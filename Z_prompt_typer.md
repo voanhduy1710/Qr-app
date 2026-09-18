@@ -18,6 +18,7 @@ and QR code
 
 
 
+
 qr-trai-tim-app.vercel.com
 is gonna be the main size -> ill add this domain later
 the otehr features gonna be based on that link
