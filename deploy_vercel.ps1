@@ -17,13 +17,9 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
 $nodeVersion = node -v
 Write-Host "   Node.js Version: $nodeVersion" -ForegroundColor Green
 
-# 2. Vercel access token from environment, .env, or .mcp.json
-$vercelToken = $env:VERCEL_ACCESS_TOKEN
-if (-not $vercelToken) {
-    $vercelToken = $env:VERCEL_TOKEN
-}
-
-if (-not $vercelToken -and (Test-Path ".env")) {
+# 2. Vercel access token: .env first (so editing it always takes effect), then environment, then .mcp.json
+$vercelToken = $null
+if (Test-Path ".env") {
     foreach ($line in Get-Content ".env") {
         $trimmed = $line.Trim()
         if ($trimmed -match "^(VERCEL_ACCESS_TOKEN|VERCEL_TOKEN)\s*=\s*(.+)$") {
@@ -31,6 +27,12 @@ if (-not $vercelToken -and (Test-Path ".env")) {
             break
         }
     }
+}
+if (-not $vercelToken) {
+    $vercelToken = $env:VERCEL_ACCESS_TOKEN
+}
+if (-not $vercelToken) {
+    $vercelToken = $env:VERCEL_TOKEN
 }
 
 if (-not $vercelToken -and (Test-Path ".mcp.json")) {
@@ -49,7 +51,6 @@ if (-not $vercelToken) {
     Write-Host "   Set VERCEL_ACCESS_TOKEN in .env or `$env:VERCEL_TOKEN." -ForegroundColor Yellow
     Exit 1
 }
-$env:VERCEL_TOKEN = $vercelToken
 
 $whoamiRaw = npx -y vercel whoami --token $vercelToken 2>&1
 $whoami = ($whoamiRaw | Where-Object { $_ -notmatch 'telemetry' -and $_ -notmatch 'Worker' -and $_ -notmatch 'NOTE' } | Select-Object -Last 1)
