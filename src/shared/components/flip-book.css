@@ -1,0 +1,215 @@
+.book-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.book {
+  --page-w: min(47vw, 340px);
+  position: relative;
+  width: calc(var(--page-w) * 2);
+  height: min(calc(var(--page-w) * 1.8), 66dvh, 480px);
+  perspective: 2200px;
+  touch-action: pan-y;
+  cursor: pointer;
+  transition: translate 800ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* Closed: only the cover shows, so centre it instead of leaving the left half empty. */
+.book.is-closed {
+  translate: calc(var(--page-w) / -2) 0;
+}
+
+.book-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  z-index: 100;
+  box-shadow: 0 0 18px 6px rgba(80, 40, 25, 0.28);
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 600ms;
+}
+
+.book.is-closed .book-spine {
+  opacity: 0;
+}
+
+.book-sheet {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 50%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 1000ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.book-sheet.is-turned {
+  transform: rotateY(-180deg);
+}
+
+.book-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(16px, 4.5vw, 34px) clamp(14px, 4vw, 30px);
+  color: #3b2420;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Right-hand page: binding on its left edge. */
+.book-front {
+  border-radius: 2px 14px 14px 2px;
+  background:
+    linear-gradient(90deg, rgba(120, 72, 48, 0.2), transparent 10%),
+    radial-gradient(120% 90% at 70% 20%, #fffaf0, #f6e7cf 70%, #ecd6b4);
+}
+
+/* Left-hand page (the back of a turned sheet): binding on its right edge. */
+.book-back {
+  transform: rotateY(180deg);
+  border-radius: 14px 2px 2px 14px;
+  background:
+    linear-gradient(270deg, rgba(120, 72, 48, 0.2), transparent 10%),
+    radial-gradient(120% 90% at 30% 20%, #fffaf0, #f6e7cf 70%, #ecd6b4);
+}
+
+.book-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.book-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  transition: width 300ms var(--ease-out), background 300ms;
+}
+
+.book-dots span.is-active {
+  width: 18px;
+  background: var(--gold);
+}
+
+.book-hint {
+  margin: 0;
+}
+
+/* Shared page typography */
+.page-title {
+  margin: 0 0 6px;
+  font-family: var(--font-script);
+  font-size: clamp(22px, 6.4vw, 40px);
+  line-height: 1.15;
+  color: #8a2c3f;
+}
+
+.page-text {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: clamp(14px, 3.9vw, 23px);
+  line-height: 1.5;
+  text-align: left;
+  white-space: pre-line;
+  text-wrap: pretty;
+}
+
+.page-sign {
+  margin: 18px 0 0;
+  font-family: var(--font-script);
+  font-size: clamp(16px, 4.4vw, 24px);
+  text-align: right;
+  color: #8a2c3f;
+}
+
+.page-num {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(59, 36, 32, 0.45);
+}
+
+/* Letter cover / closing page layouts shared by the gift pages */
+.letter-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.letter-eyebrow {
+  color: #b0745a;
+}
+
+.letter-seal {
+  width: 40px;
+  height: 40px;
+  margin-top: 14px;
+  fill: #c0394f;
+  animation: heart-beat 1.8s ease-in-out infinite;
+}
+
+.letter-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.letter-end .page-sign {
+  align-self: flex-end;
+  margin: 0 0 14px;
+}
+
+.letter-end > .page-text,
+.letter-ps > .page-text {
+  align-self: stretch;
+}
+
+.letter-cover-note {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: clamp(18px, 5vw, 26px);
+  color: #b0745a;
+}
+
+.letter-ps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  animation: scene-in 700ms var(--ease-out) both;
+}
+
+.letter-ps .page-sign {
+  align-self: flex-end;
+  margin: 0 0 10px;
+}
+
+.letter-ps-hint {
+  margin: 0;
+  font-size: 11px;
+  animation: gate-blink 2.2s ease-in-out infinite;
+  color: rgba(59, 36, 32, 0.5);
+}
+
+.letter-next {
+  padding-inline: 14px;
+  font-size: clamp(12px, 3.4vw, 15px);
+}

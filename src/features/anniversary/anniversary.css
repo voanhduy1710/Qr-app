@@ -1,0 +1,116 @@
+.love-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(80% 50% at 50% 30%, rgba(160, 20, 55, 0.4), transparent 70%),
+    linear-gradient(180deg, #1c0610 0%, #0d0308 60%, #050103 100%);
+  transition: opacity 1.4s ease;
+}
+
+.love-bg.is-on {
+  opacity: 1;
+}
+
+.love .scene {
+  z-index: 10;
+}
+
+.btn-love {
+  border-color: transparent;
+  background: linear-gradient(135deg, #ff5c82, #e11d48);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(225, 29, 72, 0.4);
+}
+
+.btn-love:hover {
+  background: linear-gradient(135deg, #ff7396, #ef2b57);
+}
+
+.love-eyebrow {
+  color: #c0394f;
+}
+
+/* Counter */
+.counter-scene .eyebrow {
+  color: #ff8fab;
+}
+
+.counter-days {
+  margin: 8px 0 0;
+  font-size: clamp(72px, 24vw, 128px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, #fff, #ff8fab);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 30px rgba(255, 92, 130, 0.45));
+}
+
+.counter-unit {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: 30px;
+  color: var(--ink-dim);
+}
+
+.counter-break {
+  margin: 18px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.counter-clock {
+  margin: 6px 0 0;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-next {
+  margin-top: 30px;
+  animation: scene-in 800ms var(--ease-out) 2.2s both;
+}
+
+/* Finale */
+.finale-scene {
+  justify-content: flex-end;
+}
+
+.finale-copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 24px max(32px, env(safe-area-inset-bottom));
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1s var(--ease-out);
+  pointer-events: none;
+}
+
+.finale-copy.is-ready {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.finale-text {
+  max-width: 16ch;
+  font-size: clamp(26px, 7.4vw, 38px);
+  text-wrap: balance;
+}
+
+.finale-sign {
+  margin: 0 0 16px;
+  color: #ff8fab;
+}

@@ -1,59 +1,43 @@
+great, not bad for the first attempt
 
-i want you to create a very simpl project here
+update the following
+1. add a home page 
+and move the main page to that 
+for management and config the resulting pages
 
-the project is feature based
-first page is 
-choosing dropdown to choose
-1. Birthday
-2. Anniversary
+example
+the resulting happy birthday page: has image 1 2 3 4 5
 
+then the /localhost:5176/home
+page would have config of that 
 
-second page 
-is QR code
-which links to 3rd page
-just a simple black background 
-and QR code
+basicaly for better customization
 
+and to manage everyyign
 
-
-
-
-qr-trai-tim-app.vercel.com
-is gonna be the main site -> ill add this domain later
-the otehr features gonna be based on that link
-
-
-
-also create 3 ps1 files like this
-C:\Caro-app\clean_restart.ps1
-C:\Caro-app\deploy_local.ps1
-C:\Caro-app\deploy_vercel.ps1
-
-FE is just react
-
-
-How it works:
-
-1. choose a drop down
-2. shows the QR code in heart format
-use this as referhce
-qr heart.png
-image.png
-
-make it as seamless as possible
-
-3. links to a animation website
-whats there:
-first is the birhtday
-
-lovegift_online_-_QR_t_nh_y_u_video_no_watermark.mp4
-https://birthday-gift-cake.netlify.app/?isPreview=true&autoplay=0&muted=1
-
-use this as reference
+in it i can add / remove images
+they are gonna be store in supabase db
 note
-website is somewhat interactable
 
-i want you to actually go to the site and test the interaction
+there should be add, swithc / delete images etc
 
 
-createe an implemnetation plan first
+
+2. Gửi cậu -> Gửi kẻ hốn chíp
+3. Chúc mừng sinh nhật Cậu! -> Chúc mừng sinh nhật mẹ Hấu
+4. Bây giờ chọn một điều ước cho ngày sinh nhật của Cậu -> 
+
+5. Change tớ -> Bố Hấu
+Cậu -> Mẹ Hấu
+
+the page flipping antimation kinda broken
+fix please
+
+6. Happy Birthday To you ❤︎⁠ animation in the begining
+change to
+
+Happy -> Birthday -> To you -> Mẹ Hấu ❤︎⁠
+
+7. the cake part -> add some gifts near there
+also add 
+

@@ -1,0 +1,42 @@
+.floaters {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floaters span {
+  position: absolute;
+  bottom: -40px;
+  opacity: 0;
+  animation-name: float-up;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.floaters svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translate(0, 0) rotate(-12deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--alpha);
+  }
+  50% {
+    transform: translate(var(--sway), -55dvh) rotate(14deg);
+  }
+  90% {
+    opacity: var(--alpha);
+  }
+  100% {
+    transform: translate(0, -112dvh) rotate(-10deg);
+    opacity: 0;
+  }
+}

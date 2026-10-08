@@ -1,0 +1,822 @@
+.bday-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(90% 55% at 50% 22%, rgba(120, 40, 70, 0.55), transparent 70%),
+    linear-gradient(180deg, #24101b 0%, #150911 55%, #0a0408 100%);
+  transition: opacity 1.4s ease;
+}
+
+.bday-bg.is-on {
+  opacity: 1;
+}
+
+.bday .scene {
+  z-index: 10;
+}
+
+/* Cake */
+.cake-scene {
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cake-copy {
+  min-height: 132px;
+  /* keep clear of the mute button in the top-right corner */
+  padding: 28px 36px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  animation: scene-in 800ms var(--ease-out) both;
+}
+
+.cake-title {
+  margin: 0;
+  max-width: 18ch;
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(28px, 8vw, 40px);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.cake-hb {
+  max-width: none;
+  font-size: clamp(30px, 9.4vw, 52px);
+  background: linear-gradient(180deg, #fff4dc, #f2c879);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 22px rgba(242, 200, 121, 0.35));
+}
+
+.cake-wrap {
+  position: relative;
+  isolation: isolate;
+  /* narrower than the screen so the presents fit beside it */
+  width: min(64vw, 320px, 42dvh);
+  aspect-ratio: 240 / 250;
+}
+
+/* Presents and balloons around the cake */
+.cake-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cake-gift {
+  position: absolute;
+  z-index: 1;
+  bottom: -2%;
+  overflow: visible;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.45));
+  animation: scene-in 900ms var(--ease-out) both;
+}
+
+.cake-gift.is-g1 {
+  left: -26%;
+  width: 34%;
+  animation-delay: 300ms;
+}
+
+.cake-gift.is-g2 {
+  left: -6%;
+  bottom: -5%;
+  width: 22%;
+  animation-delay: 450ms;
+}
+
+.cake-gift.is-g3 {
+  right: -22%;
+  width: 28%;
+  animation-delay: 600ms;
+}
+
+.cake-gift-lid {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+/* Once the candle is out, the lids hop like something inside is excited. */
+.cake-decor.is-blown .cake-gift-lid {
+  animation: gift-hop 1.6s ease-in-out infinite;
+}
+
+.cake-decor.is-blown .is-g2 .cake-gift-lid {
+  animation-delay: 0.3s;
+}
+
+.cake-decor.is-blown .is-g3 .cake-gift-lid {
+  animation-delay: 0.6s;
+}
+
+@keyframes gift-hop {
+  0%,
+  55%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  65% {
+    transform: translateY(-14%) rotate(-5deg);
+  }
+  80% {
+    transform: translateY(-4%) rotate(3deg);
+  }
+}
+
+.cake-balloon {
+  position: absolute;
+  z-index: -1;
+  width: 15%;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  animation: balloon-bob 4.2s ease-in-out infinite alternate;
+}
+
+.cake-balloon.is-b1 {
+  left: -24%;
+  top: -18%;
+  animation-delay: -1s;
+}
+
+.cake-balloon.is-b2 {
+  left: -8%;
+  top: -34%;
+  width: 13%;
+  animation-delay: -2.4s;
+}
+
+.cake-balloon.is-b3 {
+  right: -10%;
+  top: -30%;
+  animation-delay: -0.4s;
+}
+
+.cake-balloon.is-b4 {
+  right: -26%;
+  top: -12%;
+  width: 13%;
+  animation-delay: -3.1s;
+}
+
+@keyframes balloon-bob {
+  from {
+    transform: translateY(0) rotate(-4deg);
+  }
+  to {
+    transform: translateY(-8%) rotate(4deg);
+  }
+}
+
+/* Photo heart: each photo is shown big, then flies to its slot on the outline. */
+.photo-scene {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.photo-heart {
+  position: relative;
+  width: min(94vw, 640px);
+  height: min(90vw, 60dvh, 600px);
+  margin: auto 0;
+}
+
+.photo-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--big);
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  padding: 3.2% 3.2% 12%;
+  background: #fffaf2;
+  border-radius: 3px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.photo-scene.is-done .photo-heart {
+  animation: heart-beat 2.6s ease-in-out 1.2s infinite;
+}
+
+.photo-caption {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 26px;
+  border: 0;
+  border-radius: 24px;
+  background: none;
+  opacity: 0;
+  transition: opacity 900ms ease 400ms, background 300ms;
+  pointer-events: none;
+}
+
+.photo-scene.is-done .photo-caption {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.photo-scene.is-done .photo-caption:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.photo-title {
+  display: block;
+  font-size: clamp(30px, 9vw, 46px);
+  background: linear-gradient(180deg, #fff4dc, #f2c879);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(242, 200, 121, 0.35));
+}
+
+.photo-sub {
+  display: block;
+  margin: 4px 0 0;
+  font-family: var(--font-script);
+  font-size: clamp(18px, 5vw, 24px);
+  color: #ffd9e2;
+}
+
+.photo-footer {
+  min-height: 56px;
+  display: grid;
+  place-items: center;
+}
+
+.photo-next {
+  margin: 0;
+  animation:
+    scene-in 800ms var(--ease-out) 900ms both,
+    gate-blink 2.2s ease-in-out 1.7s infinite;
+}
+
+.cake-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45));
+}
+
+.cake-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  scale: var(--flame-scale, 1);
+  animation: flame-flicker 0.18s ease-in-out infinite alternate;
+  transition: opacity 400ms ease, scale 120ms linear;
+}
+
+.cake-flame.is-out {
+  opacity: 0;
+  scale: 0.2;
+}
+
+@keyframes flame-flicker {
+  from {
+    transform: rotate(-2.5deg) scaleY(1);
+  }
+  to {
+    transform: rotate(2.5deg) scaleY(1.07);
+  }
+}
+
+/* Hit area centred on the flame (flame sits at ~8–16% of the cake's height). */
+.cake-hold {
+  position: absolute;
+  left: 50%;
+  top: 6.5%;
+  width: 34%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  touch-action: none;
+  -webkit-touch-callout: none;
+}
+
+.cake-hold svg {
+  width: 100%;
+  height: 100%;
+  rotate: -90deg;
+  fill: none;
+}
+
+.cake-ring-track {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 2;
+}
+
+.cake-ring {
+  stroke: var(--gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px rgba(242, 200, 121, 0.8));
+}
+
+.cake-hold::after {
+  content: "";
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  border: 1px solid rgba(242, 200, 121, 0.35);
+  animation: gate-ring 2.4s ease-out infinite;
+}
+
+.cake-smoke {
+  position: absolute;
+  left: 50%;
+  top: 14%;
+  width: 0;
+}
+
+.cake-smoke span {
+  position: absolute;
+  left: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(230, 220, 225, 0.55);
+  filter: blur(4px);
+  animation: smoke-rise 2.6s ease-out forwards;
+}
+
+.cake-smoke span:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.cake-smoke span:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+@keyframes smoke-rise {
+  from {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate(18px, -110px) scale(3.4);
+    opacity: 0;
+  }
+}
+
+.cake-footer {
+  min-height: 64px;
+  display: grid;
+  place-items: center;
+}
+
+.cake-hint {
+  margin: 0;
+  animation: gate-blink 2.2s ease-in-out infinite;
+}
+
+.cake-next {
+  animation: scene-in 800ms var(--ease-out) 1.4s both;
+}
+
+/* Wish tags */
+.wish-scene {
+  gap: 4px;
+}
+
+.wish-title {
+  margin: 0 auto 18px;
+  max-width: 20ch;
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(24px, 7vw, 34px);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.wish-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 26px;
+  margin-bottom: 18px;
+}
+
+.wish-tag {
+  position: relative;
+  padding: 28px 0 0;
+  border: 0;
+  background: none;
+  transform-origin: 50% 0;
+  animation: tag-swing 3.4s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -0.9s);
+}
+
+/* ribbon */
+.wish-tag::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 40px;
+  translate: -50% 0;
+  background: linear-gradient(#f4b6c4, #e48da3);
+  border-radius: 2px;
+}
+
+.wish-tag-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: min(34vw, 140px);
+  height: min(42vw, 168px, 21dvh);
+  padding: 26px 12px 12px;
+  color: #5a3a33;
+  background: radial-gradient(120% 90% at 30% 10%, #fffaf0, #f3e2c7);
+  clip-path: polygon(22% 0, 78% 0, 100% 16%, 100% 100%, 0 100%, 0 16%);
+  border-radius: 6px;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 400ms var(--ease-out), filter 400ms;
+}
+
+.wish-tag:hover .wish-tag-card {
+  transform: translateY(-3px);
+}
+
+.wish-tag-hole {
+  position: absolute;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #24101b;
+  box-shadow: 0 0 0 2px #e7b85c;
+}
+
+.wish-tag-text {
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(18px, 5vw, 22px);
+  line-height: 1.2;
+}
+
+.wish-tag-flower {
+  width: 46px;
+  height: 28px;
+}
+
+.wish-tag.is-seen .wish-tag-card {
+  filter: drop-shadow(0 0 14px rgba(242, 200, 121, 0.55));
+}
+
+.wish-tag:disabled {
+  cursor: default;
+}
+
+@keyframes tag-swing {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(4deg);
+  }
+}
+
+/* Wish postcard */
+.postcard-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 20px 16px;
+  background: rgba(10, 4, 8, 0.72);
+  backdrop-filter: blur(4px);
+  animation: fade-in 300ms ease both;
+}
+
+.postcard {
+  position: relative;
+  width: min(100%, 420px);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  padding: 30px 24px 22px;
+  color: #3b2420;
+  text-align: left;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(-45deg, #c0394f 0 10px, #fffaf0 10px 20px, #3b6ea5 20px 30px, #fffaf0 30px 40px) border-box;
+  border: 8px solid transparent;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+  isolation: isolate;
+  animation: postcard-in 600ms var(--ease-out) both;
+}
+
+.postcard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 3px;
+  background: radial-gradient(120% 90% at 70% 10%, #fffaf0, #f6e7cf 70%, #ecd6b4);
+}
+
+.postcard-stamp {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 46px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed rgba(192, 57, 79, 0.5);
+  border-radius: 4px;
+  transform: rotate(6deg);
+}
+
+.postcard-stamp svg {
+  width: 26px;
+  fill: #c0394f;
+}
+
+.postcard-title {
+  margin: 0 60px 12px 0;
+  font-family: var(--font-script);
+  font-size: clamp(28px, 8vw, 36px);
+  line-height: 1.15;
+  color: #8a2c3f;
+}
+
+.postcard-text {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: clamp(19px, 5.2vw, 22px);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.postcard-sign {
+  margin: 12px 0 18px;
+  font-family: var(--font-script);
+  font-size: 22px;
+  text-align: right;
+  color: #8a2c3f;
+}
+
+.postcard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.postcard-actions .btn:not(.btn-primary) {
+  color: #5a3a33;
+  border-color: rgba(90, 58, 51, 0.35);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+@keyframes postcard-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotate(-4deg) scale(0.9);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Sky */
+.sky-scene {
+  gap: 6px;
+}
+
+.sky-title {
+  font-size: clamp(30px, 8.6vw, 44px);
+  margin-bottom: 26px;
+}
+
+.sky-star {
+  position: relative;
+  z-index: 5;
+  width: 120px;
+  height: 120px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+}
+
+.sky-star:disabled {
+  cursor: default;
+}
+
+.sky-star-x,
+.sky-star-y {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.sky-star-y {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 223, 150, 0.35), transparent 65%);
+  animation: star-pulse 2.4s ease-in-out infinite;
+}
+
+.sky-star svg {
+  width: 54px;
+  height: 54px;
+  fill: #ffe7a8;
+  filter: drop-shadow(0 0 14px rgba(255, 210, 120, 0.95));
+}
+
+@keyframes star-pulse {
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* Knight's move: x eases in (slow start) while y eases out (fast start), so the
+   star shoots up first and swings sideways at the end: an arc, not a line. */
+.sky-scene:not(.is-idle) .sky-star-x {
+  translate: var(--fx) 0;
+  transition: translate var(--flight) cubic-bezier(0.55, 0, 0.75, 0.6);
+}
+
+.sky-scene:not(.is-idle) .sky-star-y {
+  translate: 0 var(--fy);
+  scale: 0.55;
+  background: none;
+  transition:
+    translate var(--flight) cubic-bezier(0.2, 0.7, 0.35, 1),
+    scale var(--flight) ease;
+  animation: star-hang 3s ease-in-out var(--flight) infinite;
+}
+
+.sky-scene.is-flying .sky-star svg {
+  animation: star-spin var(--flight) ease-in-out both;
+}
+
+@keyframes star-spin {
+  50% {
+    filter: drop-shadow(0 0 40px rgba(255, 240, 200, 1)) brightness(1.4);
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes star-hang {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 220, 140, 0.8));
+  }
+  50% {
+    transform: rotate(12deg) scale(1.15);
+    filter: drop-shadow(0 0 24px rgba(255, 230, 170, 1));
+  }
+}
+
+/* Once the wish lands, stars like it light up across the sky. */
+.sky-sisters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sky-sisters svg {
+  position: absolute;
+  width: calc(54px * var(--s));
+  height: calc(54px * var(--s));
+  translate: -50% -50%;
+  fill: #ffe7a8;
+  filter: drop-shadow(0 0 10px rgba(255, 210, 120, 0.9));
+  opacity: 0;
+  scale: 0;
+}
+
+.sky-scene.is-landed .sky-sisters svg {
+  animation:
+    sister-in 900ms var(--ease-out) var(--d) forwards,
+    sister-twinkle var(--tw, 2.6s) ease-in-out calc(var(--d) + 900ms) infinite;
+}
+
+@keyframes sister-in {
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes sister-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+    rotate: 0deg;
+  }
+  50% {
+    opacity: 0.45;
+    rotate: 20deg;
+  }
+}
+
+.sky-moon {
+  position: absolute;
+  top: max(22px, env(safe-area-inset-top));
+  left: 22px;
+  width: clamp(54px, 15vw, 84px);
+  height: auto;
+  fill: #fff1c9;
+  filter: drop-shadow(0 0 18px rgba(255, 236, 180, 0.55));
+  rotate: -18deg;
+  pointer-events: none;
+  animation: moon-in 1.6s var(--ease-out) both;
+  transition: filter 2s ease;
+}
+
+.sky-scene.is-landed .sky-moon {
+  filter: drop-shadow(0 0 32px rgba(255, 236, 180, 0.85));
+}
+
+@keyframes moon-in {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+.sky-wish {
+  margin: 16px 0 0;
+  max-width: 22ch;
+  padding: 10px 22px;
+  border: 1px solid rgba(242, 200, 121, 0.4);
+  border-radius: 24px;
+  font-family: var(--font-script);
+  font-size: clamp(20px, 5.6vw, 26px);
+  line-height: 1.35;
+  text-wrap: balance;
+  color: #ffe7a8;
+}
+
+.sky-lead {
+  min-height: 3.2em;
+}
+
+.sky-actions {
+  min-height: 56px;
+  margin-top: 12px;
+}
+
+.sky-actions .btn {
+  animation: scene-in 800ms var(--ease-out) 1.2s both;
+}
+
+.cake-hb-line {
+  display: block;
+  white-space: nowrap;
+}
+
+/* After the candle is out the cake is the "open gift" button. */
+.cake-scene.is-blown .cake-wrap {
+  cursor: pointer;
+  border-radius: 24px;
+  animation: cake-invite 2.4s ease-in-out 1.6s infinite;
+}
+
+.cake-scene.is-blown .cake-wrap:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 6px;
+}
+
+@keyframes cake-invite {
+  50% {
+    transform: scale(1.03);
+  }
+}

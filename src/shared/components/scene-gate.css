@@ -1,0 +1,61 @@
+.gate {
+  gap: 18px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+}
+
+.gate-heart {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+}
+
+.gate-heart::before,
+.gate-heart::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 77, 141, 0.5);
+  animation: gate-ring 2.4s ease-out infinite;
+}
+
+.gate-heart::after {
+  animation-delay: 1.2s;
+}
+
+.gate-heart svg {
+  width: 52px;
+  height: 52px;
+  fill: var(--crimson);
+  filter: drop-shadow(0 0 18px rgba(225, 29, 72, 0.8));
+  animation: heart-beat 1.6s ease-in-out infinite;
+}
+
+@keyframes gate-ring {
+  from {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.gate-title {
+  font-size: clamp(30px, 9vw, 44px);
+}
+
+.gate-sub {
+  animation: gate-blink 2s ease-in-out infinite;
+}
+
+@keyframes gate-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
