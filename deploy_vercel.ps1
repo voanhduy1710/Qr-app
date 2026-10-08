@@ -108,6 +108,33 @@ if ($linked -ne $ProjectName) {
     }
 }
 
+# Vercel builds on its own servers, where .env does not exist. Copy every VITE_*
+# value (public by design: Vite bakes them into the page) to the project first.
+$link = Get-Content ".vercel\project.json" -Raw | ConvertFrom-Json
+$envUrl = "https://api.vercel.com/v10/projects/$($link.projectId)/env?upsert=true&teamId=$($link.orgId)"
+$headers = @{ Authorization = "Bearer $vercelToken" }
+$synced = @()
+foreach ($line in Get-Content ".env") {
+    if ($line.Trim() -match "^(VITE_[A-Z0-9_]+)\s*=\s*(.*)$") {
+        $key = $matches[1]
+        $value = $matches[2].Trim().Trim('"').Trim("'")
+        if (-not $value) { continue }
+        $body = @{ key = $key; value = $value; type = "plain"; target = @("production", "preview") } | ConvertTo-Json
+        try {
+            Invoke-RestMethod -Method Post -Uri $envUrl -Headers $headers -ContentType "application/json" -Body $body | Out-Null
+            $synced += $key
+        } catch {
+            Write-Host "Error: Could not set $key on Vercel: $($_.Exception.Message)" -ForegroundColor Red
+            Exit 1
+        }
+    }
+}
+if (-not $synced) {
+    Write-Host "Error: No VITE_* values found in .env; the site would deploy without Supabase." -ForegroundColor Red
+    Exit 1
+}
+Write-Host "   Synced to Vercel: $($synced -join ', ')" -ForegroundColor Green
+
 npx -y vercel deploy --prod --yes --token $vercelToken
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Error: Vercel deployment failed." -ForegroundColor Red
