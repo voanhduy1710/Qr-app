@@ -36,20 +36,24 @@ export default function PhotoHeartScene({ photos, content, className, onNext }) 
     return () => ro.disconnect()
   }, [])
 
-  // Slot size shrinks as photos are added so up to 20 still sit side by side on the outline.
+  // Slot size shrinks as photos are added so up to 18 still sit side by side on the outline.
   const layout = useMemo(() => {
     const { w, h } = box
-    const cardW = w * Math.min(0.22, 0.145 * Math.sqrt(16 / Math.max(1, photos.length)))
+    const cardW = w * Math.min(0.2, 0.12 * Math.sqrt(18 / Math.max(1, photos.length)))
     const cardH = cardW * 1.25
     const bigW = Math.min(w * 0.7, h * 0.62)
+    const spanW = w - cardW
+    const spanH = h - cardH
     return {
       bigW,
       k: bigW ? cardW / bigW : 0.2,
-      // A shallow cleft and a half-step offset keep the cards at the dip clear of the caption.
-      slots: heartSlots(photos.length, { width: w - cardW, height: h - cardH, offset: 0.5, dip: 3 }).map(([x, y], i) => ({
-        x: (x * (w - cardW)) / 2,
-        y: (y * (h - cardH)) / 2,
-        r: ((i * 37) % 13) - 6,
+      // One card sits dead centre in the dip and (for an even count) one on the tip;
+      // the rest are spaced so neighbours are equally far apart.
+      slots: heartSlots(photos.length, { width: spanW, height: spanH, card: [cardW, cardH] }).map(([x, y], i) => ({
+        x: (x * spanW) / 2,
+        y: (y * spanH) / 2,
+        // Small, stable tilt per slot so the heart looks hand-pinned; the centre cards stay straight.
+        r: i === 0 || i * 2 === photos.length ? 0 : ((i * 37) % 13) - 6,
       })),
     }
   }, [box, photos.length])

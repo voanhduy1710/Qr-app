@@ -17,12 +17,16 @@ function heartPoint(t, dip = 5) {
  * - `offset`: shift along the outline in slot steps; 0.5 puts a pair of slots
  *   either side of the dip instead of one slot in it.
  * - `dip`: cleft depth (see heartPoint).
+ * - `card`: [w, h] of the cards placed on the slots, in box units. When given,
+ *   slots are nudged so neighbouring cards are equally far apart (arc length
+ *   alone crowds them at the sharp dip and tip). Slot 0 stays on the dip and,
+ *   for an even count, the middle slot stays on the tip.
  */
-export function heartSlots(count, { width = 1, height = 1, offset = 0, dip = 5 } = {}) {
+export function heartSlots(count, { width = 1, height = 1, offset = 0, dip = 5, card } = {}) {
   if (count <= 0) return []
   const STEPS = 1440
   const raw = []
-  for (let i = 0; i <= STEPS; i++) raw.push(heartPoint((i / STEPS) * Math.PI * 2, dip))
+  for (let i = 0; i < STEPS; i++) raw.push(heartPoint((i / STEPS) * Math.PI * 2, dip))
   const xs = raw.map((p) => p[0])
   const ys = raw.map((p) => p[1])
   const cx = (Math.min(...xs) + Math.max(...xs)) / 2
@@ -34,19 +38,42 @@ export function heartSlots(count, { width = 1, height = 1, offset = 0, dip = 5 }
   const lengths = [0]
   for (let i = 1; i <= STEPS; i++) {
     const [ax, ay] = norm[i - 1]
-    const [bx, by] = norm[i]
+    const [bx, by] = norm[i % STEPS]
     lengths.push(lengths[i - 1] + Math.hypot((bx - ax) * width, (by - ay) * height))
   }
   const total = lengths[STEPS]
-  const slots = []
+  // Position along the outline (0..1 of its length) -> point.
   let j = 0
-  for (let k = 0; k < count; k++) {
-    const target = (((k + offset) / count) % 1) * total
+  const at = (u) => {
+    const target = (((u % 1) + 1) % 1) * total
     if (target < lengths[j]) j = 0
     while (lengths[j + 1] < target) j++
-    slots.push(norm[j])
+    return norm[j % STEPS]
   }
-  return slots
+
+  let u = Array.from({ length: count }, (_, k) => (k + offset) / count)
+
+  if (card && count > 2) {
+    const [cw, ch] = card
+    // How far apart two cards are, in card sizes (1 = just touching).
+    const gap = ([ax, ay], [bx, by]) =>
+      Math.max((Math.abs(ax - bx) * width) / 2 / cw, (Math.abs(ay - by) * height) / 2 / ch)
+    for (let it = 0; it < 400; it++) {
+      const pts = u.map(at)
+      const g = pts.map((p, k) => gap(p, pts[(k + 1) % count]))
+      const next = u.map((v, k) => v + 0.002 * (g[k] - g[(k - 1 + count) % count]))
+      next[0] = 0
+      if (count % 2 === 0) next[count / 2] = 0.5
+      // Keep the heart mirror-symmetric.
+      for (let k = 1; k < Math.ceil(count / 2); k++) {
+        const m = (next[k] + (1 - next[count - k])) / 2
+        next[k] = m
+        next[count - k] = 1 - m
+      }
+      u = next
+    }
+  }
+  return u.map(at)
 }
 
 // Classic parametric heart, scaled so the shape spans roughly `size` px.

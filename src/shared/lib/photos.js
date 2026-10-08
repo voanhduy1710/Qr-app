@@ -1,7 +1,7 @@
 import { supabase } from './supabase'
 
 const BUCKET = 'gift-photos'
-export const MAX_PHOTOS = 20
+export const MAX_PHOTOS = 18
 
 function requireClient() {
   if (!supabase) throw new Error('Supabase is not configured (.env)')
@@ -44,45 +44,66 @@ function newPath(occasion, file) {
   return `${occasion}/${crypto.randomUUID()}.${ext}`
 }
 
-export async function addPhoto(occasion, file, position) {
+/**
+ * Applies a whole editing session in as few requests as possible.
+ *
+ * `saved` is the list as loaded; `draft` is the list to end up with, in order.
+ * Draft items are saved rows (`id`, `storage_path`), optionally with a `file`
+ * that replaces the image, or new items with only a `file`.
+ *
+ * Requests: one upload per new/replaced file (unavoidable), then at most one
+ * delete, one insert, one upsert for every position, and one storage cleanup.
+ */
+export async function savePhotoChanges(occasion, saved, draft, onProgress = () => {}) {
   const db = requireClient()
-  const path = newPath(occasion, file)
-  const up = await db.storage.from(BUCKET).upload(path, file, { contentType: file.type })
-  if (up.error) throw up.error
-  const { error } = await db.from('gift_photos').insert({ occasion, storage_path: path, position })
-  if (error) {
-    await db.storage.from(BUCKET).remove([path])
-    throw error
+  const keep = new Set(draft.filter((p) => p.id).map((p) => p.id))
+  const removed = saved.filter((p) => !keep.has(p.id))
+  const uploads = draft.filter((p) => p.file)
+  const uploaded = []
+  const staleFiles = removed.map((p) => p.storage_path)
+  let rowsWritten = false
+
+  try {
+    const pathFor = new Map()
+    for (const [i, item] of uploads.entries()) {
+      onProgress(`Uploading ${i + 1} of ${uploads.length}…`)
+      const path = newPath(occasion, item.file)
+      const up = await db.storage.from(BUCKET).upload(path, item.file, { contentType: item.file.type })
+      if (up.error) throw up.error
+      uploaded.push(path)
+      pathFor.set(item, path)
+    }
+
+    onProgress('Saving…')
+    const rows = draft.map((item, position) => ({
+      ...(item.id && { id: item.id }),
+      occasion,
+      storage_path: pathFor.get(item) ?? item.storage_path,
+      position,
+    }))
+    const fresh = rows.filter((r) => !r.id)
+    const existing = rows.filter((r) => r.id)
+    if (fresh.length) {
+      const { error } = await db.from('gift_photos').insert(fresh)
+      if (error) throw error
+      rowsWritten = true
+    }
+    if (existing.length) {
+      const { error } = await db.from('gift_photos').upsert(existing, { onConflict: 'id' })
+      if (error) throw error
+    }
+    // Deleting last means a failure earlier never loses photos.
+    if (removed.length) {
+      const { error } = await db.from('gift_photos').delete().in('id', removed.map((p) => p.id))
+      if (error) throw error
+    }
+    // Files that were replaced are no longer referenced.
+    for (const item of draft) if (item.id && item.file) staleFiles.push(item.storage_path)
+  } catch (err) {
+    // If no row points at the new uploads yet, don't leave them behind.
+    if (uploaded.length && !rowsWritten) await db.storage.from(BUCKET).remove(uploaded)
+    throw err
   }
-}
 
-/** Swap the file behind a photo, keeping its slot. */
-export async function replacePhoto(photo, occasion, file) {
-  const db = requireClient()
-  const path = newPath(occasion, file)
-  const up = await db.storage.from(BUCKET).upload(path, file, { contentType: file.type })
-  if (up.error) throw up.error
-  const { error } = await db.from('gift_photos').update({ storage_path: path }).eq('id', photo.id)
-  if (error) {
-    await db.storage.from(BUCKET).remove([path])
-    throw error
-  }
-  await db.storage.from(BUCKET).remove([photo.storage_path])
-}
-
-export async function deletePhoto(photo) {
-  const db = requireClient()
-  const { error } = await db.from('gift_photos').delete().eq('id', photo.id)
-  if (error) throw error
-  await db.storage.from(BUCKET).remove([photo.storage_path])
-}
-
-/** Persist a new order: `photos` is the full list in the order to save. */
-export async function savePositions(photos) {
-  const db = requireClient()
-  const results = await Promise.all(
-    photos.map((p, i) => db.from('gift_photos').update({ position: i }).eq('id', p.id)),
-  )
-  const failed = results.find((r) => r.error)
-  if (failed) throw failed.error
+  if (staleFiles.length) await db.storage.from(BUCKET).remove(staleFiles)
 }

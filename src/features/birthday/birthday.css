@@ -177,10 +177,11 @@
   gap: 12px;
 }
 
+/* Slightly wider than tall, like a drawn heart. */
 .photo-heart {
   position: relative;
-  width: min(94vw, 640px);
-  height: min(90vw, 60dvh, 600px);
+  width: min(94vw, 600px, 70dvh);
+  aspect-ratio: 10 / 9;
   margin: auto 0;
 }
 
