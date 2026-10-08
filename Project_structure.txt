@@ -1,0 +1,1496 @@
+Generated at: 2026-10-01 15:56:32
+Root directory: C:\Atino-tong-hop-approval-web
+Folders: 179
+Files: 971
+Lines of code: 147764
+Bytes: 72,852,830
+
+Structure:
+📁 Atino-tong-hop-approval-web/
+├── 📁 .agents/
+│   ├── 📁 plugins/
+│   │   └── 📁 superpowers/
+│   │       ├── 📁 hooks/
+│   │       │   ├── 📄 hooks-cursor.json
+│   │       │   ├── 📄 hooks.json
+│   │       │   ├── 📄 run-hook.cmd
+│   │       │   └── 📄 session-start
+│   │       └── 📄 plugin.json
+│   ├── 📁 skills/
+│   │   ├── 📁 brainstorming/
+│   │   │   ├── 📁 scripts/
+│   │   │   │   ├── 📄 frame-template.html
+│   │   │   │   ├── 📄 helper.js
+│   │   │   │   ├── 📄 server.cjs
+│   │   │   │   ├── 📄 start-server.sh
+│   │   │   │   └── 📄 stop-server.sh
+│   │   │   ├── 📄 SKILL.md
+│   │   │   ├── 📄 spec-document-reviewer-prompt.md
+│   │   │   └── 📄 visual-companion.md
+│   │   ├── 📁 caveman/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 caveman-commit/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 caveman-compress/
+│   │   │   ├── 📁 scripts/
+│   │   │   │   ├── 📄 __main__.py
+│   │   │   │   ├── 📄 benchmark.py
+│   │   │   │   ├── 📄 cli.py
+│   │   │   │   ├── 📄 compress.py
+│   │   │   │   ├── 📄 detect.py
+│   │   │   │   └── 📄 validate.py
+│   │   │   ├── 📄 README.md
+│   │   │   ├── 📄 SECURITY.md
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 caveman-help/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 caveman-review/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 diagnosing-superpowers/
+│   │   │   ├── 📁 prompts/
+│   │   │   │   ├── 📄 analyst-common.md
+│   │   │   │   ├── 📄 cost-and-time.md
+│   │   │   │   ├── 📄 plan-adherence.md
+│   │   │   │   ├── 📄 quality-evidence.md
+│   │   │   │   ├── 📄 repeated-work.md
+│   │   │   │   ├── 📄 request-conflicts.md
+│   │   │   │   ├── 📄 scrub-audit.md
+│   │   │   │   ├── 📄 scrub.md
+│   │   │   │   ├── 📄 similar-session.md
+│   │   │   │   ├── 📄 skill-timeline.md
+│   │   │   │   └── 📄 stumbles.md
+│   │   │   ├── 📁 references/
+│   │   │   │   ├── 📄 context-safety.md
+│   │   │   │   ├── 📄 github-issues.md
+│   │   │   │   ├── 📄 redaction-policy.md
+│   │   │   │   └── 📄 session-discovery.md
+│   │   │   ├── 📁 templates/
+│   │   │   │   ├── 📄 bundle-README.md
+│   │   │   │   ├── 📄 case.md
+│   │   │   │   ├── 📄 issue.md
+│   │   │   │   └── 📄 report.md
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 dispatching-parallel-agents/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 executing-plans/
+│   │   │   ├── 📁 scripts/
+│   │   │   │   ├── 📄 task-done
+│   │   │   │   └── 📄 task-start
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 finishing-a-development-branch/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 receiving-code-review/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 requesting-code-review/
+│   │   │   ├── 📄 code-reviewer.md
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 subagent-driven-development/
+│   │   │   ├── 📁 scripts/
+│   │   │   │   ├── 📄 review-package
+│   │   │   │   ├── 📄 sdd-workspace
+│   │   │   │   └── 📄 task-brief
+│   │   │   ├── 📄 implementer-prompt.md
+│   │   │   ├── 📄 re-review-prompt.md
+│   │   │   ├── 📄 SKILL.md
+│   │   │   └── 📄 task-reviewer-prompt.md
+│   │   ├── 📁 systematic-debugging/
+│   │   │   ├── 📄 condition-based-waiting-example.ts
+│   │   │   ├── 📄 condition-based-waiting.md
+│   │   │   ├── 📄 CREATION-LOG.md
+│   │   │   ├── 📄 defense-in-depth.md
+│   │   │   ├── 📄 find-polluter.sh
+│   │   │   ├── 📄 root-cause-tracing.md
+│   │   │   ├── 📄 SKILL.md
+│   │   │   ├── 📄 test-academic.md
+│   │   │   ├── 📄 test-pressure-1.md
+│   │   │   ├── 📄 test-pressure-2.md
+│   │   │   └── 📄 test-pressure-3.md
+│   │   ├── 📁 test-driven-development/
+│   │   │   ├── 📄 SKILL.md
+│   │   │   └── 📄 writing-good-tests.md
+│   │   ├── 📁 using-git-worktrees/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 using-superpowers/
+│   │   │   ├── 📁 references/
+│   │   │   │   ├── 📄 antigravity-tools.md
+│   │   │   │   ├── 📄 claude-code-tools.md
+│   │   │   │   ├── 📄 codex-tools.md
+│   │   │   │   ├── 📄 gemini-tools.md
+│   │   │   │   ├── 📄 hermes-tools.md
+│   │   │   │   ├── 📄 muse-tools.md
+│   │   │   │   └── 📄 pi-tools.md
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 verification-before-completion/
+│   │   │   └── 📄 SKILL.md
+│   │   ├── 📁 writing-plans/
+│   │   │   └── 📄 SKILL.md
+│   │   └── 📁 writing-skills/
+│   │       ├── 📁 examples/
+│   │       │   └── 📄 CLAUDE_MD_TESTING.md
+│   │       ├── 📄 anthropic-best-practices.md
+│   │       ├── 📄 graphviz-conventions.dot
+│   │       ├── 📄 persuasion-principles.md
+│   │       ├── 📄 render-graphs.js
+│   │       ├── 📄 SKILL.md
+│   │       └── 📄 testing-skills-with-subagents.md
+│   ├── 📄 AGENTS.md
+│   └── 📄 plugins.json
+├── 📁 .claude/
+│   ├── 📁 skills/
+│   │   ├── 📄 debug-issue.md
+│   │   ├── 📄 explore-codebase.md
+│   │   ├── 📄 refactor-safely.md
+│   │   └── 📄 review-changes.md
+│   ├── 📄 settings.json
+│   └── 📄 settings.local.json
+├── 📁 .claw/
+│   ├── 📁 plugins/
+│   │   ├── 📁 installed/
+│   │   │   ├── 📁 example-bundled-bundled/
+│   │   │   │   ├── 📁 .claude-plugin/
+│   │   │   │   │   └── 📄 plugin.json
+│   │   │   │   └── 📁 hooks/
+│   │   │   │       ├── 📄 post.sh
+│   │   │   │       └── 📄 pre.sh
+│   │   │   └── 📁 sample-hooks-bundled/
+│   │   │       ├── 📁 .claude-plugin/
+│   │   │       │   └── 📄 plugin.json
+│   │   │       └── 📁 hooks/
+│   │   │           ├── 📄 post.sh
+│   │   │           └── 📄 pre.sh
+│   │   └── 📄 installed.json
+│   └── 📁 sessions/
+│       └── 📁 d23425682c8fd0ae/
+│           ├── 📄 session-1780892848019-0.jsonl
+│           └── 📄 session-1780893582252-0.jsonl
+├── 📁 .code-review-graph/
+│   ├── 📁 wiki/
+│   │   ├── 📄 approval-summary-handle.md
+│   │   ├── 📄 atino-tong-hop-approval-web-case.md
+│   │   ├── 📄 atino-tong-hop-approval-web-print.md
+│   │   ├── 📄 dashboard-cache.md
+│   │   ├── 📄 data-child.md
+│   │   ├── 📄 debug-check.md
+│   │   ├── 📄 functions-data.md
+│   │   ├── 📄 index.md
+│   │   ├── 📄 scripts-fetch.md
+│   │   ├── 📄 scripts-validate.md
+│   │   ├── 📄 tests-json.md
+│   │   └── 📄 z-scripts-extract.md
+│   ├── 📄 .gitignore
+│   ├── 📄 code_review_graph_bug.md
+│   └── 📄 graph.db
+├── 📁 .codex/
+│   ├── 📄 config.toml
+│   └── 📄 hooks.json
+├── 📁 .githooks/
+│   ├── 📄 post-checkout
+│   └── 📄 post-commit
+├── 📁 .turbo/
+│   └── 📁 cache/
+│       ├── 📄 1385cca906a0e451-manifest.json
+│       ├── 📄 1385cca906a0e451-meta.json
+│       ├── 📄 1385cca906a0e451.tar.zst
+│       ├── 📄 17bd6a90e749b56f-manifest.json
+│       ├── 📄 17bd6a90e749b56f-meta.json
+│       ├── 📄 17bd6a90e749b56f.tar.zst
+│       ├── 📄 1f97efeb89770b39-manifest.json
+│       ├── 📄 1f97efeb89770b39-meta.json
+│       ├── 📄 1f97efeb89770b39.tar.zst
+│       ├── 📄 247095acd9ea4e36-manifest.json
+│       ├── 📄 247095acd9ea4e36-meta.json
+│       ├── 📄 247095acd9ea4e36.tar.zst
+│       ├── 📄 35d796bf7f218de1-manifest.json
+│       ├── 📄 35d796bf7f218de1-meta.json
+│       ├── 📄 35d796bf7f218de1.tar.zst
+│       ├── 📄 3b1b3fe5a58d7213-manifest.json
+│       ├── 📄 3b1b3fe5a58d7213-meta.json
+│       ├── 📄 3b1b3fe5a58d7213.tar.zst
+│       ├── 📄 400341d269bba2b9-manifest.json
+│       ├── 📄 400341d269bba2b9-meta.json
+│       ├── 📄 400341d269bba2b9.tar.zst
+│       ├── 📄 4e7eafd93b5dd92e-manifest.json
+│       ├── 📄 4e7eafd93b5dd92e-meta.json
+│       ├── 📄 4e7eafd93b5dd92e.tar.zst
+│       ├── 📄 871dc27f8a045252-manifest.json
+│       ├── 📄 871dc27f8a045252-meta.json
+│       ├── 📄 871dc27f8a045252.tar.zst
+│       ├── 📄 9084bbcee0cbdeab-manifest.json
+│       ├── 📄 9084bbcee0cbdeab-meta.json
+│       ├── 📄 9084bbcee0cbdeab.tar.zst
+│       ├── 📄 988d68964c5c95e8-manifest.json
+│       ├── 📄 988d68964c5c95e8-meta.json
+│       ├── 📄 988d68964c5c95e8.tar.zst
+│       ├── 📄 b153662aaf536a59-manifest.json
+│       ├── 📄 b153662aaf536a59-meta.json
+│       ├── 📄 b153662aaf536a59.tar.zst
+│       ├── 📄 b444fda286f8ae5d-manifest.json
+│       ├── 📄 b444fda286f8ae5d-meta.json
+│       ├── 📄 b444fda286f8ae5d.tar.zst
+│       ├── 📄 c73bfa15d76d5427-manifest.json
+│       ├── 📄 c73bfa15d76d5427-meta.json
+│       ├── 📄 c73bfa15d76d5427.tar.zst
+│       ├── 📄 cf083acf4a76d2c2-manifest.json
+│       ├── 📄 cf083acf4a76d2c2-meta.json
+│       ├── 📄 cf083acf4a76d2c2.tar.zst
+│       ├── 📄 d43172c3870c473d-manifest.json
+│       ├── 📄 d43172c3870c473d-meta.json
+│       ├── 📄 d43172c3870c473d.tar.zst
+│       ├── 📄 e008b8f64ae8204d-manifest.json
+│       ├── 📄 e008b8f64ae8204d-meta.json
+│       ├── 📄 e008b8f64ae8204d.tar.zst
+│       ├── 📄 fb448a0bfdc4837c-manifest.json
+│       ├── 📄 fb448a0bfdc4837c-meta.json
+│       └── 📄 fb448a0bfdc4837c.tar.zst
+├── 📁 apps/
+│   ├── 📁 mobile/
+│   │   ├── 📄 package.json
+│   │   ├── 📄 README.md
+│   │   └── 📄 tsconfig.json
+│   └── 📁 web/
+│       ├── 📁 .turbo/
+│       │   ├── 📄 turbo-build.log
+│       │   ├── 📄 turbo-lint.log
+│       │   ├── 📄 turbo-test.log
+│       │   └── 📄 turbo-typecheck.log
+│       ├── 📁 public/
+│       │   ├── 📄 atino-logo.svg
+│       │   ├── 📄 loading.gif
+│       │   └── 📄 vite.svg
+│       ├── 📁 src/
+│       │   ├── 📁 app/
+│       │   │   ├── 📄 App.tsx
+│       │   │   ├── 📄 appConstants.ts
+│       │   │   ├── 📄 AppContent.tsx
+│       │   │   ├── 📄 AppShared.tsx
+│       │   │   ├── 📄 navigationConfig.ts
+│       │   │   ├── 📄 providers.tsx
+│       │   │   ├── 📄 Sidebar.tsx
+│       │   │   ├── 📄 topbar.css
+│       │   │   └── 📄 Topbar.tsx
+│       │   ├── 📁 assets/
+│       │   │   ├── 📄 A Logo.svg
+│       │   │   ├── 📄 atino-logo.svg
+│       │   │   └── 📄 react.svg
+│       │   ├── 📁 features/
+│       │   │   ├── 📁 admin/
+│       │   │   │   ├── 📁 components/
+│       │   │   │   │   ├── 📄 AdminDocComponents.tsx
+│       │   │   │   │   └── 📄 AdminDocContent.tsx
+│       │   │   │   ├── 📄 AdminMcpConnectorTab.tsx
+│       │   │   │   ├── 📄 AdminMultiSelect.tsx
+│       │   │   │   ├── 📄 AdminPage.tsx
+│       │   │   │   ├── 📄 AdminRawDataTab.tsx
+│       │   │   │   └── 📄 AdminRawTable.tsx
+│       │   │   ├── 📁 admin-testing/
+│       │   │   │   └── 📄 AdminTestingPage.tsx
+│       │   │   ├── 📁 approval-api-preview/
+│       │   │   │   ├── 📄 api.ts
+│       │   │   │   └── 📄 ApprovalApiPreviewPage.tsx
+│       │   │   ├── 📁 approval-summary/
+│       │   │   │   ├── 📁 components/
+│       │   │   │   │   ├── 📄 ApprovalReportSummaries.tsx
+│       │   │   │   │   ├── 📄 approvalReportSummary.test.ts
+│       │   │   │   │   ├── 📄 approvalReportSummary.ts
+│       │   │   │   │   ├── 📄 ApprovalSummaryFilters.tsx
+│       │   │   │   │   ├── 📄 ApprovalSummaryTable.tsx
+│       │   │   │   │   ├── 📄 ProductApprovalReportDetailTable.tsx
+│       │   │   │   │   ├── 📄 productApprovalReportOrdering.ts
+│       │   │   │   │   ├── 📄 ProductApprovalTooltip.tsx
+│       │   │   │   │   ├── 📄 ProductDevTooltip.tsx
+│       │   │   │   │   ├── 📄 ProductWorkflowFilterBar.test.ts
+│       │   │   │   │   ├── 📄 ProductWorkflowFilterBar.tsx
+│       │   │   │   │   └── 📄 productWorkflowFilterConfig.ts
+│       │   │   │   ├── 📄 ApprovalSummaryPage.tsx
+│       │   │   │   ├── 📄 approvalSummaryUtils.test.ts
+│       │   │   │   ├── 📄 approvalSummaryUtils.ts
+│       │   │   │   ├── 📄 index.ts
+│       │   │   │   ├── 📄 ProductApprovalPage.tsx
+│       │   │   │   ├── 📄 productApprovalReportFilters.test.ts
+│       │   │   │   ├── 📄 productApprovalReportFilters.ts
+│       │   │   │   ├── 📄 ProductApprovalReportPage.tsx
+│       │   │   │   ├── 📄 productApprovalUtils.ts
+│       │   │   │   ├── 📄 ProductDashboardPage.tsx
+│       │   │   │   ├── 📄 productDevConstants.ts
+│       │   │   │   ├── 📄 ProductDevDetailTable.tsx
+│       │   │   │   ├── 📄 ProductDevelopmentPage.tsx
+│       │   │   │   ├── 📄 ProductDevGanttChart.tsx
+│       │   │   │   ├── 📄 ProductDevPersonnelTables.tsx
+│       │   │   │   ├── 📄 ProductDevReportPage.tsx
+│       │   │   │   ├── 📄 productDevShared.tsx
+│       │   │   │   ├── 📄 ProductDevStepPill.tsx
+│       │   │   │   ├── 📄 ProductDevTimelineChart.tsx
+│       │   │   │   ├── 📄 productDevUtils.test.tsx
+│       │   │   │   └── 📄 productDevUtils.ts
+│       │   │   ├── 📁 auth/
+│       │   │   │   ├── 📄 login-background.jpg
+│       │   │   │   ├── 📄 login-editorial.jpg
+│       │   │   │   ├── 📄 LoginPage.tsx
+│       │   │   │   └── 📄 stich code.MD
+│       │   │   ├── 📁 balance-summary/
+│       │   │   │   ├── 📁 components/
+│       │   │   │   │   ├── 📄 BalanceFilters.tsx
+│       │   │   │   │   └── 📄 BalanceTable.tsx
+│       │   │   │   ├── 📄 BalanceSummaryPage.tsx
+│       │   │   │   └── 📄 CurrentBalancePage.tsx
+│       │   │   ├── 📁 cashflow/
+│       │   │   │   ├── 📄 ApprovalCheckingPage.tsx
+│       │   │   │   ├── 📄 ApprovalDuplicateCheckingPage.tsx
+│       │   │   │   ├── 📄 CashFlowByLedgerPage.tsx
+│       │   │   │   ├── 📄 CashFlowDetailedPage.tsx
+│       │   │   │   ├── 📄 CashFlowTable.tsx
+│       │   │   │   ├── 📄 LinkedTransactionsPage.tsx
+│       │   │   │   └── 📄 SubsetMatchModal.tsx
+│       │   │   ├── 📁 cashflow-in/
+│       │   │   │   ├── 📄 CashFlowInDailyRevenueData.ts
+│       │   │   │   ├── 📄 CashFlowInDailyRevenueExport.ts
+│       │   │   │   ├── 📄 CashFlowInDailyRevenueModals.tsx
+│       │   │   │   ├── 📄 CashFlowInDailyRevenuePage.tsx
+│       │   │   │   ├── 📄 CashFlowInDailyRevenueUtils.ts
+│       │   │   │   ├── 📄 CashFlowInDailyRevenueView.tsx
+│       │   │   │   ├── 📄 CashFlowInManualTransactionModal.tsx
+│       │   │   │   ├── 📄 CashFlowInMonthlyReportDetailsModal.tsx
+│       │   │   │   ├── 📄 CashFlowInMonthlyReportPage.tsx
+│       │   │   │   ├── 📄 CashFlowInOnlineDailyRevenuePage.tsx
+│       │   │   │   ├── 📄 CashFlowInPendingTransactionsPage.tsx
+│       │   │   │   ├── 📄 CashFlowInReconciliationStatusFilter.tsx
+│       │   │   │   ├── 📄 CashFlowInTransactionsInlineEditors.tsx
+│       │   │   │   ├── 📄 CashFlowInTransactionsPage.tsx
+│       │   │   │   ├── 📄 CashFlowInTransactionsPageData.ts
+│       │   │   │   ├── 📄 CashFlowInTransactionsPagination.tsx
+│       │   │   │   ├── 📄 CashFlowInTransactionsUtils.ts
+│       │   │   │   ├── 📄 CashFlowInTransactionsView.tsx
+│       │   │   │   ├── 📄 PendingTransactionsActiveTable.tsx
+│       │   │   │   ├── 📄 PendingTransactionsLegacyTableSorting.tsx
+│       │   │   │   ├── 📄 PendingTransactionsShared.tsx
+│       │   │   │   ├── 📄 PendingTransactionsTablePage.tsx
+│       │   │   │   ├── 📄 useCashFlowInDailyRevenuePage.ts
+│       │   │   │   ├── 📄 useCashFlowInTransactionsPage.ts
+│       │   │   │   └── 📄 usePendingTransactionsTableState.ts
+│       │   │   ├── 📁 dashboard/
+│       │   │   │   ├── 📁 branch-revenue/
+│       │   │   │   │   ├── 📁 components/
+│       │   │   │   │   │   ├── 📄 BranchForecastTable.tsx
+│       │   │   │   │   │   ├── 📄 BranchRevenueChart.tsx
+│       │   │   │   │   │   ├── 📄 BranchRevenueUi.tsx
+│       │   │   │   │   │   ├── 📄 ForecastTab.tsx
+│       │   │   │   │   │   ├── 📄 HeaderFilters.tsx
+│       │   │   │   │   │   ├── 📄 OverviewFilters.tsx
+│       │   │   │   │   │   ├── 📄 OverviewTab.tsx
+│       │   │   │   │   │   ├── 📄 PairTab.tsx
+│       │   │   │   │   │   └── 📄 YearsTab.tsx
+│       │   │   │   │   ├── 📄 BranchRevenueDashboardTab.test.tsx
+│       │   │   │   │   ├── 📄 BranchRevenueDashboardTab.tsx
+│       │   │   │   │   ├── 📄 branchRevenueFixture.ts
+│       │   │   │   │   ├── 📄 branchRevenueMath.test.ts
+│       │   │   │   │   ├── 📄 branchRevenueMath.ts
+│       │   │   │   │   ├── 📄 branchRevenueTypes.ts
+│       │   │   │   │   ├── 📄 branchRevenueUi.ts
+│       │   │   │   │   └── 📄 overviewControls.ts
+│       │   │   │   ├── 📁 components/
+│       │   │   │   │   ├── 📄 DashboardChart.tsx
+│       │   │   │   │   ├── 📄 DashboardFilters.tsx
+│       │   │   │   │   ├── 📄 DashboardKPICard.tsx
+│       │   │   │   │   ├── 📄 DashboardTable.tsx
+│       │   │   │   │   ├── 📄 FilterMultiSelect.tsx
+│       │   │   │   │   ├── 📄 PLStructureEditor.tsx
+│       │   │   │   │   └── 📄 PLStructureTableBody.tsx
+│       │   │   │   ├── 📁 customer-dashboard/
+│       │   │   │   │   ├── 📄 CalculationLogicModal.tsx
+│       │   │   │   │   ├── 📄 CustomerDashboardBehaviorCharts.tsx
+│       │   │   │   │   ├── 📄 CustomerDashboardDetailModal.tsx
+│       │   │   │   │   ├── 📄 CustomerDashboardDistributionCharts.tsx
+│       │   │   │   │   └── 📄 customerDashboardShared.ts
+│       │   │   │   ├── 📁 tabs/
+│       │   │   │   │   ├── 📁 expense/
+│       │   │   │   │   │   ├── 📄 ExpenseCategoryChart.tsx
+│       │   │   │   │   │   └── 📄 ExpenseDetailTable.tsx
+│       │   │   │   │   ├── 📁 overview/
+│       │   │   │   │   │   ├── 📄 OverviewDepotTable.tsx
+│       │   │   │   │   │   └── 📄 OverviewProfitChart.tsx
+│       │   │   │   │   ├── 📁 pl-table/
+│       │   │   │   │   │   ├── 📄 PLSalaryDashboard.tsx
+│       │   │   │   │   │   ├── 📄 PLTableBody.tsx
+│       │   │   │   │   │   ├── 📄 PLTableHeader.tsx
+│       │   │   │   │   │   ├── 📄 PLTableTooltip.tsx
+│       │   │   │   │   │   ├── 📄 PLTableTypes.ts
+│       │   │   │   │   │   └── 📄 usePLTableTooltip.ts
+│       │   │   │   │   ├── 📁 pl-table-bytime/
+│       │   │   │   │   │   ├── 📄 PLTableByTimeTable.tsx
+│       │   │   │   │   │   ├── 📄 PLTableByTimeTooltip.tsx
+│       │   │   │   │   │   ├── 📄 PLTableByTimeTypes.ts
+│       │   │   │   │   │   └── 📄 usePLTableByTimeTooltip.ts
+│       │   │   │   │   ├── 📁 revenue/
+│       │   │   │   │   │   ├── 📄 RevenueComboChart.tsx
+│       │   │   │   │   │   ├── 📄 RevenueStackedArea.tsx
+│       │   │   │   │   │   └── 📄 revenueUtils.ts
+│       │   │   │   │   ├── 📄 ExpenseDetailsTab.tsx
+│       │   │   │   │   ├── 📄 OverviewTab.tsx
+│       │   │   │   │   ├── 📄 PLTableByTimeTab.tsx
+│       │   │   │   │   ├── 📄 PLTableTab.tsx
+│       │   │   │   │   └── 📄 RevenueFlowTab.tsx
+│       │   │   │   ├── 📄 CustomerDashboardPage.tsx
+│       │   │   │   ├── 📄 CustomerFunnelChart.tsx
+│       │   │   │   ├── 📄 CustomerRetentionDetailModal.tsx
+│       │   │   │   ├── 📄 dashboardDateRange.ts
+│       │   │   │   ├── 📄 DashboardPage.test.ts
+│       │   │   │   └── 📄 DashboardPage.tsx
+│       │   │   ├── 📁 koc-chat/
+│       │   │   │   ├── 📄 KocChatBubble.tsx
+│       │   │   │   └── 📄 KocChatPage.tsx
+│       │   │   ├── 📁 ledger/
+│       │   │   │   ├── 📄 LedgerBankAccountsDataProcessorTab.tsx
+│       │   │   │   ├── 📄 LedgerBravoDataProcessorTab.tsx
+│       │   │   │   ├── 📄 LedgerDataProcessorTab.test.tsx
+│       │   │   │   ├── 📄 LedgerDataProcessorTab.tsx
+│       │   │   │   ├── 📄 LedgerDataTab.tsx
+│       │   │   │   ├── 📄 ledgerDepotConfig.ts
+│       │   │   │   ├── 📄 LedgerPage.tsx
+│       │   │   │   ├── 📄 LedgerReportTab.tsx
+│       │   │   │   ├── 📄 TpBankAccountingDataProcessorTab.tsx
+│       │   │   │   ├── 📄 tpbankAccountingProcessor.test.ts
+│       │   │   │   └── 📄 tpbankAccountingProcessor.ts
+│       │   │   ├── 📁 permission-management/
+│       │   │   │   ├── 📄 PermissionManagementPage.tsx
+│       │   │   │   ├── 📄 permissionMatrix.test.ts
+│       │   │   │   ├── 📄 permissionMatrix.ts
+│       │   │   │   └── 📄 RolePermissionTab.tsx
+│       │   │   ├── 📁 product-dashboard/
+│       │   │   │   ├── 📁 manager/
+│       │   │   │   │   ├── 📄 ManagerDeadlineView.tsx
+│       │   │   │   │   ├── 📄 ManagerDeadlineViewEnhanced.tsx
+│       │   │   │   │   ├── 📄 ManagerKanbanView.tsx
+│       │   │   │   │   ├── 📄 ManagerKanbanViewEnhanced.tsx
+│       │   │   │   │   └── 📄 ManagerWorkloadView.tsx
+│       │   │   │   ├── 📄 ceoApprovalPivot.test.ts
+│       │   │   │   ├── 📄 ceoApprovalPivot.ts
+│       │   │   │   ├── 📄 DashboardShared.tsx
+│       │   │   │   ├── 📄 PhaseDescriptionModal.tsx
+│       │   │   │   ├── 📄 ProductCeoDashboard.tsx
+│       │   │   │   ├── 📄 ProductEmployeeDashboard.tsx
+│       │   │   │   ├── 📄 ProductManagerDashboard.tsx
+│       │   │   │   ├── 📄 types.ts
+│       │   │   │   └── 📄 useProductDashboard.ts
+│       │   │   └── 📁 report/
+│       │   │       ├── 📁 components/
+│       │   │       │   └── 📄 ReportExpenseFilters.tsx
+│       │   │       ├── 📄 CashFlowOutReportAdminPage.tsx
+│       │   │       └── 📄 ReportExpensePage.tsx
+│       │   ├── 📁 shared/
+│       │   │   ├── 📁 components/
+│       │   │   │   ├── 📁 filters/
+│       │   │   │   │   ├── 📄 AgeRangePickerPopup.test.tsx
+│       │   │   │   │   ├── 📄 AgeRangePickerPopup.tsx
+│       │   │   │   │   ├── 📄 DateRangePickerPopup.tsx
+│       │   │   │   │   ├── 📄 DateRangePresets.tsx
+│       │   │   │   │   ├── 📄 FilterBar.tsx
+│       │   │   │   │   ├── 📄 FilterBarContext.ts
+│       │   │   │   │   ├── 📄 FilterDatePicker.tsx
+│       │   │   │   │   ├── 📄 filterDateUtils.ts
+│       │   │   │   │   ├── 📄 FilterMultiSelect.tsx
+│       │   │   │   │   ├── 📄 FilterSearchInput.tsx
+│       │   │   │   │   ├── 📄 FilterSingleSelect.tsx
+│       │   │   │   │   ├── 📄 index.ts
+│       │   │   │   │   └── 📄 SingleDatePickerPopup.tsx
+│       │   │   │   ├── 📄 ClaudeBubble.test.tsx
+│       │   │   │   └── 📄 ClaudeBubble.tsx
+│       │   │   ├── 📁 lib/
+│       │   │   │   ├── 📁 api/
+│       │   │   │   │   ├── 📄 admin.ts
+│       │   │   │   │   ├── 📄 approval.ts
+│       │   │   │   │   ├── 📄 balance.ts
+│       │   │   │   │   ├── 📄 cashflow.ts
+│       │   │   │   │   ├── 📄 cashflowIn.ts
+│       │   │   │   │   ├── 📄 client.ts
+│       │   │   │   │   ├── 📄 dashboard.ts
+│       │   │   │   │   ├── 📄 permissions.ts
+│       │   │   │   │   └── 📄 report.ts
+│       │   │   │   ├── 📄 api.test.ts
+│       │   │   │   ├── 📄 api.ts
+│       │   │   │   ├── 📄 auth.tsx
+│       │   │   │   ├── 📄 authContext.ts
+│       │   │   │   ├── 📄 etlCompletion.test.ts
+│       │   │   │   └── 📄 etlCompletion.ts
+│       │   │   ├── 📁 utils/
+│       │   │   │   ├── 📄 accountMapping.ts
+│       │   │   │   ├── 📄 cashOutFilter.ts
+│       │   │   │   ├── 📄 excelUtils.ts
+│       │   │   │   ├── 📄 formatters.ts
+│       │   │   │   ├── 📄 naturalSort.ts
+│       │   │   │   ├── 📄 throttle.ts
+│       │   │   │   └── 📄 viLocale.ts
+│       │   │   └── 📄 constants.ts
+│       │   ├── 📁 test/
+│       │   │   └── 📄 setup.ts
+│       │   ├── 📄 App.css
+│       │   ├── 📄 index.css
+│       │   ├── 📄 main.tsx
+│       │   └── 📄 vite-env.d.ts
+│       ├── 📄 .gcloudignore
+│       ├── 📄 .gitignore
+│       ├── 📄 Dockerfile
+│       ├── 📄 eslint.config.js
+│       ├── 📄 index.html
+│       ├── 📄 nginx.conf
+│       ├── 📄 package-lock.json
+│       ├── 📄 package.json
+│       ├── 📄 postcss.config.js
+│       ├── 📄 README.md
+│       ├── 📄 tailwind.config.js
+│       ├── 📄 tsconfig.app.json
+│       ├── 📄 tsconfig.json
+│       ├── 📄 tsconfig.node.json
+│       └── 📄 vite.config.ts
+├── 📁 architecture_doc_files/
+│   ├── 📄 ACCOUNT_MANAGEMENT_ARCHITECTURE.md
+│   ├── 📄 AUTH_PERSONNEL_PERMISSIONS_ARCHITECTURE.md
+│   ├── 📄 AUTOMATED_SYNC_ARCHITECTURE.md
+│   ├── 📄 DASHBOARD.md
+│   ├── 📄 DATA_PROCESSOR_PARSING_REVIEW.md
+│   ├── 📄 DATE_FILTER_ARCHITECTURE.md
+│   ├── 📄 DATEPICKER_ARCHITECTURE.md
+│   ├── 📄 DEPLOY_GCP_ARCHITECTURE.md
+│   ├── 📄 DEPLOY_SCRIPTS.md
+│   ├── 📄 DUAL_ACCOUNT_SPAGEHTTI.md
+│   ├── 📄 FILTER_ARCHITECTURE.md
+│   ├── 📄 GLOBAL_SEARCH_FILTER.md
+│   ├── 📄 implementation_plan.md
+│   ├── 📄 LOGGING_ARCHITECTURE.md
+│   ├── 📄 MCP_INSTALLATION_RULES.md
+│   ├── 📄 MINI_BUTTONS_ARCHITECTURE.md
+│   ├── 📄 ON_HOVER_PENCIL_EDIT_ARCHITECTURE.md
+│   ├── 📄 SHIFT_CLICK_ARCHITECTURE.md
+│   ├── 📄 Supabase_ipv4_issue.md
+│   ├── 📄 TAB_ARCHITECTURE.md
+│   ├── 📄 TOGGLE_BUTTON.md
+│   └── 📄 TOOLTIP_ARCHITECTURE.md
+├── 📁 backend/
+│   ├── 📁 .turbo/
+│   │   ├── 📄 turbo-build.log
+│   │   ├── 📄 turbo-test.log
+│   │   └── 📄 turbo-typecheck.log
+│   ├── 📁 app/
+│   │   ├── 📁 core/
+│   │   │   ├── 📄 config.py
+│   │   │   ├── 📄 constants.py
+│   │   │   ├── 📄 exceptions.py
+│   │   │   ├── 📄 http_errors.py
+│   │   │   ├── 📄 json_safety.py
+│   │   │   ├── 📄 logging_filters.py
+│   │   │   ├── 📄 responses.py
+│   │   │   ├── 📄 safe_eval.py
+│   │   │   └── 📄 timing.py
+│   │   ├── 📁 features/
+│   │   │   ├── 📁 approval/
+│   │   │   │   ├── 📄 local_cache.py
+│   │   │   │   ├── 📄 pa_local_cache.py
+│   │   │   │   ├── 📄 payment_source_helpers.py
+│   │   │   │   ├── 📄 pd_local_cache.py
+│   │   │   │   ├── 📄 product_approval.py
+│   │   │   │   ├── 📄 product_approval_report.py
+│   │   │   │   ├── 📄 product_dashboard.py
+│   │   │   │   ├── 📄 product_development.py
+│   │   │   │   ├── 📄 product_development_report.py
+│   │   │   │   ├── 📄 queries.py
+│   │   │   │   ├── 📄 query_constants.py
+│   │   │   │   ├── 📄 query_helpers.py
+│   │   │   │   ├── 📄 router.py
+│   │   │   │   └── 📄 source_control.py
+│   │   │   ├── 📁 approval_api_preview/
+│   │   │   │   ├── 📄 models.py
+│   │   │   │   ├── 📄 repository.py
+│   │   │   │   └── 📄 router.py
+│   │   │   ├── 📁 auth/
+│   │   │   │   ├── 📄 dependencies.py
+│   │   │   │   ├── 📄 jwt_utils.py
+│   │   │   │   ├── 📄 password.py
+│   │   │   │   └── 📄 router.py
+│   │   │   ├── 📁 balance/
+│   │   │   │   ├── 📄 local_cache.py
+│   │   │   │   └── 📄 router.py
+│   │   │   ├── 📁 cashflow/
+│   │   │   │   ├── 📄 approval_checking.py
+│   │   │   │   ├── 📄 cashflow_summary.py
+│   │   │   │   ├── 📄 create_links_table.py
+│   │   │   │   ├── 📄 router.py
+│   │   │   │   ├── 📄 subset_match.py
+│   │   │   │   ├── 📄 test_without_lendings_router.py
+│   │   │   │   └── 📄 transaction_links.py
+│   │   │   ├── 📁 cashflow_in/
+│   │   │   │   ├── 📄 cashflow_daily_revenue_routes.py
+│   │   │   │   ├── 📄 cashflow_pending_routes.py
+│   │   │   │   ├── 📄 cashflow_report_routes.py
+│   │   │   │   ├── 📄 cashflow_transaction_routes.py
+│   │   │   │   ├── 📄 common.py
+│   │   │   │   ├── 📄 metadata.py
+│   │   │   │   ├── 📄 parsing.py
+│   │   │   │   ├── 📄 pending_transaction_balance.py
+│   │   │   │   ├── 📄 pending_transaction_crawler.py
+│   │   │   │   ├── 📄 pending_transaction_lark.py
+│   │   │   │   ├── 📄 pending_transaction_reporting.py
+│   │   │   │   ├── 📄 pending_transaction_table.py
+│   │   │   │   ├── 📄 pending_transaction_validation.py
+│   │   │   │   ├── 📄 pending_transactions.py
+│   │   │   │   ├── 📄 raw_transactions.py
+│   │   │   │   ├── 📄 report_details.py
+│   │   │   │   ├── 📄 reports.py
+│   │   │   │   ├── 📄 router.py
+│   │   │   │   ├── 📄 router_helpers.py
+│   │   │   │   ├── 📄 service.py
+│   │   │   │   └── 📄 transactions.py
+│   │   │   ├── 📁 dashboard/
+│   │   │   │   ├── 📄 customer_behavior_queries.py
+│   │   │   │   ├── 📄 customer_detail_queries.py
+│   │   │   │   ├── 📄 customer_fact.py
+│   │   │   │   ├── 📄 customer_summary_queries.py
+│   │   │   │   ├── 📄 customers.py
+│   │   │   │   ├── 📄 depot_mappings.py
+│   │   │   │   ├── 📄 local_cache.py
+│   │   │   │   ├── 📄 pl_calculator.py
+│   │   │   │   ├── 📄 pl_calculator_by_time.py
+│   │   │   │   ├── 📄 pl_constants.py
+│   │   │   │   ├── 📄 pl_data_loader.py
+│   │   │   │   ├── 📄 pl_historical_loader.py
+│   │   │   │   ├── 📄 pl_salary_monthly.py
+│   │   │   │   ├── 📄 pl_structure.py
+│   │   │   │   ├── 📄 pl_table.py
+│   │   │   │   ├── 📄 queries_overview.py
+│   │   │   │   ├── 📄 queries_revenue_expenses.py
+│   │   │   │   ├── 📄 queries_tooltips.py
+│   │   │   │   ├── 📄 router.py
+│   │   │   │   ├── 📄 router_customers.py
+│   │   │   │   └── 📄 router_pl.py
+│   │   │   ├── 📁 etl/
+│   │   │   │   ├── 📄 callback_router.py
+│   │   │   │   ├── 📄 event_store.py
+│   │   │   │   ├── 📄 proxy_router.py
+│   │   │   │   ├── 📄 router.py
+│   │   │   │   └── 📄 tpb_worker_adapter.py
+│   │   │   ├── 📁 koc_chat/
+│   │   │   │   ├── 📄 agent.py
+│   │   │   │   ├── 📄 intent.py
+│   │   │   │   ├── 📄 llm.py
+│   │   │   │   ├── 📄 models.py
+│   │   │   │   ├── 📄 prompts.py
+│   │   │   │   ├── 📄 retrieval.py
+│   │   │   │   ├── 📄 router.py
+│   │   │   │   └── 📄 tools.py
+│   │   │   ├── 📁 lark_webhook/
+│   │   │   │   ├── 📄 cards.py
+│   │   │   │   ├── 📄 client.py
+│   │   │   │   ├── 📄 lark_config.py
+│   │   │   │   ├── 📄 parsing.py
+│   │   │   │   ├── 📄 processor.py
+│   │   │   │   └── 📄 router.py
+│   │   │   ├── 📁 ledger/
+│   │   │   │   ├── 📄 bravodataprocessor_router.py
+│   │   │   │   ├── 📄 dataprocessor_bank_accounts_router.py
+│   │   │   │   ├── 📄 dataprocessor_router.py
+│   │   │   │   ├── 📄 ledger_payments_cte.py
+│   │   │   │   ├── 📄 local_cache.py
+│   │   │   │   ├── 📄 router.py
+│   │   │   │   └── 📄 tpbank_accounting_export.py
+│   │   │   ├── 📁 permissions/
+│   │   │   │   ├── 📄 catalog.py
+│   │   │   │   ├── 📄 models.py
+│   │   │   │   ├── 📄 repository.py
+│   │   │   │   ├── 📄 router.py
+│   │   │   │   └── 📄 service.py
+│   │   │   ├── 📁 report/
+│   │   │   │   ├── 📄 local_cache.py
+│   │   │   │   └── 📄 router.py
+│   │   │   └── 📄 supabase_queries.py
+│   │   ├── 📁 integrations/
+│   │   │   └── 📁 supabase/
+│   │   │       ├── 📄 client.py
+│   │   │       └── 📄 pg_pool.py
+│   │   ├── 📁 models/
+│   │   │   ├── 📄 api.py
+│   │   │   └── 📄 database.py
+│   │   └── 📄 main.py
+│   ├── 📁 data/
+│   │   ├── 📁 mcp-docs/
+│   │   │   ├── 📄 approval-finance-logic.md
+│   │   │   ├── 📄 branch-revenue-logic.md
+│   │   │   └── 📄 metrics.md
+│   │   ├── 📁 mcp-schema/
+│   │   │   ├── 📄 001_mcp_oauth.sql
+│   │   │   ├── 📄 002_mcp_readonly_role.sql
+│   │   │   └── 📄 003_mcp_approval_finance_grants.sql
+│   │   ├── 📄 add_pl_entry_children.py
+│   │   ├── 📄 pl_structure copy.json
+│   │   └── 📄 pl_structure.json
+│   ├── 📁 src/
+│   │   ├── 📁 config/
+│   │   │   └── 📄 runtime.ts
+│   │   ├── 📁 core/
+│   │   │   ├── 📁 auth/
+│   │   │   │   ├── 📄 current-user.ts
+│   │   │   │   ├── 📄 etl-internal-token.ts
+│   │   │   │   └── 📄 require-route.ts
+│   │   │   ├── 📄 access-log.ts
+│   │   │   └── 📄 rate-limit.ts
+│   │   ├── 📁 features/
+│   │   │   ├── 📁 approval/
+│   │   │   │   ├── 📄 payment-sql.ts
+│   │   │   │   ├── 📄 product-approval-images.ts
+│   │   │   │   ├── 📄 product-approval.ts
+│   │   │   │   ├── 📄 product-dashboard.ts
+│   │   │   │   ├── 📄 product-development.ts
+│   │   │   │   ├── 📄 product-report.ts
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   ├── 📄 result-cache.ts
+│   │   │   │   └── 📄 router.ts
+│   │   │   ├── 📁 approval-api-preview/
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   └── 📄 router.ts
+│   │   │   ├── 📁 auth/
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   ├── 📄 route-permissions.ts
+│   │   │   │   ├── 📄 router.ts
+│   │   │   │   └── 📄 service.ts
+│   │   │   ├── 📁 balance/
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   └── 📄 router.ts
+│   │   │   ├── 📁 cashflow/
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   └── 📄 router.ts
+│   │   │   ├── 📁 cashflow-in/
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   └── 📄 router.ts
+│   │   │   ├── 📁 dashboard/
+│   │   │   │   ├── 📄 branch-revenue-service.ts
+│   │   │   │   ├── 📄 customer-category-age-service.ts
+│   │   │   │   ├── 📄 customer-drilldown-service.ts
+│   │   │   │   ├── 📄 customer-query.ts
+│   │   │   │   ├── 📄 customer-scope.ts
+│   │   │   │   ├── 📄 customer-summary-service.ts
+│   │   │   │   ├── 📄 file-repository.ts
+│   │   │   │   ├── 📄 overview-service.ts
+│   │   │   │   ├── 📄 pl-by-time-service.ts
+│   │   │   │   ├── 📄 pl-calculator.ts
+│   │   │   │   ├── 📄 pl-formulas.ts
+│   │   │   │   ├── 📄 pl-v2-data.ts
+│   │   │   │   ├── 📄 pl-v2-serializer.ts
+│   │   │   │   ├── 📄 pl-v2-service.ts
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   └── 📄 router.ts
+│   │   │   ├── 📁 etl/
+│   │   │   │   ├── 📄 callback-router.ts
+│   │   │   │   ├── 📄 router.ts
+│   │   │   │   └── 📄 service.ts
+│   │   │   ├── 📁 koc-chat/
+│   │   │   │   ├── 📄 router.ts
+│   │   │   │   └── 📄 service.ts
+│   │   │   ├── 📁 lark-webhook/
+│   │   │   │   ├── 📄 cards.ts
+│   │   │   │   ├── 📄 client.ts
+│   │   │   │   ├── 📄 duplicate-po.ts
+│   │   │   │   ├── 📄 payment-mapping.ts
+│   │   │   │   ├── 📄 router.ts
+│   │   │   │   ├── 📄 service.ts
+│   │   │   │   └── 📄 summary.ts
+│   │   │   ├── 📁 ledger/
+│   │   │   │   ├── 📄 payments.ts
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   └── 📄 router.ts
+│   │   │   ├── 📁 mcp/
+│   │   │   │   ├── 📁 oauth/
+│   │   │   │   │   ├── 📄 login-page.ts
+│   │   │   │   │   ├── 📄 provider.ts
+│   │   │   │   │   └── 📄 store.ts
+│   │   │   │   ├── 📁 tools/
+│   │   │   │   │   ├── 📄 approval.ts
+│   │   │   │   │   ├── 📄 cashflow.ts
+│   │   │   │   │   ├── 📄 common.ts
+│   │   │   │   │   ├── 📄 customers.ts
+│   │   │   │   │   ├── 📄 dashboard.ts
+│   │   │   │   │   ├── 📄 finance.ts
+│   │   │   │   │   └── 📄 sql.ts
+│   │   │   │   ├── 📄 admin-router.ts
+│   │   │   │   ├── 📄 db.ts
+│   │   │   │   ├── 📄 guard.ts
+│   │   │   │   ├── 📄 resources.ts
+│   │   │   │   ├── 📄 router.ts
+│   │   │   │   ├── 📄 server.ts
+│   │   │   │   └── 📄 sql-guard.ts
+│   │   │   ├── 📁 permissions/
+│   │   │   │   ├── 📄 repository.ts
+│   │   │   │   ├── 📄 router.ts
+│   │   │   │   └── 📄 service.ts
+│   │   │   └── 📁 report/
+│   │   │       ├── 📄 financial-parity-service.ts
+│   │   │       ├── 📄 overview-service.ts
+│   │   │       ├── 📄 repository.ts
+│   │   │       ├── 📄 router.ts
+│   │   │       └── 📄 summary-service.ts
+│   │   ├── 📄 app.ts
+│   │   └── 📄 main.ts
+│   ├── 📁 test/
+│   │   ├── 📄 app.test.mjs
+│   │   ├── 📄 approval-result-cache.test.mjs
+│   │   ├── 📄 auth-differential.test.mjs
+│   │   ├── 📄 branch-revenue-service.test.mjs
+│   │   ├── 📄 cashflow-in-repository.test.mjs
+│   │   ├── 📄 cashflow-repository.test.mjs
+│   │   ├── 📄 customer-category-age-service.test.mjs
+│   │   ├── 📄 customer-drilldown-service.test.mjs
+│   │   ├── 📄 customer-scope.test.mjs
+│   │   ├── 📄 customer-summary-service.test.mjs
+│   │   ├── 📄 dashboard-repository.test.mjs
+│   │   ├── 📄 financial-parity-service.test.mjs
+│   │   ├── 📄 lark-cards.test.mjs
+│   │   ├── 📄 lark-duplicate-po.test.mjs
+│   │   ├── 📄 lark-service.test.mjs
+│   │   ├── 📄 lark-summary.test.mjs
+│   │   ├── 📄 ledger-repository.test.mjs
+│   │   ├── 📄 mcp-approval-finance.test.mjs
+│   │   ├── 📄 mcp-http.test.mjs
+│   │   ├── 📄 mcp-live.test.mjs
+│   │   ├── 📄 mcp.test.mjs
+│   │   ├── 📄 overview-service.test.mjs
+│   │   ├── 📄 permission-migration.test.mjs
+│   │   ├── 📄 pl-by-time-service.test.mjs
+│   │   ├── 📄 pl-calculator.test.mjs
+│   │   ├── 📄 pl-formulas.test.mjs
+│   │   ├── 📄 pl-v2-data.test.mjs
+│   │   ├── 📄 pl-v2-serializer.test.mjs
+│   │   ├── 📄 postgres-date-parser.test.mjs
+│   │   ├── 📄 read-only-differential.test.mjs
+│   │   ├── 📄 report-overview-service.test.mjs
+│   │   ├── 📄 report-summary-service.test.mjs
+│   │   ├── 📄 require-route.test.mjs
+│   │   └── 📄 reversible-mutation.test.mjs
+│   ├── 📁 tests/
+│   │   ├── 📄 test_approval_actual_payment_sums.py
+│   │   ├── 📄 test_approval_summary_grouping.py
+│   │   ├── 📄 test_cashflow_reconciliation_modes.py
+│   │   ├── 📄 test_ledger_query_performance_guards.py
+│   │   ├── 📄 test_pending_transaction_lark.py
+│   │   ├── 📄 test_pending_transaction_validation.py
+│   │   ├── 📄 test_product_approval_quantity.py
+│   │   ├── 📄 test_product_dashboard_phase_progress.py
+│   │   └── 📄 test_tpb_worker_adapter.py
+│   ├── 📄 .gcloudignore
+│   ├── 📄 Dockerfile
+│   ├── 📄 package.json
+│   ├── 📄 requirements-dev.txt
+│   ├── 📄 requirements.txt
+│   ├── 📄 scratch_check_categories_view.py
+│   ├── 📄 scratch_check_request.py
+│   ├── 📄 scratch_inspect_all_tables.py
+│   ├── 📄 scratch_inspect_category.py
+│   ├── 📄 scratch_inspect_depot.py
+│   ├── 📄 scratch_query.py
+│   ├── 📄 scratch_test_kmp.py
+│   ├── 📄 scratch_test_kmp_actual.py
+│   ├── 📄 search_postgres.py
+│   └── 📄 tsconfig.json
+├── 📁 debug/
+│   ├── 📄 .token
+│   └── 📄 supabase_connection_limit_issue.md
+├── 📁 docs/
+│   ├── 📄 0. Project_description.md
+│   ├── 📄 1. Principal guideline.md
+│   ├── 📄 10. Deployment.md
+│   ├── 📄 11. Flow_diagram.md
+│   ├── 📄 12. Subset_Match_Feature.md
+│   ├── 📄 13. Supabase_Connection_Migration.md
+│   ├── 📄 14. Handover_rule.md
+│   ├── 📄 15. Encoding_Safety_Rule.md
+│   ├── 📄 16. Codex_code_review_graph_mcp.md
+│   ├── 📄 17. Automated_ETL_Sync_Cron.md
+│   ├── 📄 18. Product_Approval_Production_Incident.md
+│   ├── 📄 19. Lark_Approval_Webhook.md
+│   ├── 📄 2. Notes_for_agent.md
+│   ├── 📄 20. Bravo_Data_Processor_Feature.md
+│   ├── 📄 21. Cashflow_In_Feature.md
+│   ├── 📄 22. Tong_hop_approval file problems.md
+│   ├── 📄 23. Supabase_Database_Size_Incident.md
+│   ├── 📄 24. Customer_dashboard_feature_documentation.md
+│   ├── 📄 25. Approval Bug.md
+│   ├── 📄 26. ETL Sync between projects.md
+│   ├── 📄 27. Cashflow_Out_Report_Analysis.md
+│   ├── 📄 28. Env_Secrets_Deploy.md
+│   ├── 📄 3. Powerbi_report_analysis.md
+│   ├── 📄 4. Architecture_Overview.md
+│   ├── 📄 5. Dashboard_PL_Feature.md
+│   ├── 📄 6. API_Reference.md
+│   ├── 📄 7. Caching_System.md
+│   ├── 📄 8. Development_Setup.md
+│   ├── 📄 9. Frontend_Features.md
+│   ├── 📄 CASHFLOW Minh Duoc.md
+│   ├── 📄 ROUTE_MAP.md
+│   └── 📄 TOKEN_ROTATION_RUNBOOK.md
+├── 📁 frontend/
+├── 📁 functions/
+│   ├── 📄 normalize_larkbase_data.py
+│   ├── 📄 parsing.py
+│   ├── 📄 process_data_to_supabase_tong_hop_approval.py
+│   └── 📄 tong_hop_approval_helper.py
+├── 📁 larksuite/
+│   └── 📄 Lark_bot_message_card_bao_cao_lenh_chuyen_tien.py
+├── 📁 mapping/
+│   ├── 📄 loss_table_mapping.py
+│   └── 📄 tong_hop_approval_mapping.py
+├── 📁 migration-baseline/
+│   ├── 📁 decisions/
+│   │   ├── 📄 0001-backend-framework.md
+│   │   ├── 📄 0002-package-manager.md
+│   │   └── 📄 0003-database-driver.md
+│   ├── 📁 route-contracts/
+│   │   ├── 📄 approval-read-baseline.md
+│   │   ├── 📄 auth-login.md
+│   │   ├── 📄 permissions-me.md
+│   │   └── 📄 README.md
+│   ├── 📁 visual/
+│   │   └── 📄 web-relocation-smoke.md
+│   ├── 📄 final-parity-report.md
+│   ├── 📄 inventory.md
+│   ├── 📄 README.md
+│   ├── 📄 reversible-mutation-runbook.md
+│   ├── 📄 rollback-runbook.md
+│   ├── 📄 route-matrix.md
+│   ├── 📄 tool-versions.md
+│   ├── 📄 typescript-runtime-shell.md
+│   └── 📄 verification-matrix.md
+├── 📁 packages/
+│   ├── 📁 api/
+│   │   ├── 📁 .turbo/
+│   │   │   ├── 📄 turbo-build.log
+│   │   │   ├── 📄 turbo-test.log
+│   │   │   └── 📄 turbo-typecheck.log
+│   │   ├── 📁 src/
+│   │   │   ├── 📄 client.ts
+│   │   │   └── 📄 index.ts
+│   │   ├── 📁 test/
+│   │   │   └── 📄 client.test.mjs
+│   │   ├── 📄 package.json
+│   │   └── 📄 tsconfig.json
+│   ├── 📁 constants/
+│   │   ├── 📁 .turbo/
+│   │   │   ├── 📄 turbo-build.log
+│   │   │   ├── 📄 turbo-test.log
+│   │   │   └── 📄 turbo-typecheck.log
+│   │   ├── 📁 src/
+│   │   │   └── 📄 index.ts
+│   │   ├── 📁 test/
+│   │   │   └── 📄 python-parity.test.mjs
+│   │   ├── 📄 package.json
+│   │   └── 📄 tsconfig.json
+│   ├── 📁 forecast/
+│   │   ├── 📁 src/
+│   │   │   └── 📄 index.ts
+│   │   ├── 📁 test/
+│   │   │   └── 📄 forecast.test.mjs
+│   │   ├── 📄 package.json
+│   │   └── 📄 tsconfig.json
+│   └── 📁 tsconfig/
+│       ├── 📄 base.json
+│       ├── 📄 node-service.json
+│       ├── 📄 package.json
+│       ├── 📄 react-app.json
+│       ├── 📄 react-library.json
+│       └── 📄 vite-app.json
+├── 📁 tools/
+│   ├── 📄 set_mcp_readonly_password.mjs
+│   └── 📄 smoke_test.ps1
+├── 📁 Z_scripts/
+│   ├── 📁 approval_api/
+│   │   ├── 📄 alerts.py
+│   │   ├── 📄 artifacts.py
+│   │   ├── 📄 client.py
+│   │   ├── 📄 config.py
+│   │   ├── 📄 io_utils.py
+│   │   ├── 📄 models.py
+│   │   ├── 📄 operational_gates.py
+│   │   ├── 📄 parity.py
+│   │   ├── 📄 parser.py
+│   │   ├── 📄 payment_lines.py
+│   │   ├── 📄 pipeline.py
+│   │   ├── 📄 pl_shadow.py
+│   │   ├── 📄 publication.py
+│   │   ├── 📄 publishers.py
+│   │   ├── 📄 reconcile.py
+│   │   ├── 📄 transform.py
+│   │   └── 📄 validation.py
+│   ├── 📁 bigquery_sql/
+│   │   └── 📄 0_create_table_views.py
+│   ├── 📁 functions/
+│   │   ├── 📄 constants.py
+│   │   ├── 📄 fetch_data.py
+│   │   ├── 📄 fetch_lark_data.py
+│   │   ├── 📄 fetch_user_data.py
+│   │   ├── 📄 get_lark_access_token.py
+│   │   ├── 📄 normalize_data.py
+│   │   ├── 📄 normalize_larkbase_data.py
+│   │   ├── 📄 parsing.py
+│   │   ├── 📄 process_data_to_supabase_tong_hop_approval.py
+│   │   ├── 📄 save_excel.py
+│   │   ├── 📄 send_lark_error_alert.py
+│   │   ├── 📄 sync_to_supabase.py
+│   │   ├── 📄 sync_to_supabase_minh_duoc_project.py
+│   │   ├── 📄 tong_hop_approval_helper.py
+│   │   └── 📄 upload_parquet_to_gcs.py
+│   ├── 📁 mapping/
+│   │   ├── 📄 loss_table_mapping.py
+│   │   └── 📄 tong_hop_approval_mapping.py
+│   ├── 📁 scripts/
+│   │   ├── 📄 auto_detect_internal_transfers.py
+│   │   ├── 📄 auto_detect_internal_transfers_same_account.py
+│   │   ├── 📄 backfill_metadata.py
+│   │   ├── 📄 check_ledger_discrepancy.py
+│   │   ├── 📄 cleanup_approval_api_artifacts.py
+│   │   ├── 📄 compare_approval_api_parity.py
+│   │   ├── 📄 cost_table_larkbase_only_new_refactored.py
+│   │   ├── 📄 cost_table_larkbase_only_new_refactored_api.py
+│   │   ├── 📄 crawl_tpb_balance.py
+│   │   ├── 📄 crawl_tpb_pending_transactions.py
+│   │   ├── 📄 crawl_vcb_transactions.py
+│   │   ├── 📄 create_ledger_view.py
+│   │   ├── 📄 custom_depots.py
+│   │   ├── 📄 DIM_customers.py
+│   │   ├── 📄 DIM_depot.py
+│   │   ├── 📄 FACT_sepay_transactions.py
+│   │   ├── 📄 migrate_cashflow_in_from_minh_duoc.py
+│   │   ├── 📄 migrate_record_id_to_unique_id.py
+│   │   ├── 📄 migrate_views.py
+│   │   ├── 📄 parsing.py
+│   │   ├── 📄 pl_historical_etl.py
+│   │   ├── 📄 quy_trinh_phat_trien_san_pham.py
+│   │   ├── 📄 quy_trinh_phe_duyet_san_pham.py
+│   │   ├── 📄 rollback_approval_api_snapshot.py
+│   │   ├── 📄 run_migration.py
+│   │   ├── 📄 save_agent_table_to_excel.py
+│   │   ├── 📄 sync_phe_duyet_to_supabase.py
+│   │   ├── 📄 sync_to_agent_table.py
+│   │   ├── 📄 tong_hop_approval.py
+│   │   ├── 📄 tong_hop_approval_api.py
+│   │   └── 📄 verify_approval_api_operational_gates.py
+│   ├── 📁 sql/
+│   │   ├── 📁 bigquery/
+│   │   │   └── 📄 20260714_approval_api_shadow_tables.sql
+│   │   ├── 📄 20260630_cashflow_in_auto_metadata.sql
+│   │   ├── 📄 20260630_cashflow_in_cleanup.sql
+│   │   ├── 📄 20260701_cashflow_in_daily_revenue_performance.sql
+│   │   ├── 📄 20260701_cashflow_in_status_overrides.sql
+│   │   ├── 📄 20260702_approval_payment_lines.sql
+│   │   ├── 📄 20260702_cashflow_in_daily_revenue_links.sql
+│   │   ├── 📄 20260703_auth_accounts_current_password.sql
+│   │   ├── 📄 20260703_auth_permission_management.sql
+│   │   ├── 📄 20260703_cashflow_in_daily_revenue_reconciliation_status.sql
+│   │   ├── 📄 20260706_auth_permission_route_fixes.sql
+│   │   ├── 📄 20260706_cashflow_in_daily_revenue_link_type.sql
+│   │   ├── 📄 20260707_cashflow_test_without_lendings_permissions.sql
+│   │   ├── 📄 20260714_approval_api_shadow_tables.sql
+│   │   ├── 📄 20260715_approval_api_feature_permissions.sql
+│   │   ├── 📄 20260723_customer_dashboard_depot_views.sql
+│   │   ├── 📄 20260723_permission_matrix_all_routes_editable.sql
+│   │   ├── 📄 20260724_add_merchandise_permission_role.sql
+│   │   ├── 📄 20260724_customer_dashboard_performance_indexes.sql
+│   │   ├── 📄 20260725_customer_dashboard_customer_covering_index.sql
+│   │   ├── 📄 20260725_customer_dashboard_daily_fact.sql
+│   │   ├── 📄 20260729_add_auth_accounts_bar_position.sql
+│   │   ├── 📄 20260806_etl_event_state.sql
+│   │   ├── 📄 20260812_cashflow_in_pending_transactions.sql
+│   │   ├── 📄 20260821_mistaken_transactions.sql
+│   │   ├── 📄 20260914_tpbank_data_processor_permission.sql
+│   │   ├── 📄 20260928_resync_cashflow_in_pending_revenue.sql
+│   │   ├── 📄 20261001_approval_filter_options.sql
+│   │   ├── 📄 20261001_approval_incremental_load.sql
+│   │   ├── 📄 add_search_text_index.sql
+│   │   └── 📄 doanh_thu_PL.sql
+│   ├── 📁 tests/
+│   │   ├── 📄 test_approval_incremental_load.py
+│   │   ├── 📄 test_crawl_tpb_pending_transactions.py
+│   │   ├── 📄 test_crawl_vcb_transactions.py
+│   │   └── 📄 test_tong_hop_approval_payment_lines.py
+│   ├── 📄 0. structure.md
+│   ├── 📄 copy_files.py
+│   ├── 📄 extract_sql.py
+│   ├── 📄 my_config.py
+│   └── 📄 README_SCRIPTS_COPYING_STUFF.md
+├── 📄 .dockerignore
+├── 📄 .env
+├── 📄 .env.example
+├── 📄 .gcloudignore
+├── 📄 .gitignore
+├── 📄 .mcp.json
+├── 📄 .npmrc
+├── 📄 .opencode.json
+├── 📄 agents.md
+├── 📄 approval_mapping.xlsx
+├── 📄 CLAUDE.md
+├── 📄 clean_restart.ps1
+├── 📄 cloudbuild.fastapi-baseline.yaml
+├── 📄 connection_to_supabase_and_pooler_explanation.md
+├── 📄 dark_light_mode_plan.md
+├── 📄 deploy.ps1
+├── 📄 deploy_local.ps1
+├── 📄 deploy_mcp.ps1
+├── 📄 deploy_render.ps1
+├── 📄 deploy_test.ps1
+├── 📄 deploy_test_fastapi_baseline.ps1
+├── 📄 detailed_kmp_plan.md
+├── 📄 Dockerfile
+├── 📄 ETL_backend_cost_breakdown.md
+├── 📄 GEMINI.md
+├── 📄 Ledger_Reconciliation_Debugging_Guide.md
+├── 📄 mcp_approval_finance_tools_plan.md
+├── 📄 nginx.cloudrun.conf
+├── 📄 package.json
+├── 📄 pnpm-lock.yaml
+├── 📄 pnpm-workspace.yaml
+├── 📄 Project_CODE_REVIEW.md
+├── 📄 project_structure.py
+├── 📄 project_tester.py
+├── 📄 README.md
+├── 📄 refactoring_implementation_plan.md
+├── 📄 rollback_test.ps1
+├── 📄 skills-lock.json
+├── 📄 start.sh
+├── 📄 tampermonkey_google_sheet_script.js
+├── 📄 tong_hop_approval_api_problems.md
+├── 📄 turbo.json
+├── 📄 webapp_mcp_server.md
+├── 📄 Z_prompt_typer copy.md
+├── 📄 Z_prompt_typer.md
+├── 📄 Z_updating_prompt.md
+└── 📄 Z_updating_prompt_2.md
+
+Heavy files (> 100 kb):
+📄 .code-review-graph/graph.db: 58.68 MB
+📄 .turbo/cache/fb448a0bfdc4837c.tar.zst: 813.61 KB
+📄 .turbo/cache/cf083acf4a76d2c2.tar.zst: 812.70 KB
+📄 .turbo/cache/988d68964c5c95e8.tar.zst: 806.60 KB
+📄 .turbo/cache/35d796bf7f218de1.tar.zst: 246.45 KB
+📄 .turbo/cache/1f97efeb89770b39.tar.zst: 246.44 KB
+📄 .turbo/cache/b444fda286f8ae5d.tar.zst: 241.79 KB
+📄 apps/web/package-lock.json: 208.37 KB
+📄 backend/src/features/auth/repository.ts: 203.45 KB
+📄 pnpm-lock.yaml: 157.77 KB
+📄 backend/test/app.test.mjs: 145.08 KB
+📄 refactoring_implementation_plan.md: 143.40 KB
+
+Large Files (> 300 lines):
+📄 pnpm-lock.yaml: 4892 lines
+📄 backend/src/features/auth/repository.ts: 1579 lines
+📄 functions/tong_hop_approval_helper.py: 1112 lines
+📄 apps/web/src/features/cashflow-in/PendingTransactionsTablePage.tsx: 912 lines
+📄 apps/web/src/features/report/ReportExpensePage.tsx: 906 lines
+📄 backend/app/features/report/router.py: 769 lines
+📄 apps/web/src/features/cashflow/ApprovalCheckingPage.tsx: 709 lines
+📄 backend/app/features/cashflow/cashflow_summary.py: 703 lines
+📄 apps/web/src/features/cashflow-in/CashFlowInMonthlyReportDetailsModal.tsx: 679 lines
+📄 backend/app/features/approval/product_dashboard.py: 658 lines
+📄 backend/app/features/approval/router.py: 656 lines
+📄 tampermonkey_google_sheet_script.js: 648 lines
+📄 larksuite/Lark_bot_message_card_bao_cao_lenh_chuyen_tien.py: 633 lines
+📄 apps/web/src/features/ledger/LedgerDataProcessorTab.tsx: 622 lines
+📄 backend/app/features/koc_chat/tools.py: 608 lines
+📄 backend/app/features/approval/product_approval.py: 602 lines
+📄 backend/app/features/cashflow_in/pending_transaction_validation.py: 585 lines
+📄 apps/web/src/features/cashflow-in/CashFlowInPendingTransactionsPage.tsx: 583 lines
+📄 backend/app/features/approval/query_helpers.py: 583 lines
+📄 backend/app/features/ledger/dataprocessor_router.py: 581 lines
+📄 apps/web/src/app/AppContent.tsx: 572 lines
+📄 apps/web/src/features/approval-summary/ProductApprovalPage.tsx: 560 lines
+📄 mapping/tong_hop_approval_mapping.py: 558 lines
+📄 backend/app/features/ledger/dataprocessor_bank_accounts_router.py: 553 lines
+📄 apps/web/src/shared/utils/excelUtils.ts: 552 lines
+📄 backend/app/features/etl/router.py: 528 lines
+📄 apps/web/src/features/cashflow-in/useCashFlowInDailyRevenuePage.ts: 527 lines
+📄 apps/web/src/features/permission-management/PermissionManagementPage.tsx: 526 lines
+📄 apps/web/src/features/dashboard/branch-revenue/components/YearsTab.tsx: 524 lines
+📄 apps/web/src/features/approval-summary/components/ProductApprovalTooltip.tsx: 517 lines
+📄 apps/web/src/shared/components/filters/DateRangePickerPopup.tsx: 515 lines
+📄 apps/web/src/features/cashflow-in/PendingTransactionsShared.tsx: 488 lines
+📄 backend/app/features/ledger/local_cache.py: 483 lines
+📄 apps/web/src/app/navigationConfig.ts: 482 lines
+📄 backend/app/integrations/supabase/pg_pool.py: 481 lines
+📄 apps/web/src/features/approval-summary/components/ApprovalSummaryFilters.tsx: 479 lines
+📄 backend/app/features/cashflow_in/reports.py: 473 lines
+📄 apps/web/src/features/cashflow-in/useCashFlowInTransactionsPage.ts: 470 lines
+📄 backend/app/features/cashflow_in/cashflow_transaction_routes.py: 461 lines
+📄 backend/app/features/approval/product_development.py: 454 lines
+📄 apps/web/src/features/koc-chat/KocChatPage.tsx: 452 lines
+📄 backend/app/features/permissions/repository.py: 451 lines
+📄 backend/app/features/dashboard/customers.py: 449 lines
+📄 apps/web/src/features/cashflow/LinkedTransactionsPage.tsx: 438 lines
+📄 apps/web/src/features/cashflow-in/CashFlowInMonthlyReportPage.tsx: 437 lines
+📄 apps/web/src/features/approval-summary/ApprovalSummaryPage.tsx: 432 lines
+📄 apps/web/src/features/cashflow-in/CashFlowInDailyRevenueView.tsx: 427 lines
+📄 apps/web/src/features/dashboard/customer-dashboard/CustomerDashboardDetailModal.tsx: 424 lines
+📄 backend/app/features/cashflow/approval_checking.py: 422 lines
+📄 backend/app/features/cashflow/subset_match.py: 418 lines
+📄 apps/web/src/shared/lib/api/cashflowIn.ts: 413 lines
+📄 backend/app/features/cashflow/router.py: 413 lines
+📄 backend/app/features/cashflow_in/transactions.py: 403 lines
+📄 backend/app/features/dashboard/queries_overview.py: 403 lines
+📄 apps/web/src/features/dashboard/branch-revenue/components/OverviewTab.tsx: 393 lines
+📄 backend/app/features/approval_api_preview/repository.py: 386 lines
+📄 backend/app/features/lark_webhook/processor.py: 386 lines
+📄 apps/web/src/features/cashflow/SubsetMatchModal.tsx: 380 lines
+📄 apps/web/src/features/dashboard/customer-dashboard/CustomerDashboardDistributionCharts.tsx: 379 lines
+📄 backend/app/features/report/local_cache.py: 378 lines
+📄 apps/web/src/features/approval-api-preview/ApprovalApiPreviewPage.tsx: 377 lines
+📄 backend/app/features/dashboard/customer_behavior_queries.py: 376 lines
+📄 apps/web/src/features/cashflow-in/PendingTransactionsLegacyTableSorting.tsx: 374 lines
+📄 apps/web/src/shared/components/filters/SingleDatePickerPopup.tsx: 371 lines
+📄 backend/app/features/dashboard/pl_calculator_by_time.py: 371 lines
+📄 apps/web/src/features/ledger/LedgerDataTab.tsx: 370 lines
+📄 backend/app/features/ledger/bravodataprocessor_router.py: 367 lines
+📄 backend/app/features/approval/local_cache.py: 366 lines
+📄 apps/web/src/features/dashboard/tabs/PLTableTab.tsx: 357 lines
+📄 backend/app/features/cashflow_in/pending_transaction_lark.py: 356 lines
+📄 backend/app/features/lark_webhook/parsing.py: 351 lines
+📄 backend/app/features/cashflow_in/service.py: 350 lines
+📄 apps/web/src/features/cashflow/ApprovalDuplicateCheckingPage.tsx: 349 lines
+📄 apps/web/src/features/cashflow-in/CashFlowInTransactionsView.tsx: 349 lines
+📄 backend/app/features/dashboard/pl_data_loader.py: 343 lines
+📄 apps/web/src/features/approval-summary/ProductApprovalReportPage.tsx: 341 lines
+📄 backend/app/features/dashboard/pl_table.py: 341 lines
+📄 backend/app/features/dashboard/local_cache.py: 337 lines
+📄 backend/app/features/ledger/tpbank_accounting_export.py: 337 lines
+📄 backend/scratch_test_kmp.py: 334 lines
+📄 apps/web/src/features/dashboard/branch-revenue/components/HeaderFilters.tsx: 332 lines
+📄 backend/app/features/cashflow_in/pending_transaction_table.py: 329 lines
+📄 backend/app/features/dashboard/queries_revenue_expenses.py: 329 lines
+📄 backend/app/features/permissions/service.py: 328 lines
+📄 apps/web/src/features/cashflow-in/usePendingTransactionsTableState.ts: 320 lines
+📄 apps/web/src/features/ledger/LedgerReportTab.tsx: 320 lines
+📄 backend/app/features/dashboard/customer_detail_queries.py: 320 lines
+📄 backend/app/features/balance/local_cache.py: 316 lines
+📄 backend/app/features/dashboard/pl_calculator.py: 315 lines
+📄 backend/app/features/cashflow_in/cashflow_pending_routes.py: 310 lines
+📄 apps/web/src/features/approval-summary/approvalSummaryUtils.ts: 305 lines
+
+Small Files (< 60 lines):
+📄 .turbo/cache/1385cca906a0e451-manifest.json: 1 lines
+📄 .turbo/cache/1385cca906a0e451-meta.json: 1 lines
+📄 .turbo/cache/17bd6a90e749b56f-manifest.json: 1 lines
+📄 .turbo/cache/17bd6a90e749b56f-meta.json: 1 lines
+📄 .turbo/cache/1f97efeb89770b39-manifest.json: 1 lines
+📄 .turbo/cache/1f97efeb89770b39-meta.json: 1 lines
+📄 .turbo/cache/247095acd9ea4e36-manifest.json: 1 lines
+📄 .turbo/cache/247095acd9ea4e36-meta.json: 1 lines
+📄 .turbo/cache/35d796bf7f218de1-manifest.json: 1 lines
+📄 .turbo/cache/35d796bf7f218de1-meta.json: 1 lines
+📄 .turbo/cache/3b1b3fe5a58d7213-manifest.json: 1 lines
+📄 .turbo/cache/3b1b3fe5a58d7213-meta.json: 1 lines
+📄 .turbo/cache/400341d269bba2b9-manifest.json: 1 lines
+📄 .turbo/cache/400341d269bba2b9-meta.json: 1 lines
+📄 .turbo/cache/4e7eafd93b5dd92e-manifest.json: 1 lines
+📄 .turbo/cache/4e7eafd93b5dd92e-meta.json: 1 lines
+📄 .turbo/cache/871dc27f8a045252-manifest.json: 1 lines
+📄 .turbo/cache/871dc27f8a045252-meta.json: 1 lines
+📄 .turbo/cache/9084bbcee0cbdeab-manifest.json: 1 lines
+📄 .turbo/cache/9084bbcee0cbdeab-meta.json: 1 lines
+📄 .turbo/cache/988d68964c5c95e8-manifest.json: 1 lines
+📄 .turbo/cache/988d68964c5c95e8-meta.json: 1 lines
+📄 .turbo/cache/b153662aaf536a59-manifest.json: 1 lines
+📄 .turbo/cache/b153662aaf536a59-meta.json: 1 lines
+📄 .turbo/cache/b444fda286f8ae5d-manifest.json: 1 lines
+📄 .turbo/cache/b444fda286f8ae5d-meta.json: 1 lines
+📄 .turbo/cache/c73bfa15d76d5427-manifest.json: 1 lines
+📄 .turbo/cache/c73bfa15d76d5427-meta.json: 1 lines
+📄 .turbo/cache/cf083acf4a76d2c2-manifest.json: 1 lines
+📄 .turbo/cache/cf083acf4a76d2c2-meta.json: 1 lines
+📄 .turbo/cache/d43172c3870c473d-manifest.json: 1 lines
+📄 .turbo/cache/d43172c3870c473d-meta.json: 1 lines
+📄 .turbo/cache/e008b8f64ae8204d-manifest.json: 1 lines
+📄 .turbo/cache/e008b8f64ae8204d-meta.json: 1 lines
+📄 .turbo/cache/fb448a0bfdc4837c-manifest.json: 1 lines
+📄 .turbo/cache/fb448a0bfdc4837c-meta.json: 1 lines
+📄 apps/web/src/vite-env.d.ts: 1 lines
+📄 .claw/plugins/installed/example-bundled-bundled/hooks/post.sh: 2 lines
+📄 .claw/plugins/installed/example-bundled-bundled/hooks/pre.sh: 2 lines
+📄 .claw/plugins/installed/sample-hooks-bundled/hooks/post.sh: 2 lines
+📄 .claw/plugins/installed/sample-hooks-bundled/hooks/pre.sh: 2 lines
+📄 apps/web/src/test/setup.ts: 2 lines
+📄 backend/requirements-dev.txt: 2 lines
+📄 backend/src/features/approval/payment-sql.ts: 2 lines
+📄 packages/api/src/index.ts: 2 lines
+📄 .agents/skills/caveman-compress/scripts/__main__.py: 3 lines
+📄 apps/web/src/features/approval-summary/index.ts: 3 lines
+📄 .agents/plugins/superpowers/plugin.json: 5 lines
+📄 backend/src/features/balance/repository.ts: 5 lines
+📄 packages/tsconfig/package.json: 5 lines
+📄 apps/mobile/package.json: 6 lines
+📄 apps/web/src/features/product-dashboard/PhaseDescriptionModal.tsx: 6 lines
+📄 apps/web/src/features/product-dashboard/manager/ManagerDeadlineViewEnhanced.tsx: 6 lines
+📄 .agents/plugins.json: 7 lines
+📄 apps/web/postcss.config.js: 7 lines
+📄 apps/web/tsconfig.json: 7 lines
+📄 apps/web/src/shared/constants.ts: 7 lines
+📄 backend/src/features/lark-webhook/cards.ts: 7 lines
+📄 backend/src/features/lark-webhook/duplicate-po.ts: 7 lines
+📄 apps/mobile/tsconfig.json: 8 lines
+📄 apps/web/src/features/admin/AdminPage.tsx: 8 lines
+📄 pnpm-workspace.yaml: 9 lines
+📄 apps/web/src/features/approval-summary/components/productApprovalReportOrdering.ts: 9 lines
+📄 apps/web/src/shared/lib/api.ts: 9 lines
+📄 backend/tsconfig.json: 9 lines
+📄 backend/src/features/dashboard/pl-v2-serializer.ts: 9 lines
+📄 backend/src/features/koc-chat/router.ts: 9 lines
+📄 .agents/plugins/superpowers/hooks/hooks-cursor.json: 10 lines
+📄 .claw/plugins/installed/example-bundled-bundled/.claude-plugin/plugin.json: 10 lines
+📄 .claw/plugins/installed/sample-hooks-bundled/.claude-plugin/plugin.json: 10 lines
+📄 apps/web/src/features/approval-summary/ProductDashboardPage.tsx: 10 lines
+📄 apps/web/src/features/cashflow-in/CashFlowInTransactionsPage.tsx: 10 lines
+📄 backend/src/features/approval-api-preview/repository.ts: 10 lines
+📄 backend/src/features/lark-webhook/summary.ts: 10 lines
+📄 packages/api/tsconfig.json: 10 lines
+📄 packages/constants/tsconfig.json: 10 lines
+📄 packages/forecast/tsconfig.json: 10 lines
+📄 cloudbuild.fastapi-baseline.yaml: 11 lines
+📄 apps/web/src/app/topbar.css: 11 lines
+📄 apps/web/src/features/cashflow-in/CashFlowInDailyRevenuePage.tsx: 11 lines
+📄 apps/web/src/features/dashboard/branch-revenue/branchRevenueTypes.ts: 11 lines
+📄 apps/web/src/shared/lib/api/balance.ts: 11 lines
+📄 backend/src/features/dashboard/pl-calculator.ts: 11 lines
+📄 backend/src/features/dashboard/pl-formulas.ts: 11 lines
+📄 packages/tsconfig/react-library.json: 11 lines
+📄 .claude/settings.local.json: 12 lines
+📄 backend/app/core/responses.py: 12 lines
+📄 packages/tsconfig/node-service.json: 12 lines
+📄 apps/web/src/features/approval-summary/components/productWorkflowFilterConfig.ts: 13 lines
+📄 apps/web/src/features/dashboard/dashboardDateRange.ts: 13 lines
+📄 apps/web/src/shared/utils/cashOutFilter.ts: 13 lines
+📄 backend/app/features/auth/password.py: 13 lines
+📄 packages/tsconfig/base.json: 13 lines
+📄 packages/tsconfig/vite-app.json: 13 lines
+📄 apps/web/src/features/product-dashboard/manager/ManagerDeadlineView.tsx: 14 lines
+📄 apps/web/src/features/product-dashboard/manager/ManagerKanbanView.tsx: 14 lines
+📄 apps/web/src/features/cashflow-in/CashFlowInTransactionsPageData.ts: 15 lines
+📄 apps/web/src/features/product-dashboard/manager/ManagerWorkloadView.tsx: 15 lines
+📄 apps/web/src/shared/components/filters/FilterBarContext.ts: 15 lines
+📄 apps/web/src/shared/components/filters/filterDateUtils.ts: 15 lines
+📄 apps/web/src/shared/utils/viLocale.ts: 15 lines
+📄 backend/app/features/cashflow_in/router.py: 15 lines
+📄 .opencode.json: 16 lines
+📄 .codex/hooks.json: 16 lines
+📄 apps/web/tsconfig.node.json: 16 lines
+📄 apps/web/src/main.tsx: 16 lines
+📄 apps/web/src/features/dashboard/branch-revenue/branchRevenueFixture.ts: 16 lines
+📄 .agents/plugins/superpowers/hooks/hooks.json: 17 lines
+📄 apps/web/src/features/product-dashboard/ProductManagerDashboard.tsx: 17 lines
+📄 backend/app/integrations/supabase/client.py: 17 lines
+📄 backend/src/features/dashboard/repository.ts: 17 lines
+📄 apps/web/src/features/dashboard/DashboardPage.test.ts: 18 lines
+📄 apps/web/src/shared/components/filters/index.ts: 18 lines
+📄 apps/web/src/shared/utils/naturalSort.ts: 18 lines
+📄 backend/src/features/lark-webhook/payment-mapping.ts: 18 lines
+📄 backend/src/features/report/repository.ts: 18 lines
+📄 apps/web/src/features/product-dashboard/manager/ManagerKanbanViewEnhanced.tsx: 19 lines
+📄 backend/src/features/dashboard/customer-drilldown-service.ts: 19 lines
+📄 apps/web/src/features/approval-summary/productDevConstants.ts: 20 lines
+📄 apps/web/src/features/ledger/tpbankAccountingProcessor.test.ts: 20 lines
+📄 apps/web/src/shared/lib/api.test.ts: 20 lines
+📄 backend/scratch_inspect_category.py: 20 lines
+📄 backend/tests/test_product_approval_quantity.py: 20 lines
+📄 packages/tsconfig/react-app.json: 20 lines
+📄 package.json: 21 lines
+📄 apps/web/src/features/approval-summary/components/approvalReportSummary.test.ts: 21 lines
+📄 apps/web/src/features/approval-summary/components/ProductWorkflowFilterBar.test.ts: 21 lines
+📄 apps/web/src/shared/utils/throttle.ts: 21 lines
+📄 backend/scratch_inspect_depot.py: 21 lines
+📄 backend/scratch_query.py: 21 lines
+📄 backend/app/core/exceptions.py: 22 lines
+📄 backend/tests/test_tpb_worker_adapter.py: 22 lines
+📄 apps/web/eslint.config.js: 23 lines
+📄 backend/scratch_inspect_all_tables.py: 23 lines
+📄 backend/src/features/dashboard/file-repository.ts: 23 lines
+📄 backend/src/features/ledger/repository.ts: 23 lines
+📄 backend/src/core/auth/etl-internal-token.ts: 24 lines
+📄 apps/web/src/shared/lib/etlCompletion.ts: 25 lines
+📄 apps/web/tsconfig.app.json: 26 lines
+📄 apps/web/src/app/providers.tsx: 26 lines
+📄 apps/web/src/features/product-dashboard/ProductEmployeeDashboard.tsx: 26 lines
+📄 backend/tests/test_approval_summary_grouping.py: 26 lines
+📄 packages/constants/package.json: 26 lines
+📄 packages/forecast/package.json: 26 lines
+📄 apps/web/src/features/product-dashboard/DashboardShared.tsx: 27 lines
+📄 packages/api/package.json: 27 lines
+📄 apps/web/tailwind.config.js: 28 lines
+📄 apps/web/src/features/approval-summary/productApprovalReportFilters.test.ts: 28 lines
+📄 apps/web/src/shared/lib/api/approval.ts: 28 lines
+📄 backend/src/features/dashboard/customer-query.ts: 28 lines
+📄 backend/tests/test_approval_actual_payment_sums.py: 28 lines
+📄 backend/app/core/timing.py: 29 lines
+📄 backend/requirements.txt: 30 lines
+📄 backend/app/core/logging_filters.py: 30 lines
+📄 backend/src/features/approval/product-report.ts: 30 lines
+📄 turbo.json: 31 lines
+📄 apps/web/src/shared/lib/etlCompletion.test.ts: 31 lines
+📄 backend/scratch_check_categories_view.py: 31 lines
+📄 backend/app/features/approval/query_constants.py: 31 lines
+📄 backend/src/features/dashboard/customer-scope.ts: 31 lines
+📄 .claw/plugins/installed.json: 32 lines
+📄 apps/web/src/features/approval-summary/ProductDevStepPill.tsx: 32 lines
+📄 backend/src/core/auth/require-route.ts: 32 lines
+📄 backend/src/features/balance/router.ts: 32 lines
+📄 backend/package.json: 33 lines
+📄 backend/scratch_test_kmp_actual.py: 33 lines
+📄 backend/src/features/mcp/server.ts: 33 lines
+📄 backend/tests/test_pending_transaction_validation.py: 33 lines
+📄 backend/app/features/cashflow/create_links_table.py: 34 lines
+📄 backend/src/features/lark-webhook/router.ts: 34 lines
+📄 backend/src/features/ledger/payments.ts: 34 lines
+📄 apps/web/src/features/ledger/LedgerPage.tsx: 35 lines
+📄 backend/src/features/lark-webhook/service.ts: 35 lines
+📄 apps/web/src/features/approval-summary/productDevShared.tsx: 36 lines
+📄 apps/web/src/shared/components/filters/AgeRangePickerPopup.test.tsx: 36 lines
+📄 backend/src/features/dashboard/pl-v2-service.ts: 36 lines
+📄 packages/api/src/client.ts: 36 lines
+📄 backend/src/features/dashboard/overview-service.ts: 37 lines
+📄 backend/src/features/dashboard/router.ts: 37 lines
+📄 backend/src/features/lark-webhook/client.ts: 37 lines
+📄 apps/web/src/features/approval-summary/components/ProductApprovalReportDetailTable.tsx: 38 lines
+📄 apps/web/src/features/ledger/ledgerDepotConfig.ts: 38 lines
+📄 backend/src/features/approval/repository.ts: 38 lines
+📄 backend/src/features/dashboard/pl-by-time-service.ts: 38 lines
+📄 apps/web/src/shared/components/filters/FilterBar.tsx: 39 lines
+📄 apps/web/src/features/dashboard/branch-revenue/components/BranchRevenueUi.tsx: 40 lines
+📄 backend/src/core/rate-limit.ts: 40 lines
+📄 backend/src/features/report/financial-parity-service.ts: 40 lines
+📄 apps/web/src/shared/lib/authContext.ts: 42 lines
+📄 backend/app/core/http_errors.py: 42 lines
+📄 backend/app/features/cashflow_in/pending_transaction_balance.py: 42 lines
+📄 backend/src/features/etl/callback-router.ts: 42 lines
+📄 backend/tests/test_product_dashboard_phase_progress.py: 42 lines
+📄 apps/web/src/features/dashboard/tabs/revenue/revenueUtils.ts: 43 lines
+📄 apps/web/src/shared/components/filters/FilterSearchInput.tsx: 44 lines
+📄 backend/src/features/cashflow/repository.ts: 44 lines
+📄 backend/src/features/mcp/oauth/login-page.ts: 44 lines
+📄 apps/web/src/App.css: 45 lines
+📄 backend/scratch_check_request.py: 45 lines
+📄 backend/src/features/approval/product-approval-images.ts: 45 lines
+📄 backend/src/features/mcp/sql-guard.ts: 45 lines
+📄 packages/forecast/src/index.ts: 45 lines
+📄 apps/web/src/features/admin/AdminMultiSelect.tsx: 46 lines
+📄 apps/web/src/features/approval-summary/components/approvalReportSummary.ts: 46 lines
+📄 apps/web/src/features/product-dashboard/useProductDashboard.ts: 46 lines
+📄 apps/web/src/shared/components/ClaudeBubble.tsx: 46 lines
+📄 backend/app/features/koc_chat/router.py: 46 lines
+📄 backend/src/features/dashboard/customer-category-age-service.ts: 46 lines
+📄 backend/app/features/auth/jwt_utils.py: 47 lines
+📄 .claude/settings.json: 48 lines
+📄 backend/app/features/lark_webhook/router.py: 48 lines
+📄 backend/src/core/access-log.ts: 48 lines
+📄 backend/src/features/auth/router.ts: 48 lines
+📄 backend/src/features/mcp/tools/cashflow.ts: 48 lines
+📄 backend/tests/test_ledger_query_performance_guards.py: 48 lines
+📄 apps/web/src/shared/components/ClaudeBubble.test.tsx: 49 lines
+📄 backend/app/features/approval_api_preview/models.py: 49 lines
+📄 backend/app/features/auth/dependencies.py: 49 lines
+📄 apps/web/src/features/product-dashboard/ceoApprovalPivot.test.ts: 50 lines
+📄 backend/app/core/json_safety.py: 51 lines
+📄 apps/web/src/shared/lib/api/client.ts: 52 lines
+📄 apps/web/package.json: 54 lines
+📄 apps/web/src/features/approval-summary/components/ProductDevTooltip.tsx: 54 lines
+📄 skills-lock.json: 55 lines
+📄 backend/app/core/safe_eval.py: 55 lines
+📄 apps/web/src/features/dashboard/branch-revenue/components/BranchRevenueChart.tsx: 56 lines
+📄 backend/app/features/lark_webhook/lark_config.py: 58 lines
+📄 backend/src/features/ledger/router.ts: 58 lines
