@@ -5,7 +5,7 @@ import MuteButton from '../../shared/components/MuteButton'
 import SceneGate from '../../shared/components/SceneGate'
 import Starfield from '../../shared/components/Starfield'
 import { useSceneMachine } from '../../shared/hooks/useSceneMachine'
-import { HAPPY_BIRTHDAY, LULLABY, playMelody } from '../../shared/lib/audio'
+import { HAPPY_BIRTHDAY, LULLABY, playMelody, playTrack } from '../../shared/lib/audio'
 import { defaults } from './content'
 import { useGiftContent } from '../../shared/hooks/useGiftContent'
 import { listPhotos } from '../../shared/lib/photos'
@@ -43,20 +43,38 @@ export default function BirthdayPage() {
   }, [])
   const fireworks = useRef(null)
   const stopMusic = useRef(null)
+  const track = useRef(null) // the admin's own looping music, when set
 
   const playAmbient = useCallback(() => {
     stopMusic.current?.()
+    stopMusic.current = null
+    if (track.current) {
+      track.current.duck(1)
+      return
+    }
+    if (content.musicUrl) {
+      track.current = playTrack(content.musicUrl, { volume: content.musicVolume / 100 })
+      return
+    }
     stopMusic.current = playMelody(LULLABY, { bpm: 72, volume: 0.1, loop: true })
-  }, [])
+  }, [content.musicUrl, content.musicVolume])
 
   useEffect(() => {
     document.title = content.pageTitle
   }, [content.pageTitle])
 
-  useEffect(() => () => stopMusic.current?.(), [])
+  useEffect(
+    () => () => {
+      stopMusic.current?.()
+      track.current?.stop()
+    },
+    [],
+  )
 
   const onBlown = useCallback(() => {
     stopMusic.current?.()
+    // Your own music keeps looping, just quieter, under the birthday song.
+    track.current?.duck(0.25)
     stopMusic.current = playMelody(HAPPY_BIRTHDAY, { bpm: 118, volume: 0.24, onEnd: playAmbient })
   }, [playAmbient])
 

@@ -76,6 +76,41 @@ export function heartSlots(count, { width = 1, height = 1, offset = 0, dip = 5, 
   return u.map(at)
 }
 
+/**
+ * Cards of one size around a heart filling a `width` x `height` box, sized so
+ * neighbours overlap by `overlap` (a fraction of a card) and the outline reads
+ * as one unbroken ring. Returns the card size and each card's centre in px,
+ * relative to the box centre.
+ */
+export function heartCards(count, width, height, { aspect = 1.25, overlap = 0.12, dip = 5, maxW = 0.24 } = {}) {
+  // Not measured yet: everything waits at the centre.
+  if (count <= 0 || !width || !height) {
+    return { cardW: 0, cardH: 0, slots: Array.from({ length: Math.max(0, count) }, () => [0, 0]) }
+  }
+  const place = (cardW) => {
+    const cardH = cardW * aspect
+    const spanW = width - cardW
+    const spanH = height - cardH
+    return heartSlots(count, { width: spanW, height: spanH, dip, card: [cardW, cardH] }).map(([x, y]) => [
+      (x * spanW) / 2,
+      (y * spanH) / 2,
+    ])
+  }
+  let cardW = width * 0.11
+  // Card size and slot spacing depend on each other; a few rounds settle it.
+  for (let round = 0; round < 5 && count > 2; round++) {
+    const slots = place(cardW)
+    // Widest neighbour gap, in card sizes (1 = just touching).
+    let widest = 0
+    slots.forEach(([ax, ay], k) => {
+      const [bx, by] = slots[(k + 1) % count]
+      widest = Math.max(widest, Math.abs(ax - bx) / cardW, Math.abs(ay - by) / (cardW * aspect))
+    })
+    cardW = Math.min(width * maxW, (cardW * widest) / (1 - overlap))
+  }
+  return { cardW, cardH: cardW * aspect, slots: place(cardW) }
+}
+
 // Classic parametric heart, scaled so the shape spans roughly `size` px.
 export function traceHeart(ctx, cx, cy, size) {
   const s = size / 34

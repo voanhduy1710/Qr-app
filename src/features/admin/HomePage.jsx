@@ -123,7 +123,7 @@ function Dashboard() {
         <main className="dash-content">
           {!gift && <Overview onOpen={go} />}
           {gift && tool === 'content' && <ContentEditor key={gift.id} gift={gift} onDirtyChange={setDirty} />}
-          {gift && tool === 'photos' && <PhotoManager key={gift.id} occasion={gift.id} />}
+          {gift && tool === 'photos' && <PhotoManager key={gift.id} occasion={gift.id} onDirtyChange={setDirty} />}
           {gift && tool === 'qr' && <QrPanel key={gift.id} gift={gift} />}
         </main>
       </div>

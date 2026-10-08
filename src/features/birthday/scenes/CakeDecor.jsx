@@ -28,6 +28,16 @@ function Balloon({ color, className }) {
   )
 }
 
+// Stickers that pop up beside the presents once the candle is out, three a side.
+const STICKERS = [
+  { src: '/gifs/kissy_face.gif', className: 'is-s1' },
+  { src: '/gifs/bugcat-capoo.gif', className: 'is-s2' },
+  { src: '/gifs/hatch.gif', className: 'is-s3' },
+  { src: '/gifs/napoli_chatgpt.gif', className: 'is-s4' },
+  { src: '/gifs/mentori.gif', className: 'is-s5' },
+  { src: '/gifs/Sinister.gif', className: 'is-s6' },
+]
+
 /** Presents at the cake's feet and balloons floating behind it. */
 export default function CakeDecor({ blown }) {
   return (
@@ -50,6 +60,9 @@ export default function CakeDecor({ blown }) {
       <Gift box="#c0394f" ribbon="#f2c879" className="is-g1" />
       <Gift box="#f3e2c7" ribbon="#e48da3" className="is-g2" />
       <Gift box="#7a5cc0" ribbon="#ffd9e2" className="is-g3" />
+
+      {blown &&
+        STICKERS.map((s) => <img key={s.src} src={s.src} alt="" className={`cake-sticker ${s.className}`} draggable="false" />)}
     </div>
   )
 }

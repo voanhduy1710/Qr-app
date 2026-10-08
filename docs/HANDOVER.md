@@ -14,7 +14,7 @@ React (Vite) app for Vercel. A heart-shaped QR code opens an interactive animate
 /anniversary gift experience (public)
 ```
 
-Stack: Vite 8, React 19, react-router 8 (data router, `react-router/dom`), `qrcode`, `@supabase/supabase-js`, vitest + jsqr. UI copy is Vietnamese. Dev port **5176**. Target domain `qr-trai-tim-app.vercel.app` (custom domain to be added later).
+Stack: Vite 8, React 19, react-router 8 (data router, `react-router/dom`), `qrcode`, `@supabase/supabase-js`, vitest + jsqr. UI copy is Vietnamese. Dev port **5176**. Target domain `qr-app.vercel.app` (custom domain to be added later).
 
 ## 2. What has been done
 
@@ -46,7 +46,7 @@ Stack: Vite 8, React 19, react-router 8 (data router, `react-router/dom`), `qrco
 5. **Round-2 visual verification.** Walk `/home` (login, add, switch order, replace, delete photos), the photo-heart scene with 1, 5 and 16 photos, the fixed page flip, the new intro words and the cake decor in a real browser at 390×844.
 6. **Anniversary content is placeholder** (`Em` / `Anh`, 2024-02-14) and was not updated for round 2.
 7. **Real phone scan test** of the heart QR (iPhone and Android) is still outstanding.
-8. Domain: `qr-trai-tim-app.vercel.app` is only reachable after the first deploy. When a custom domain exists, set `VITE_SITE_URL` so QR codes always point at it.
+8. Domain: `qr-app.vercel.app` is only reachable after the first deploy. When a custom domain exists, set `VITE_SITE_URL` so QR codes always point at it.
 9. Music is synthesised (no audio files); the user may later want real tracks.
 10. `/home` is protected by login in the UI only; real protection is the RLS policies. Public gift pages read photos with the anon key, which is intended.
 

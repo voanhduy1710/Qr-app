@@ -941,3 +941,30 @@ body:has(.dash) {
   }
 
 }
+
+.dash-audio {
+  display: flex;
+  gap: 8px;
+}
+
+.dash-audio input {
+  flex: 1;
+  min-width: 0;
+}
+
+.dash-volume {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dash-volume input {
+  flex: 1;
+  accent-color: currentColor;
+}
+
+.dash-volume span {
+  min-width: 3.5ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

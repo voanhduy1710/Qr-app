@@ -222,8 +222,63 @@ function Field({ field, value, isDefault, onChange, onReset }) {
       {field.type === 'list' && <ListField id={id} items={value} onChange={onChange} />}
       {field.type === 'pages' && <ListField id={id} items={value} onChange={onChange} multiline itemLabel="Page" />}
       {field.type === 'cards' && <CardsField id={id} cards={value} onChange={onChange} />}
+      {field.type === 'audio' && <AudioField id={id} value={value} onChange={onChange} />}
+      {field.type === 'volume' && (
+        <div className="dash-volume">
+          <input id={id} type="range" min="0" max="100" step="5" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+          <span>{value}%</span>
+        </div>
+      )}
       {field.hint && <span className="dash-hint">{field.hint}</span>}
     </div>
+  )
+}
+
+/** Path or link to an mp3, with a button to listen before saving. */
+function AudioField({ id, value, onChange }) {
+  const [playing, setPlaying] = useState(false)
+  const [error, setError] = useState('')
+  const audio = useRef(null)
+
+  const stop = () => {
+    audio.current?.pause()
+    audio.current = null
+    setPlaying(false)
+  }
+  useEffect(() => stop, [])
+
+  function toggle() {
+    if (playing) return stop()
+    setError('')
+    const el = new Audio(value)
+    el.volume = 0.6
+    el.onended = stop
+    el.onerror = () => {
+      setError('Could not play that file. Check the path, e.g. /music/song.mp3')
+      stop()
+    }
+    audio.current = el
+    el.play().then(() => setPlaying(true), () => {})
+  }
+
+  return (
+    <>
+      <div className="dash-audio">
+        <input
+          id={id}
+          value={value}
+          placeholder="/music/song.mp3"
+          onChange={(e) => {
+            stop()
+            onChange(e.target.value.trim())
+          }}
+        />
+        <button type="button" className="dash-btn dash-btn-ghost" onClick={toggle} disabled={!value}>
+          {playing ? 'Stop' : 'Preview'}
+        </button>
+      </div>
+      {error && <span className="dash-error">{error}</span>}
+    </>
   )
 }
 

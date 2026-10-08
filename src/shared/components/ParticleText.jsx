@@ -5,12 +5,20 @@ import { traceHeart } from '../lib/heartPath'
 
 export const HEART = '♥'
 
+// Never wait longer than this for a word to settle.
+const MAX_FORM_S = 3
+
 /**
  * Glowing dots that fly together to spell each word in turn, then scatter and
  * regroup into the next one. `HEART` is drawn as a true heart shape. The last
  * word stays on screen; `onDone` fires after it has been held.
+ *
+ * By default each word gets `holdMs` in total, flight included. With `restMs`,
+ * a word is instead held for `restMs` after its dots have settled into place,
+ * so it can be read before it scatters. `restMs` may also be a function of the
+ * word (keep it stable, e.g. module level); returning null uses `holdMs`.
  */
-export default function ParticleText({ words, holdMs = 1500, color = '255, 120, 170', onDone, scale = 1 }) {
+export default function ParticleText({ words, holdMs = 1500, restMs, color = '255, 120, 170', onDone, scale = 1 }) {
   const ref = useRef(null)
   const reduceMotion = usePrefersReducedMotion()
   const onDoneRef = useRef(onDone)
@@ -27,6 +35,9 @@ export default function ParticleText({ words, holdMs = 1500, color = '255, 120, 
       let index = -1
       let timer = 0.35
       let finished = false
+      const restFor = (word) => (typeof restMs === 'function' ? restMs(word) : restMs) ?? null
+      let forming = false // waiting for the word to settle before its rest starts
+      let formingFor = 0
       const sampler = document.createElement('canvas')
       const sctx = sampler.getContext('2d', { willReadFrequently: true })
 
@@ -107,6 +118,17 @@ export default function ParticleText({ words, holdMs = 1500, color = '255, 120, 
         })
       }
 
+      function settled() {
+        let placed = 0
+        let still = 0
+        for (const p of particles) {
+          if (p.free) continue
+          placed += 1
+          if (Math.abs(p.tx - p.x) < 1.5 && Math.abs(p.ty - p.y) < 1.5 && Math.abs(p.vx) + Math.abs(p.vy) < 0.4) still += 1
+        }
+        return placed > 0 && still >= placed * 0.97
+      }
+
       return {
         resize(width, height) {
           w = width
@@ -114,12 +136,28 @@ export default function ParticleText({ words, holdMs = 1500, color = '255, 120, 
           if (index >= 0) showWord(words[index])
         },
         frame(dt) {
-          timer -= dt
-          if (timer <= 0 && !finished) {
+          const last = index === words.length - 1
+          if (forming) {
+            formingFor += dt
+            // Settled once nearly every dot sits still on its target (or it is taking too long).
+            if (formingFor > MAX_FORM_S || settled()) {
+              forming = false
+              const rest = restFor(words[index])
+              timer = (last ? rest * 1.8 : rest) / 1000
+            }
+          } else {
+            timer -= dt
+          }
+          if (!forming && timer <= 0 && !finished) {
             if (index < words.length - 1) {
               index += 1
               showWord(words[index])
-              timer = (index === words.length - 1 ? holdMs * 1.8 : holdMs) / 1000
+              if (restFor(words[index]) != null) {
+                forming = true
+                formingFor = 0
+              } else {
+                timer = (index === words.length - 1 ? holdMs * 1.8 : holdMs) / 1000
+              }
             } else {
               finished = true
               onDoneRef.current?.()
@@ -150,7 +188,7 @@ export default function ParticleText({ words, holdMs = 1500, color = '255, 120, 
         },
       }
     },
-    [words.join('|'), holdMs, color, scale, reduceMotion],
+    [words.join('|'), holdMs, restMs, color, scale, reduceMotion],
   )
 
   return <canvas ref={ref} className="layer" role="img" aria-label={words.join(' ')} />

@@ -1,5 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { heartSlots } from '../../../shared/lib/heartPath'
+import { createPortal } from 'react-dom'
+import Fireworks from '../../../shared/components/Fireworks'
+import { heartCards } from '../../../shared/lib/heartPath'
 import { usePrefersReducedMotion } from '../../../shared/hooks/usePrefersReducedMotion'
 
 const ZOOM_IN_MS = 700
@@ -7,6 +9,13 @@ const HOLD_MS = 800
 const ZOOM_OUT_MS = 850
 const EASE_IN = 'cubic-bezier(0.22, 1, 0.36, 1)'
 const EASE_MOVE = 'cubic-bezier(0.65, 0, 0.35, 1)'
+
+// A deeper cleft than the classic curve, so the lobes still read with cards on top.
+const HEART_DIP = 7
+// How much neighbouring cards overlap, as a fraction of a card.
+const HEART_OVERLAP = 0.14
+// The dip card is lifted by this fraction of a card so it clears the title.
+const DIP_LIFT = 0.14
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms))
 
@@ -25,7 +34,20 @@ export default function PhotoHeartScene({ photos, content, className, onNext }) 
   const boxRef = useRef(null)
   const cards = useRef([])
   const skip = useRef(false)
+  const fireworks = useRef(null)
+  const [viewing, setViewing] = useState(null) // index of the photo shown full size
   const done = placed >= photos.length
+
+  // Once the heart is complete, fireworks go off behind it now and then.
+  useEffect(() => {
+    if (!done || reduceMotion || !photos.length) return undefined
+    const start = setTimeout(() => fireworks.current?.show(5), 400)
+    const again = setInterval(() => fireworks.current?.show(2), 3600)
+    return () => {
+      clearTimeout(start)
+      clearInterval(again)
+    }
+  }, [done, reduceMotion, photos.length])
 
   useLayoutEffect(() => {
     const el = boxRef.current
@@ -36,24 +58,20 @@ export default function PhotoHeartScene({ photos, content, className, onNext }) 
     return () => ro.disconnect()
   }, [])
 
-  // Slot size shrinks as photos are added so up to 18 still sit side by side on the outline.
+  // Cards are sized so neighbours overlap a little and the heart reads as one piece.
   const layout = useMemo(() => {
     const { w, h } = box
-    const cardW = w * Math.min(0.2, 0.12 * Math.sqrt(18 / Math.max(1, photos.length)))
-    const cardH = cardW * 1.25
+    const { cardW, cardH, slots } = heartCards(photos.length, w, h, { dip: HEART_DIP, overlap: HEART_OVERLAP })
     const bigW = Math.min(w * 0.7, h * 0.62)
-    const spanW = w - cardW
-    const spanH = h - cardH
     return {
       bigW,
       k: bigW ? cardW / bigW : 0.2,
-      // One card sits dead centre in the dip and (for an even count) one on the tip;
-      // the rest are spaced so neighbours are equally far apart.
-      slots: heartSlots(photos.length, { width: spanW, height: spanH, card: [cardW, cardH] }).map(([x, y], i) => ({
-        x: (x * spanW) / 2,
-        y: (y * spanH) / 2,
+      // One card sits dead centre in the dip and (for an even count) one on the tip.
+      slots: slots.map(([x, y], i) => ({
+        x,
+        y: i === 0 ? y - cardH * DIP_LIFT : y,
         // Small, stable tilt per slot so the heart looks hand-pinned; the centre cards stay straight.
-        r: i === 0 || i * 2 === photos.length ? 0 : ((i * 37) % 13) - 6,
+        r: i === 0 || i * 2 === photos.length ? 0 : ((i * 37) % 9) - 4,
       })),
     }
   }, [box, photos.length])
@@ -120,6 +138,7 @@ export default function PhotoHeartScene({ photos, content, className, onNext }) 
 
   return (
     <div className={`${className} photo-scene${done ? ' is-done' : ''}`}>
+      <Fireworks ref={fireworks} className="photo-fireworks" />
       <div className="photo-heart" ref={boxRef} style={{ '--big': `${layout.bigW}px` }}>
         {photos.map((photo, i) => (
           <figure
@@ -127,6 +146,18 @@ export default function PhotoHeartScene({ photos, content, className, onNext }) 
             ref={(el) => (cards.current[i] = el)}
             className={`photo-card${i < placed ? ' is-placed' : ''}`}
             style={i < placed && layout.slots[i] ? { transform: slotTransform(i), opacity: 1 } : undefined}
+            {...(i < placed && {
+              role: 'button',
+              tabIndex: 0,
+              'aria-label': `Xem ảnh ${i + 1}`,
+              onClick: () => setViewing(i),
+              onKeyDown: (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setViewing(i)
+                }
+              },
+            })}
           >
             <img src={photo.url} alt="" draggable="false" />
           </figure>
@@ -146,6 +177,12 @@ export default function PhotoHeartScene({ photos, content, className, onNext }) 
         </button>
       </div>
 
+      {viewing !== null &&
+        createPortal(
+          <PhotoViewer photos={photos} index={viewing} onIndex={setViewing} onClose={() => setViewing(null)} />,
+          document.body,
+        )}
+
       <div className="photo-footer">
         {done ? (
           <p className="hint photo-next">
@@ -157,6 +194,64 @@ export default function PhotoHeartScene({ photos, content, className, onNext }) 
           </button>
         )}
       </div>
+    </div>
+  )
+}
+
+/** One photo at full size over everything; arrows, swipe or ←/→ step through, Esc closes. */
+function PhotoViewer({ photos, index, onIndex, onClose }) {
+  const closeRef = useRef(null)
+  const swipe = useRef(null)
+  const count = photos.length
+  const step = (d) => onIndex((index + d + count) % count)
+
+  useEffect(() => {
+    const opener = document.activeElement
+    closeRef.current?.focus()
+    return () => opener?.focus?.()
+  }, [])
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose()
+      else if (e.key === 'ArrowRight') step(1)
+      else if (e.key === 'ArrowLeft') step(-1)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
+
+  return (
+    <div
+      className="photo-viewer"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Ảnh ${index + 1} / ${count}`}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onPointerDown={(e) => (swipe.current = e.clientX)}
+      onPointerUp={(e) => {
+        const dx = swipe.current === null ? 0 : e.clientX - swipe.current
+        swipe.current = null
+        if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1)
+      }}
+    >
+      <img key={photos[index].id} src={photos[index].url} alt={`Ảnh ${index + 1}`} draggable="false" />
+      <button ref={closeRef} type="button" className="photo-viewer-btn photo-viewer-close" onClick={onClose} aria-label="Đóng">
+        ×
+      </button>
+      {count > 1 && (
+        <>
+          <button type="button" className="photo-viewer-btn photo-viewer-prev" onClick={() => step(-1)} aria-label="Ảnh trước">
+            ‹
+          </button>
+          <button type="button" className="photo-viewer-btn photo-viewer-next" onClick={() => step(1)} aria-label="Ảnh sau">
+            ›
+          </button>
+          <span className="photo-viewer-count">
+            {index + 1} / {count}
+          </span>
+        </>
+      )}
     </div>
   )
 }

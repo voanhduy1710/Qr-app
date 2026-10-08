@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest'
 import { buildHeartQr, outputToQr } from './buildHeartQr'
 
 const URLS = [
-  'https://qr-trai-tim-app.vercel.app/birthday',
-  'https://qr-trai-tim-app.vercel.app/anniversary',
+  'https://qr-app.vercel.app/birthday',
+  'https://qr-app.vercel.app/anniversary',
   'http://192.168.1.25:5176/birthday',
 ]
 

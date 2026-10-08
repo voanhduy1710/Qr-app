@@ -180,6 +180,7 @@
 /* Slightly wider than tall, like a drawn heart. */
 .photo-heart {
   position: relative;
+  z-index: 1;
   width: min(94vw, 600px, 70dvh);
   aspect-ratio: 10 / 9;
   margin: auto 0;
@@ -211,8 +212,124 @@
   pointer-events: none;
 }
 
-.photo-scene.is-done .photo-heart {
-  animation: heart-beat 2.6s ease-in-out 1.2s infinite;
+.photo-card.is-placed {
+  cursor: zoom-in;
+}
+
+.photo-card.is-placed:focus-visible {
+  outline: 2px solid #f2c879;
+  outline-offset: 3px;
+}
+
+/* Fireworks behind the photo heart once every photo has landed. */
+.photo-fireworks {
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Full-size photo viewer */
+.photo-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: rgba(14, 4, 12, 0.88);
+  backdrop-filter: blur(6px);
+  animation: viewer-in 220ms ease-out both;
+}
+
+.photo-viewer img {
+  max-width: min(94vw, 1100px);
+  max-height: 84dvh;
+  object-fit: contain;
+  border: 8px solid #fffaf2;
+  border-radius: 4px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  animation: viewer-pop 260ms var(--ease-out) both;
+}
+
+.photo-viewer-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.photo-viewer-btn:hover,
+.photo-viewer-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.photo-viewer-close {
+  top: max(14px, env(safe-area-inset-top));
+  right: 14px;
+}
+
+.photo-viewer-prev {
+  left: 12px;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.photo-viewer-next {
+  right: 12px;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.photo-viewer-count {
+  position: absolute;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: 50%;
+  translate: -50% 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Phones: arrows beside the counter so they never cover the photo. */
+@media (max-width: 600px) {
+  .photo-viewer img {
+    max-height: 76dvh;
+  }
+
+  .photo-viewer-prev,
+  .photo-viewer-next {
+    top: auto;
+    bottom: max(6px, env(safe-area-inset-bottom));
+    translate: none;
+  }
+
+  .photo-viewer-prev {
+    left: calc(50% - 96px);
+  }
+
+  .photo-viewer-next {
+    right: calc(50% - 96px);
+  }
+}
+
+@keyframes viewer-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes viewer-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
 }
 
 .photo-caption {
@@ -261,6 +378,8 @@
 }
 
 .photo-footer {
+  position: relative;
+  z-index: 1; /* above the fireworks */
   min-height: 56px;
   display: grid;
   place-items: center;
@@ -752,7 +871,7 @@
   position: absolute;
   top: max(22px, env(safe-area-inset-top));
   left: 22px;
-  width: clamp(54px, 15vw, 84px);
+  width: clamp(84px, 24vw, 132px);
   height: auto;
   fill: #fff1c9;
   filter: drop-shadow(0 0 18px rgba(255, 236, 180, 0.55));
@@ -819,5 +938,69 @@
 @keyframes cake-invite {
   50% {
     transform: scale(1.03);
+  }
+}
+
+/* GIF stickers beside the presents after the candle is out: three a side,
+   stepping up and outwards, each popping in and then bobbing gently. */
+.cake-sticker {
+  position: absolute;
+  z-index: 2;
+  width: var(--w, 30%);
+  height: auto;
+  left: var(--x, auto);
+  right: var(--rx, auto);
+  bottom: var(--y);
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+  animation:
+    sticker-pop 700ms var(--ease-out) var(--d) both,
+    sticker-bob 2.8s ease-in-out calc(var(--d) + 700ms) infinite;
+}
+
+.cake-sticker.is-s1 { --x: -62%; --y: -4%; --w: 34%; --d: 150ms; }
+.cake-sticker.is-s2 { --x: -92%; --y: 26%; --w: 30%; --d: 350ms; }
+.cake-sticker.is-s3 { --x: -58%; --y: 46%; --w: 28%; --d: 550ms; }
+.cake-sticker.is-s4 { --rx: -60%; --y: -4%; --w: 34%; --d: 250ms; }
+.cake-sticker.is-s5 { --rx: -94%; --y: 26%; --w: 34%; --d: 450ms; }
+.cake-sticker.is-s6 { --rx: -56%; --y: 46%; --w: 28%; --d: 650ms; }
+
+/* Not enough room beside the presents: one above each side's gifts, two below. */
+@media (max-width: 959px) {
+  .cake-sticker { --w: 27%; }
+  .cake-sticker.is-s1 { --x: -26%; --y: 40%; }
+  .cake-sticker.is-s2 { --x: -24%; --y: -40%; }
+  .cake-sticker.is-s3 { --x: 6%; --y: -44%; --w: 25%; }
+  .cake-sticker.is-s4 { --rx: -24%; --y: 40%; }
+  .cake-sticker.is-s5 { --rx: -24%; --y: -40%; --w: 30%; }
+  .cake-sticker.is-s6 { --rx: 6%; --y: -44%; --w: 25%; }
+}
+
+@keyframes sticker-pop {
+  from {
+    opacity: 0;
+    transform: translateY(30%) scale(0.3) rotate(-12deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-6%) scale(1.12) rotate(4deg);
+  }
+}
+
+@keyframes sticker-bob {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  50% {
+    translate: 0 -5%;
+    rotate: 3deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cake-sticker {
+    animation: none;
   }
 }

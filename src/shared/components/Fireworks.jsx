@@ -8,13 +8,21 @@ const PALETTES = [
   ['#b28dff', '#e0d1ff', '#ffd6e0'],
   ['#7ef0c0', '#d3fff0', '#ffffff'],
 ]
-const GRAVITY = 140
+const GRAVITY = 90
+
+// Direction (about unit length) of the heart outline at angle t, y pointing down,
+// centred so the burst point sits in the middle of the heart.
+function heartDir(t) {
+  const x = 16 * Math.sin(t) ** 3
+  const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) - 2.5
+  return [x / 16, y / 16]
+}
 
 /**
  * Canvas fireworks. `ref.current.launch(x, y)` fires one rocket that bursts at
  * (x, y) in viewport coordinates; `ref.current.show(count)` fires a volley.
  */
-const Fireworks = forwardRef(function Fireworks(_, ref) {
+const Fireworks = forwardRef(function Fireworks({ className = 'confetti-layer' }, ref) {
   const canvasRef = useRef(null)
   const rockets = useRef([])
   const sparks = useRef([])
@@ -43,23 +51,23 @@ const Fireworks = forwardRef(function Fireworks(_, ref) {
     },
   }))
 
+  // Every burst opens into a heart: sparks leave along the heart outline, so as
+  // they fly out together they draw it. Drag and gravity act the same on every
+  // spark, so the heart keeps its shape while it grows and sinks.
   function explode(r) {
-    const count = 70 + Math.floor(Math.random() * 40)
-    const power = 160 + Math.random() * 90
+    const count = 90 + Math.floor(Math.random() * 30)
+    const power = 150 + Math.random() * 80
+    const tilt = (Math.random() - 0.5) * 0.5
+    const spark = (vx, vy, i, life) =>
+      sparks.current.push({ x: r.tx, y: r.ty, px: r.tx, py: r.ty, vx, vy, life, color: r.palette[i % r.palette.length] })
     for (let i = 0; i < count; i++) {
-      const a = (i / count) * Math.PI * 2 + Math.random() * 0.1
-      const v = power * (0.55 + Math.random() * 0.45)
-      sparks.current.push({
-        x: r.tx,
-        y: r.ty,
-        px: r.tx,
-        py: r.ty,
-        vx: Math.cos(a) * v,
-        vy: Math.sin(a) * v,
-        life: 1.2 + Math.random() * 0.8,
-        max: 2,
-        color: r.palette[i % r.palette.length],
-      })
+      const [hx, hy] = heartDir((i / count) * Math.PI * 2)
+      const v = power * (0.97 + Math.random() * 0.06)
+      const x = hx * Math.cos(tilt) - hy * Math.sin(tilt)
+      const y = hx * Math.sin(tilt) + hy * Math.cos(tilt)
+      spark(x * v, y * v, i, 1.5 + Math.random() * 0.3)
+      // A smaller heart inside for depth.
+      if (i % 3 === 0) spark(x * v * 0.55, y * v * 0.55, i + 1, 1.3 + Math.random() * 0.3)
     }
   }
 
@@ -123,7 +131,7 @@ const Fireworks = forwardRef(function Fireworks(_, ref) {
     [],
   )
 
-  return <canvas ref={canvasRef} className="layer confetti-layer" aria-hidden="true" />
+  return <canvas ref={canvasRef} className={`layer ${className}`} aria-hidden="true" />
 })
 
 export default Fireworks

@@ -1,36 +1,46 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  MAX_PHOTOS,
-  addPhoto,
-  deletePhoto,
-  listPhotos,
-  replacePhoto,
-  savePositions,
-  shrinkImage,
-} from '../../shared/lib/photos'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { MAX_PHOTOS, listPhotos, savePhotoChanges, shrinkImage } from '../../shared/lib/photos'
 import Icon from './Icon'
+
+const keyOf = (photo) => photo.id ?? photo.key
 
 /**
  * Photos shown in a gift page's photo heart, as a vertical list in display
- * order. Drag rows (or use the arrows) to reorder; tick rows to delete many.
+ * order. Every edit (add, replace, reorder, delete) only changes a local
+ * draft; "Save changes" sends the whole draft in one batch.
  */
-export default function PhotoManager({ occasion }) {
-  const [photos, setPhotos] = useState([])
+export default function PhotoManager({ occasion, onDirtyChange }) {
+  const [saved, setSaved] = useState([])
+  const [photos, setPhotos] = useState([]) // the draft
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState('')
   const [error, setError] = useState('')
+  const [note, setNote] = useState('')
+  const [saving, setSaving] = useState(false)
   const [selected, setSelected] = useState(() => new Set())
   const [drag, setDrag] = useState(null) // { from, over }
   const [dropping, setDropping] = useState(false)
   const addInput = useRef(null)
   const replaceInput = useRef(null)
   const replaceTarget = useRef(null)
+  const previews = useRef(new Set()) // object URLs made for unsaved files
+
+  const forgetPreviews = useCallback(() => {
+    previews.current.forEach((url) => URL.revokeObjectURL(url))
+    previews.current.clear()
+  }, [])
+
+  const preview = (file) => {
+    const url = URL.createObjectURL(file)
+    previews.current.add(url)
+    return url
+  }
 
   const reload = useCallback(async () => {
     const list = await listPhotos(occasion)
+    setSaved(list)
     setPhotos(list)
-    // Forget selections of photos that no longer exist.
-    setSelected((s) => new Set(list.filter((p) => s.has(p.id)).map((p) => p.id)))
+    setSelected(new Set())
     setLoading(false)
   }, [occasion])
 
@@ -41,37 +51,93 @@ export default function PhotoManager({ occasion }) {
     })
   }, [reload])
 
-  async function run(label, task) {
-    setBusy(label)
+  useEffect(() => forgetPreviews, [forgetPreviews])
+
+  const changes = useMemo(() => {
+    const kept = new Set(photos.filter((p) => p.id).map((p) => p.id))
+    const added = photos.filter((p) => !p.id).length
+    const replaced = photos.filter((p) => p.id && p.file).length
+    const removed = saved.filter((p) => !kept.has(p.id)).length
+    const keptSaved = saved.filter((p) => kept.has(p.id)).map((p) => p.id)
+    const keptDraft = photos.filter((p) => p.id).map((p) => p.id)
+    const moved = keptSaved.some((id, i) => id !== keptDraft[i])
+    const parts = [
+      added && `${added} added`,
+      replaced && `${replaced} replaced`,
+      removed && `${removed} removed`,
+      moved && 'order changed',
+    ].filter(Boolean)
+    return parts.join(', ')
+  }, [photos, saved])
+  const dirty = changes !== ''
+
+  useEffect(() => {
+    onDirtyChange?.(dirty)
+    if (!dirty) return undefined
+    const warn = (e) => e.preventDefault()
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [dirty, onDirtyChange])
+
+  async function save() {
+    setSaving(true)
+    setBusy('Saving…')
     setError('')
     try {
-      await task()
+      await savePhotoChanges(occasion, saved, photos, setBusy)
+      await reload()
+      forgetPreviews()
+      setNote('Saved')
+      setTimeout(() => setNote(''), 2000)
     } catch (err) {
-      setError(err.message || 'Something went wrong')
+      setError(err.message || 'Could not save')
     } finally {
-      await reload().catch(() => {})
+      setSaving(false)
       setBusy('')
     }
   }
 
-  function addFiles(list) {
+  function discard() {
+    setPhotos(saved)
+    setSelected(new Set())
+    forgetPreviews()
+  }
+
+  // Shrinking happens here so the preview is exactly what will be uploaded.
+  async function addFiles(list) {
     const room = MAX_PHOTOS - photos.length
     const files = [...list].filter((f) => f.type.startsWith('image/')).slice(0, room)
     if (!files.length) return
-    run(`Uploading ${files.length} photo${files.length > 1 ? 's' : ''}…`, async () => {
-      let position = photos.length
+    setBusy('Preparing photos…')
+    try {
+      const added = []
       for (const file of files) {
-        await addPhoto(occasion, await shrinkImage(file), position++)
+        const small = await shrinkImage(file)
+        added.push({ key: crypto.randomUUID(), file: small, name: file.name, url: preview(small) })
       }
-    })
+      setPhotos((list) => [...list, ...added])
+    } catch (err) {
+      setError(err.message || 'Could not read that image')
+    } finally {
+      setBusy('')
+    }
   }
 
-  function onReplace(e) {
+  async function onReplace(e) {
     const file = e.target.files[0]
-    const photo = replaceTarget.current
+    const target = replaceTarget.current
     e.target.value = ''
-    if (!file || !photo) return
-    run('Replacing photo…', async () => replacePhoto(photo, occasion, await shrinkImage(file)))
+    if (!file || !target) return
+    setBusy('Preparing photo…')
+    try {
+      const small = await shrinkImage(file)
+      const swap = { file: small, name: file.name, url: preview(small) }
+      setPhotos((list) => list.map((p) => (keyOf(p) === keyOf(target) ? { ...p, ...swap } : p)))
+    } catch (err) {
+      setError(err.message || 'Could not read that image')
+    } finally {
+      setBusy('')
+    }
   }
 
   function reorder(from, to) {
@@ -79,26 +145,18 @@ export default function PhotoManager({ occasion }) {
     const next = [...photos]
     next.splice(to, 0, next.splice(from, 1)[0])
     setPhotos(next)
-    run('Saving order…', () => savePositions(next))
   }
 
-  function removeMany(ids) {
-    const doomed = photos.filter((p) => ids.has(p.id))
-    if (!doomed.length) return
-    const label = doomed.length === 1 ? 'this photo' : `${doomed.length} photos`
-    if (!window.confirm(`Delete ${label}? This cannot be undone.`)) return
-    run(`Deleting ${label}…`, async () => {
-      for (const photo of doomed) await deletePhoto(photo)
-      await savePositions(photos.filter((p) => !ids.has(p.id)))
-      setSelected(new Set())
-    })
+  function removeMany(keys) {
+    setPhotos((list) => list.filter((p) => !keys.has(keyOf(p))))
+    setSelected(new Set())
   }
 
-  function toggle(id) {
+  function toggle(key) {
     setSelected((s) => {
       const next = new Set(s)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
       return next
     })
   }
@@ -113,7 +171,8 @@ export default function PhotoManager({ occasion }) {
         <div>
           <h1>Heart photos</h1>
           <p className="dash-muted">
-            Each photo zooms in, then flies to its place on the heart, top to bottom in this order. Drag rows to reorder.
+            Photo 1 sits in the dip at the top, then the rest go clockwise around the heart. With an even number of
+            photos, the middle one lands on the bottom tip. Drag rows to reorder, then save.
           </p>
         </div>
         <div className="dash-actions">
@@ -145,14 +204,29 @@ export default function PhotoManager({ occasion }) {
       />
       <input ref={replaceInput} type="file" accept="image/*" hidden onChange={onReplace} />
 
-      <p className="dash-status" role="status">
-        {busy}
-      </p>
-      {error && (
-        <p className="dash-error" role="alert">
-          {error}
-        </p>
-      )}
+      <div className="dash-savebar" data-dirty={dirty}>
+        <span role="status">
+          {error ? (
+            <span className="dash-error">{error}</span>
+          ) : busy ? (
+            busy
+          ) : note ? (
+            note
+          ) : dirty ? (
+            `Unsaved: ${changes}`
+          ) : (
+            'All changes saved'
+          )}
+        </span>
+        <div className="dash-actions">
+          <button type="button" className="dash-btn" onClick={discard} disabled={!dirty || locked}>
+            Discard
+          </button>
+          <button type="button" className="dash-btn dash-btn-primary" onClick={save} disabled={!dirty || locked}>
+            {saving ? 'Saving…' : 'Save changes'}
+          </button>
+        </div>
+      </div>
 
       <div
         className={`dash-card dash-drop${dropping ? ' is-over' : ''}`}
@@ -181,7 +255,7 @@ export default function PhotoManager({ occasion }) {
                   type="checkbox"
                   checked={allSelected}
                   ref={(el) => el && (el.indeterminate = selected.size > 0 && !allSelected)}
-                  onChange={() => setSelected(allSelected ? new Set() : new Set(photos.map((p) => p.id)))}
+                  onChange={() => setSelected(allSelected ? new Set() : new Set(photos.map(keyOf)))}
                   disabled={locked}
                 />
                 {selected.size ? `${selected.size} selected` : 'Select all'}
@@ -202,17 +276,18 @@ export default function PhotoManager({ occasion }) {
                   </button>
                 </div>
               )}
-              <span className="dash-hint dash-bulk-hint">Drop new images anywhere in this box to upload.</span>
+              <span className="dash-hint dash-bulk-hint">Drop new images anywhere in this box to add them.</span>
             </div>
 
             <ol className="dash-photo-list">
               {photos.map((photo, i) => {
+                const key = keyOf(photo)
                 const isOver = drag && drag.over === i && drag.from !== i
                 const edge = isOver ? (drag.from < i ? ' is-drop-below' : ' is-drop-above') : ''
                 return (
                   <li
-                    key={photo.id}
-                    className={`dash-photo-row${selected.has(photo.id) ? ' is-selected' : ''}${
+                    key={key}
+                    className={`dash-photo-row${selected.has(key) ? ' is-selected' : ''}${
                       drag?.from === i ? ' is-dragging' : ''
                     }${edge}`}
                     draggable={!locked}
@@ -237,8 +312,8 @@ export default function PhotoManager({ occasion }) {
                     <input
                       type="checkbox"
                       className="dash-row-check"
-                      checked={selected.has(photo.id)}
-                      onChange={() => toggle(photo.id)}
+                      checked={selected.has(key)}
+                      onChange={() => toggle(key)}
                       aria-label={`Select photo ${i + 1}`}
                       disabled={locked}
                     />
@@ -247,9 +322,12 @@ export default function PhotoManager({ occasion }) {
                     </span>
                     <span className="dash-photo-pos">{i + 1}</span>
                     <img src={photo.url} alt={`Photo ${i + 1}`} loading="lazy" draggable="false" />
-                    <span className="dash-photo-name" title={photo.storage_path}>
-                      Appears {ordinal(i + 1)}
-                      <small>{photo.storage_path.split('/').pop()}</small>
+                    <span className="dash-photo-name" title={photo.name ?? photo.storage_path}>
+                      {placeName(i, photos.length)}
+                      <small>
+                        {photo.file && <span className="dash-badge is-unsaved">{photo.id ? 'Replaced' : 'New'}</span>}{' '}
+                        {photo.name ?? photo.storage_path.split('/').pop()}
+                      </small>
                     </span>
                     <div className="dash-row-tools">
                       <button
@@ -284,7 +362,7 @@ export default function PhotoManager({ occasion }) {
                       <button
                         type="button"
                         className="dash-icon-btn is-danger"
-                        onClick={() => removeMany(new Set([photo.id]))}
+                        onClick={() => removeMany(new Set([key]))}
                         disabled={locked}
                         aria-label={`Delete photo ${i + 1}`}
                       >
@@ -300,6 +378,12 @@ export default function PhotoManager({ occasion }) {
       </div>
     </div>
   )
+}
+
+function placeName(i, count) {
+  if (i === 0) return 'Top centre (dip)'
+  if (count % 2 === 0 && i === count / 2) return 'Bottom tip'
+  return i < count / 2 ? `Right side, ${ordinal(i)} from top` : `Left side, ${ordinal(count - i)} from top`
 }
 
 function ordinal(n) {

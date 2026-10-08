@@ -45,6 +45,48 @@ export function subscribeMuted(fn) {
   return () => listeners.delete(fn)
 }
 
+/**
+ * Loops an audio file (e.g. an mp3) at `volume` (0..1), following the mute
+ * switch. Call it from a user gesture so the browser allows playback.
+ * Returns `{ stop, duck(factor) }`; `duck(0.25)` lowers it, `duck(1)` restores.
+ */
+export function playTrack(url, { volume = 0.6 } = {}) {
+  const el = new Audio(url)
+  el.loop = true
+  el.preload = 'auto'
+  let level = 1
+  let fade = 0
+  const target = () => (muted ? 0 : volume * level)
+  const glide = () => {
+    // Short fade so ducking and muting never click.
+    cancelAnimationFrame(fade)
+    const step = () => {
+      const goal = target()
+      const next = el.volume + (goal - el.volume) * 0.15
+      el.volume = Math.abs(goal - next) < 0.005 ? goal : Math.min(1, Math.max(0, next))
+      if (el.volume !== goal) fade = requestAnimationFrame(step)
+    }
+    step()
+  }
+  el.volume = 0
+  el.play().catch(() => {})
+  glide()
+  const onMute = () => glide()
+  listeners.add(onMute)
+  return {
+    stop() {
+      listeners.delete(onMute)
+      cancelAnimationFrame(fade)
+      el.pause()
+      el.src = ''
+    },
+    duck(factor) {
+      level = factor
+      glide()
+    },
+  }
+}
+
 const NOTE_INDEX = { C: 0, 'C#': 1, D: 2, 'D#': 3, E: 4, F: 5, 'F#': 6, G: 7, 'G#': 8, A: 9, 'A#': 10, B: 11 }
 
 function frequency(note) {

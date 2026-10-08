@@ -4,11 +4,20 @@ import CakeDecor from './CakeDecor'
 
 const HOLD_MS = 1600
 
+// Load the stickers while the candle is still lit, so they pop in instantly.
+const STICKER_URLS = ['kissy_face', 'bugcat-capoo', 'hatch', 'napoli_chatgpt', 'mentori', 'Sinister']
+
 export default function CakeScene({ content, className, onBlown, onNext, fireworksRef }) {
   const [progress, setProgress] = useState(0)
   const [blown, setBlown] = useState(false)
   const holding = useRef(false)
   const flameRef = useRef(null)
+
+  useEffect(() => {
+    STICKER_URLS.forEach((name) => {
+      new Image().src = `/gifs/${name}.gif`
+    })
+  }, [])
 
   // Holding fills the ring; letting go slowly drains it, like a candle recovering.
   useEffect(() => {

@@ -6,6 +6,9 @@ export const defaults = {
   from: 'Bố Hấu',
   pageTitle: 'Chúc mừng sinh nhật {name} 🎂',
   gateTitle: 'Gửi kẻ hốn chíp',
+  // Empty = the built-in music box lullaby.
+  musicUrl: '',
+  musicVolume: 60,
   introWords: ['3', '2', '1', 'HAPPY', 'BIRTHDAY', 'TO YOU', 'MẸ HẤU ♥'],
   cakeTitle: 'Có một món quà nhỏ dành cho {name}…',
   cakeLead: 'Nhưng trước khi mở, thổi nến trước nhé',
@@ -61,6 +64,20 @@ export const schema = [
       { key: 'name', label: 'Recipient name', type: 'text' },
       { key: 'from', label: 'Sender name', type: 'text' },
       { key: 'pageTitle', label: 'Browser tab title', type: 'text' },
+    ],
+  },
+  {
+    id: 'music',
+    title: 'Music',
+    hint: 'Loops from the moment the gift is opened. Leave empty for the built-in music box.',
+    fields: [
+      {
+        key: 'musicUrl',
+        label: 'Music file (mp3)',
+        type: 'audio',
+        hint: 'Put the file in public/music/ and type its path, e.g. /music/song.mp3 — or paste a full https:// link.',
+      },
+      { key: 'musicVolume', label: 'Volume', type: 'volume' },
     ],
   },
   {

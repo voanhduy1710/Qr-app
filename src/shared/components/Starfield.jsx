@@ -45,12 +45,12 @@ export default function Starfield({ density = 1, shooting = true, tint = '255, 2
             if (drifting) s.y -= s.drift * dt
             if (s.y < -2) s.y = h + 2
             const tw = 0.5 + 0.5 * Math.sin(t * s.speed * (1 + glow) + s.phase)
-            const a = Math.min(1, 0.25 + 0.75 * tw + glow * 0.35)
-            const r = s.r * (1 + glow * 0.9)
+            const a = Math.min(1, 0.25 + 0.75 * tw + glow * 0.15)
+            const r = s.r * (1 + glow * 0.5)
             if (glow > 0.05 && s.r > 0.8) {
-              ctx.fillStyle = `rgba(255, 226, 160, ${(glow * a * 0.22).toFixed(3)})`
+              ctx.fillStyle = `rgba(255, 226, 160, ${(glow * a * 0.08).toFixed(3)})`
               ctx.beginPath()
-              ctx.arc(s.x, s.y, r * 4, 0, Math.PI * 2)
+              ctx.arc(s.x, s.y, r * 3, 0, Math.PI * 2)
               ctx.fill()
             }
             ctx.fillStyle = `rgba(${tint}, ${a.toFixed(3)})`

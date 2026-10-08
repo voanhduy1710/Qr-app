@@ -1,7 +1,7 @@
 # ==============================================================================
 # PowerShell Vercel Deployment Script for QR Trai Tim Web App
 # ==============================================================================
-$ProjectName = "qr-trai-tim-app"
+$ProjectName = "qr-app"
 Set-Location $PSScriptRoot
 
 Write-Host "============================================================" -ForegroundColor Cyan
@@ -89,7 +89,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Host "   Build successful! dist/ output verified." -ForegroundColor Green
 
-# 5. Link (first run creates the project -> https://qr-trai-tim-app.vercel.app) and deploy
+# 5. Link (first run creates the project -> https://qr-app.vercel.app) and deploy
 Write-Host "`n[5/5] Deploying to Production on Vercel account ($whoami)..." -ForegroundColor Yellow
 Write-Host "============================================================" -ForegroundColor Cyan
 
