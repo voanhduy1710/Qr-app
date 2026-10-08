@@ -944,11 +944,12 @@ body:has(.dash) {
 
 .dash-audio {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .dash-audio input {
-  flex: 1;
+  flex: 1 1 220px;
   min-width: 0;
 }
 

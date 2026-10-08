@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { loadOverrides, mergeContent, saveOverrides } from '../../shared/lib/giftContent'
+import { removeMusic, uploadMusic } from '../../shared/lib/music'
 import Icon from './Icon'
 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
@@ -18,6 +19,12 @@ export default function ContentEditor({ gift, onDirtyChange }) {
   const [open, setOpen] = useState(() => new Set([schema[0].id]))
   const [previewKey, setPreviewKey] = useState(0)
   const importInput = useRef(null)
+  // Music uploaded during this edit, so unsaved uploads can be cleaned up.
+  const uploads = useRef(new Set())
+  const audioKeys = useMemo(
+    () => schema.flatMap((s) => s.fields).filter((f) => f.type === 'audio').map((f) => f.key),
+    [schema],
+  )
 
   useEffect(() => {
     let alive = true
@@ -55,6 +62,12 @@ export default function ContentEditor({ gift, onDirtyChange }) {
     setStatus({ busy: true, error: '', note: '' })
     try {
       const { updatedAt: at } = await saveOverrides(gift.id, values, defaults)
+      // Uploaded files the saved content no longer points at: the replaced song,
+      // and any upload that was itself replaced before saving.
+      const inUse = new Set(audioKeys.map((k) => values[k]))
+      const unused = [...audioKeys.map((k) => saved[k]), ...uploads.current].filter((u) => u && !inUse.has(u))
+      uploads.current.clear()
+      removeMusic(unused).catch(() => {})
       setSaved(values)
       setUpdatedAt(at)
       setPreviewKey((k) => k + 1)
@@ -63,6 +76,19 @@ export default function ContentEditor({ gift, onDirtyChange }) {
     } catch (err) {
       setStatus({ busy: false, error: err.message || 'Could not save', note: '' })
     }
+  }
+
+  function discard() {
+    const inUse = new Set(audioKeys.map((k) => saved[k]))
+    removeMusic([...uploads.current].filter((u) => !inUse.has(u))).catch(() => {})
+    uploads.current.clear()
+    setValues(saved)
+  }
+
+  async function upload(file) {
+    const url = await uploadMusic(gift.id, file)
+    uploads.current.add(url)
+    return url
   }
 
   function exportJson() {
@@ -141,7 +167,7 @@ export default function ContentEditor({ gift, onDirtyChange }) {
           <button type="button" className="dash-btn dash-btn-ghost" onClick={() => setOpen(new Set(allOpen ? [] : schema.map((s) => s.id)))}>
             {allOpen ? 'Collapse all' : 'Expand all'}
           </button>
-          <button type="button" className="dash-btn" onClick={() => setValues(saved)} disabled={!dirty || status.busy}>
+          <button type="button" className="dash-btn" onClick={discard} disabled={!dirty || status.busy}>
             Discard
           </button>
           <button type="button" className="dash-btn dash-btn-primary" onClick={save} disabled={!dirty || status.busy}>
@@ -176,6 +202,7 @@ export default function ContentEditor({ gift, onDirtyChange }) {
                         isDefault={same(values[field.key], defaults[field.key])}
                         onChange={(v) => set(field.key, v)}
                         onReset={() => set(field.key, defaults[field.key])}
+                        onUpload={upload}
                       />
                     ))}
                   </div>
@@ -201,7 +228,7 @@ export default function ContentEditor({ gift, onDirtyChange }) {
   )
 }
 
-function Field({ field, value, isDefault, onChange, onReset }) {
+function Field({ field, value, isDefault, onChange, onReset, onUpload }) {
   const id = `f-${field.key}`
   return (
     <div className="dash-field">
@@ -222,7 +249,7 @@ function Field({ field, value, isDefault, onChange, onReset }) {
       {field.type === 'list' && <ListField id={id} items={value} onChange={onChange} />}
       {field.type === 'pages' && <ListField id={id} items={value} onChange={onChange} multiline itemLabel="Page" />}
       {field.type === 'cards' && <CardsField id={id} cards={value} onChange={onChange} />}
-      {field.type === 'audio' && <AudioField id={id} value={value} onChange={onChange} />}
+      {field.type === 'audio' && <AudioField id={id} value={value} onChange={onChange} onUpload={onUpload} />}
       {field.type === 'volume' && (
         <div className="dash-volume">
           <input id={id} type="range" min="0" max="100" step="5" value={value} onChange={(e) => onChange(Number(e.target.value))} />
@@ -234,11 +261,29 @@ function Field({ field, value, isDefault, onChange, onReset }) {
   )
 }
 
-/** Path or link to an mp3, with a button to listen before saving. */
-function AudioField({ id, value, onChange }) {
+/** An mp3: upload one, or type a path / link. Preview plays it before saving. */
+function AudioField({ id, value, onChange, onUpload }) {
   const [playing, setPlaying] = useState(false)
   const [error, setError] = useState('')
+  const [uploading, setUploading] = useState(false)
   const audio = useRef(null)
+  const fileInput = useRef(null)
+
+  async function pick(e) {
+    const file = e.target.files[0]
+    e.target.value = ''
+    if (!file) return
+    stop()
+    setError('')
+    setUploading(true)
+    try {
+      onChange(await onUpload(file))
+    } catch (err) {
+      setError(err.message || 'Upload failed')
+    } finally {
+      setUploading(false)
+    }
+  }
 
   const stop = () => {
     audio.current?.pause()
@@ -273,10 +318,18 @@ function AudioField({ id, value, onChange }) {
             onChange(e.target.value.trim())
           }}
         />
-        <button type="button" className="dash-btn dash-btn-ghost" onClick={toggle} disabled={!value}>
+        <button type="button" className="dash-btn dash-btn-ghost" onClick={toggle} disabled={!value || uploading}>
           {playing ? 'Stop' : 'Preview'}
         </button>
+        <button type="button" className="dash-btn" onClick={() => fileInput.current?.click()} disabled={uploading}>
+          <Icon name="upload" size={16} />
+          {uploading ? 'Uploading…' : 'Upload mp3'}
+        </button>
+        <input ref={fileInput} type="file" accept="audio/mpeg,.mp3" hidden onChange={pick} />
       </div>
+      {value && value.includes('/storage/v1/object/public/') && (
+        <span className="dash-hint">Stored in Supabase.</span>
+      )}
       {error && <span className="dash-error">{error}</span>}
     </>
   )

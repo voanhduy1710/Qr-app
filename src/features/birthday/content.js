@@ -75,7 +75,7 @@ export const schema = [
         key: 'musicUrl',
         label: 'Music file (mp3)',
         type: 'audio',
-        hint: 'Put the file in public/music/ and type its path, e.g. /music/song.mp3 — or paste a full https:// link.',
+        hint: 'Upload an mp3 (up to 10 MB), or type a path like /music/song.mp3 or paste a full https:// link.',
       },
       { key: 'musicVolume', label: 'Volume', type: 'volume' },
     ],

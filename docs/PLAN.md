@@ -1,6 +1,6 @@
 # QR Trái Tim — Implementation Plan
 
-Source brief: `Z_prompt_typer.md`. Target domain: `qr-app.vercel.app` (custom domain added later).
+Source brief: `Z_prompt_typer.md`. Target domain: `qr-app-duy.vercel.app` (custom domain added later).
 
 ## 1. Product flow
 
@@ -75,7 +75,7 @@ src/
 - `vercel.json`: SPA rewrite to `index.html` (deep links `/birthday` work from QR).
 - `clean_restart.ps1` — free port 5176 (Caro uses 5175), then run `deploy_local.ps1`.
 - `deploy_local.ps1` — check node/npm, install if needed, `vite --host --port 5176 --strictPort`.
-- `deploy_vercel.ps1` — token from env / `.env` (`VERCEL_ACCESS_TOKEN`), test + build, `vercel link --project qr-app`, `vercel deploy --prod`.
+- `deploy_vercel.ps1` — token from env / `.env` (`VERCEL_ACCESS_TOKEN`), test + build, `vercel link --project qr-app-duy`, `vercel deploy --prod`.
 - Custom domain later: Vercel → Project → Domains; optionally set `VITE_SITE_URL` so QR codes always point at the canonical domain.
 
 ## 7. Build order

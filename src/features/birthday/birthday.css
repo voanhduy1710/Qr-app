@@ -181,6 +181,8 @@
 .photo-heart {
   position: relative;
   z-index: 1;
+  /* The caption sizes itself from the heart's width (cqw), not the screen's. */
+  container-type: inline-size;
   width: min(94vw, 600px, 70dvh);
   aspect-ratio: 10 / 9;
   margin: auto 0;
@@ -335,7 +337,8 @@
 .photo-caption {
   position: absolute;
   left: 50%;
-  top: 50%;
+  /* Just above centre: clear of the dip photo above, and of the sides, which narrow toward the tip. */
+  top: 49%;
   translate: -50% -50%;
   display: flex;
   flex-direction: column;
@@ -361,7 +364,7 @@
 
 .photo-title {
   display: block;
-  font-size: clamp(30px, 9vw, 46px);
+  font-size: clamp(22px, 6.2cqw, 46px);
   background: linear-gradient(180deg, #fff4dc, #f2c879);
   -webkit-background-clip: text;
   background-clip: text;
@@ -373,7 +376,7 @@
   display: block;
   margin: 4px 0 0;
   font-family: var(--font-script);
-  font-size: clamp(18px, 5vw, 24px);
+  font-size: clamp(14px, 3.4cqw, 24px);
   color: #ffd9e2;
 }
 

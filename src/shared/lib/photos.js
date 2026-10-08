@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-const BUCKET = 'gift-photos'
+export const BUCKET = 'gift-photos'
 export const MAX_PHOTOS = 18
 
 function requireClient() {

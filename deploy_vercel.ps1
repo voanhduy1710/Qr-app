@@ -1,7 +1,7 @@
 # ==============================================================================
 # PowerShell Vercel Deployment Script for QR Trai Tim Web App
 # ==============================================================================
-$ProjectName = "qr-app"
+$ProjectName = "qr-app-duy"
 Set-Location $PSScriptRoot
 
 Write-Host "============================================================" -ForegroundColor Cyan
@@ -90,11 +90,17 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Host "   Build successful! dist/ output verified." -ForegroundColor Green
 
-# 5. Link (first run creates the project -> https://qr-app.vercel.app) and deploy
+# 5. Link (first run creates the project -> https://qr-app-duy.vercel.app) and deploy
 Write-Host "`n[5/5] Deploying to Production on Vercel account ($whoami)..." -ForegroundColor Yellow
 Write-Host "============================================================" -ForegroundColor Cyan
 
-if (-not (Test-Path ".vercel\project.json")) {
+# Re-link when this folder is linked to a different project name (e.g. after a rename).
+$linked = $null
+if (Test-Path ".vercel\project.json") {
+    try { $linked = (Get-Content ".vercel\project.json" -Raw | ConvertFrom-Json).projectName } catch {}
+}
+if ($linked -ne $ProjectName) {
+    if ($linked) { Write-Host "   Re-linking from '$linked' to '$ProjectName'..." -ForegroundColor Blue }
     npx -y vercel link --yes --project $ProjectName --token $vercelToken
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Error: Could not link Vercel project '$ProjectName'." -ForegroundColor Red
