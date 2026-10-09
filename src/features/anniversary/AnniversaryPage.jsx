@@ -17,7 +17,7 @@ import './anniversary.css'
 const LOVE_RGB = '255, 92, 130'
 
 export default function AnniversaryPage() {
-  const { scene, go, sceneClass } = useSceneMachine('gate')
+  const { scene, go, sceneClass } = useSceneMachine('gate', ['gate', 'intro', 'counter', 'letter', 'finale'])
   const { content, ready } = useGiftContent('anniversary', defaults)
   const [finaleReady, setFinaleReady] = useState(false)
   const confetti = useRef(null)

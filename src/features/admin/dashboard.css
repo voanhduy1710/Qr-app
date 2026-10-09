@@ -969,3 +969,76 @@ body:has(.dash) {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
+/* Preview: section list beside a live phone */
+.dash-previewer {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) auto;
+  justify-content: start;
+  align-items: start;
+  gap: 24px;
+}
+
+.dash-scene-list {
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+}
+
+.dash-scene {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--ink-dim);
+  text-align: left;
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+
+.dash-scene:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink);
+}
+
+.dash-scene.is-active {
+  background: rgba(255, 77, 141, 0.12);
+  color: #ffd1e1;
+  box-shadow: inset 2px 0 0 var(--rose);
+}
+
+.dash-scene-num {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Unlike the editor's side preview, this one stays visible on narrow screens. */
+.dash-preview.dash-preview-live {
+  display: flex;
+  top: 24px;
+}
+
+@media (max-width: 760px) {
+  .dash-previewer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dash-scene-list {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .dash-preview.dash-preview-live {
+    position: static;
+    align-items: center;
+  }
+}

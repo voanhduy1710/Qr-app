@@ -35,7 +35,7 @@ export default function LetterScene({ content, className, onFinish }) {
           <p className="page-text">{content.postscript}</p>
           <p className="page-sign">— {content.from}</p>
           <button type="button" className="btn btn-primary letter-next" onClick={onFinish}>
-            Gửi điều ước lên trời ✨
+            {content.letterNext}
           </button>
         </div>
       ) : (

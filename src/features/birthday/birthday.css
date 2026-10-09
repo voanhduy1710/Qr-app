@@ -1007,3 +1007,409 @@
     animation: none;
   }
 }
+
+/* Balloon pop: balloons rise forever until every message has been popped. */
+.balloon-scene {
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.balloon-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.balloon-float {
+  position: absolute;
+  top: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: balloon-rise var(--rise) linear forwards;
+}
+
+.balloon-float .balloon-art {
+  position: static;
+  display: block;
+  width: 100%;
+  z-index: auto;
+  animation: balloon-sway var(--sway) ease-in-out infinite alternate;
+}
+
+@keyframes balloon-rise {
+  to {
+    transform: translateY(calc(-100dvh - 260px));
+  }
+}
+
+@keyframes balloon-sway {
+  from {
+    transform: translateX(-10px) rotate(-5deg);
+  }
+  to {
+    transform: translateX(10px) rotate(5deg);
+  }
+}
+
+.balloon-burst {
+  position: absolute;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.balloon-burst i {
+  position: absolute;
+  left: -4px;
+  top: -3px;
+  width: 9px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--c);
+  animation: burst-fly 800ms var(--ease-out) forwards;
+}
+
+.balloon-burst i:nth-child(3n) {
+  background: #fff4dc;
+}
+
+.balloon-burst i:nth-child(4n) {
+  background: #f2c879;
+}
+
+@keyframes burst-fly {
+  from {
+    transform: rotate(var(--a)) translateX(0) scale(1.4);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(var(--a)) translateX(var(--d)) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.balloon-head,
+.balloon-foot {
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.balloon-foot {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  min-height: 56px;
+}
+
+.balloon-foot .btn {
+  pointer-events: auto;
+}
+
+/* The latest message; taps go through it to the balloons behind. */
+.balloon-card {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: min(320px, calc(100% - 48px));
+  padding: 22px 20px 16px;
+  border-radius: 20px;
+  background: rgba(255, 248, 236, 0.96);
+  color: #5a3a42;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  translate: -50% -50%;
+  animation: balloon-card-in 520ms var(--ease-out) both;
+}
+
+.balloon-card p {
+  margin: 0;
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(20px, 5.6vw, 25px);
+  line-height: 1.35;
+  color: #b8344c;
+  text-wrap: balance;
+}
+
+.balloon-count {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #9a7a80;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes balloon-card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6) rotate(-6deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) rotate(1deg);
+  }
+  to {
+    transform: scale(1) rotate(-2deg);
+  }
+}
+
+/* Scratch vouchers */
+.scratch-scene {
+  gap: 4px;
+}
+
+.scratch-list {
+  display: grid;
+  gap: 16px;
+  width: min(360px, 100%);
+  margin: 4px 0 18px;
+}
+
+.voucher {
+  position: relative;
+  display: grid;
+  place-content: center;
+  gap: 4px;
+  min-height: 124px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fff4dc, #f2c879);
+  color: #5a3a42;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+  transition: opacity 400ms ease, filter 400ms ease, transform 400ms var(--ease-out);
+}
+
+.voucher:focus-visible {
+  outline: 2px solid #f2c879;
+  outline-offset: 3px;
+}
+
+.voucher-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a07a3a;
+}
+
+.voucher-text {
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(20px, 5.6vw, 26px);
+  line-height: 1.25;
+  color: #c0394f;
+  text-wrap: balance;
+}
+
+.voucher-note {
+  font-size: 12px;
+  color: #7a5a60;
+}
+
+.voucher-silver {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity 600ms ease;
+}
+
+.voucher.is-revealed {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 2px #f2c879, 0 18px 40px rgba(242, 200, 121, 0.35);
+}
+
+.voucher.is-revealed .voucher-silver {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.voucher.is-locked {
+  opacity: 0.45;
+  filter: grayscale(0.6);
+}
+
+.voucher.is-locked .voucher-silver {
+  cursor: not-allowed;
+}
+
+.voucher-lock {
+  position: absolute;
+  inset: auto 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3a3440;
+}
+
+.scratch-foot {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  min-height: 56px;
+}
+
+/* Endings of the night sky: two choices once the wish has landed. */
+.sky-choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  animation: scene-in 800ms var(--ease-out) both;
+}
+
+.sky-choices .btn {
+  animation: none;
+}
+
+/* "Đi xem pháo hoa": the text steps aside for fireworks over the family. */
+.sky-fireworks {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sky-scene:is(.is-ending-fireworks, .is-ending-sleep) :is(.eyebrow, .sky-title, .sky-wish, .sky-lead) {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.sky-ground {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46%;
+  /* Warm light low on the horizon so the family reads as a silhouette. */
+  background:
+    radial-gradient(60% 55% at 50% 100%, rgba(255, 180, 145, 0.75), rgba(240, 110, 150, 0.3) 45%, transparent 75%),
+    linear-gradient(180deg, transparent 80%, #07030a);
+  pointer-events: none;
+  animation: sky-fade-in 1.4s ease both;
+}
+
+.sky-family {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 14px;
+  /* The figures fill 90% of the picture's height, so the width is what sets how big they look. */
+  width: min(96vw, 440px, 52dvh);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  pointer-events: none;
+  animation: sky-family-in 1.6s var(--ease-out) both;
+}
+
+.sky-family img {
+  /* The picture has its own glowing outline, so nothing is added here. */
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.sky-family i {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  translate: -50% -50%;
+  background: #fff6e4;
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  opacity: 0;
+  animation: sky-twinkle 2.6s ease-in-out var(--delay) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-family i {
+    animation: none;
+    opacity: 0.8;
+    transform: none;
+  }
+}
+
+@keyframes sky-twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+}
+
+.sky-scene.is-ending-fireworks .sky-actions {
+  position: absolute;
+  z-index: 4;
+  right: 10px;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  margin: 0;
+  min-height: 0;
+}
+
+.sky-replay {
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 12px;
+}
+
+@keyframes sky-family-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+@keyframes sky-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* "Đi về đi ngủ": the sky dims and the sleeping family rises into view. */
+.sky-sleep {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+  background: rgba(8, 3, 7, 0.88);
+  animation: sky-fade-in 1.2s ease both;
+}
+
+.sky-sleep-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  animation: sky-sleep-rise 1.8s var(--ease-out) 0.3s both;
+}
+
+.sky-sleep-card img {
+  width: min(78vw, 360px, 52dvh);
+  height: auto;
+  border: 8px solid #fffaf2;
+  border-radius: 18px;
+  background: #fffaf2;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.sky-sleep-caption {
+  margin: 0;
+  font-size: clamp(26px, 7vw, 36px);
+}
+
+@keyframes sky-sleep-rise {
+  from {
+    opacity: 0;
+    transform: translateY(60vh);
+  }
+}

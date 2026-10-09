@@ -6,6 +6,7 @@ import Icon from './Icon'
 import LoginForm from './LoginForm'
 import Overview from './Overview'
 import PhotoManager from './PhotoManager'
+import PreviewPanel from './PreviewPanel'
 import QrPanel from './QrPanel'
 import { GIFTS, toolsFor } from './registry'
 import { signOut, useAdminSession } from './useAdminSession'
@@ -124,6 +125,7 @@ function Dashboard() {
           {!gift && <Overview onOpen={go} />}
           {gift && tool === 'content' && <ContentEditor key={gift.id} gift={gift} onDirtyChange={setDirty} />}
           {gift && tool === 'photos' && <PhotoManager key={gift.id} occasion={gift.id} onDirtyChange={setDirty} />}
+          {gift && tool === 'preview' && <PreviewPanel key={gift.id} gift={gift} />}
           {gift && tool === 'qr' && <QrPanel key={gift.id} gift={gift} />}
         </main>
       </div>

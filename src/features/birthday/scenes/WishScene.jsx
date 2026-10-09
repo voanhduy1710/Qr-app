@@ -77,7 +77,7 @@ export default function WishScene({ content, className, onPick }) {
                 <span aria-hidden="true">←</span> Xem điều ước khác
               </button>
               <button ref={continueRef} type="button" className="btn btn-primary" onClick={() => onPick(wish.title)}>
-                Đọc thư tiếp <span aria-hidden="true">→</span>
+                Tiếp tục <span aria-hidden="true">→</span>
               </button>
             </div>
           </div>

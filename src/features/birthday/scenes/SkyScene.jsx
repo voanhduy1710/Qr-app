@@ -1,4 +1,6 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import Fireworks from '../../../shared/components/Fireworks'
+import { SHAPES } from '../../../shared/lib/fireworkShapes'
 import { mulberry32 } from '../../../shared/lib/rng'
 
 const STAR_PATH =
@@ -47,8 +49,24 @@ function pickSisters(box, blocked, landing) {
 }
 
 const FLIGHT_MS = 2400
+// How long the landed wish is left alone before the two endings are offered.
+const CHOICE_DELAY_MS = 5000
+const SHAPE_EVERY_MS = 2300
 
-export default function SkyScene({ content, className, onSend, onReplay }) {
+const ENDINGS = ['sleep', 'fireworks']
+
+// Twinkles on the family's outline, as % of the picture (x, y, size, delay).
+const TWINKLES = [
+  [45, 6.5, 15, 0],
+  [33.5, 18.5, 12, 0.9],
+  [61.5, 18.5, 13, 1.7],
+  [67.5, 42, 10, 0.5],
+  [73, 70, 12, 2.2],
+  [38, 49, 9, 1.3],
+  [62, 93, 10, 2.8],
+]
+
+export default function SkyScene({ content, className, onSend, onReplay, previewEnding }) {
   // idle -> flying -> landed
   const [phase, setPhase] = useState('idle')
   const [flight, setFlight] = useState({ x: 0, y: 0 })
@@ -59,6 +77,47 @@ export default function SkyScene({ content, className, onSend, onReplay }) {
   const titleRef = useRef(null)
   const wishRef = useRef(null)
   const [sisters, setSisters] = useState([])
+  const [choicesReady, setChoicesReady] = useState(false)
+  const [ending, setEnding] = useState(() => (ENDINGS.includes(previewEnding) ? previewEnding : null)) // null | 'sleep' | 'fireworks'
+  const fireworks = useRef(null)
+
+  useEffect(() => {
+    if (phase !== 'landed') return undefined
+    const t = setTimeout(() => setChoicesReady(true), CHOICE_DELAY_MS)
+    return () => clearTimeout(t)
+  }, [phase])
+
+  // Fireworks night: one shaped burst after another, every shape once per
+  // shuffled round, with a plain burst now and then in between.
+  useEffect(() => {
+    if (ending !== 'fireworks') return undefined
+    let order = []
+    let next = 0
+    let side = 0
+    const fire = () => {
+      const fw = fireworks.current
+      const el = sceneRef.current
+      if (!fw || !el) return
+      if (next >= order.length) {
+        order = [...SHAPES].sort(() => Math.random() - 0.5)
+        next = 0
+      }
+      const { width: w, height: h } = el.getBoundingClientRect()
+      const half = Math.max(56, Math.min(130, Math.min(w, h) * 0.17))
+      // Alternate left and right halves so a new shape never lands on the last one.
+      side = 1 - side
+      const x = w * (side ? 0.62 + Math.random() * 0.12 : 0.26 + Math.random() * 0.12)
+      fw.launchShape(order[next++], x, h * (0.2 + Math.random() * 0.2), half)
+    }
+    const first = setTimeout(fire, 600)
+    const shapes = setInterval(fire, SHAPE_EVERY_MS)
+    const plain = setInterval(() => fireworks.current?.show(1), 7000)
+    return () => {
+      clearTimeout(first)
+      clearInterval(shapes)
+      clearInterval(plain)
+    }
+  }, [ending])
 
   useLayoutEffect(() => {
     const scene = sceneRef.current
@@ -103,10 +162,17 @@ export default function SkyScene({ content, className, onSend, onReplay }) {
     setTimeout(() => setPhase('landed'), FLIGHT_MS)
   }
 
+  // Opened on an ending from the admin preview: send the wish straight away.
+  useEffect(() => {
+    if (previewEnding && ending) send()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const sent = phase !== 'idle'
 
   return (
-    <div ref={sceneRef} className={`${className} sky-scene is-${phase}`}>
+    <div ref={sceneRef} className={`${className} sky-scene is-${phase}${ending ? ` is-ending-${ending}` : ''}`}>
+      {ending === 'fireworks' && <Fireworks ref={fireworks} className="sky-fireworks" />}
       <svg ref={moonRef} className="sky-moon" viewBox="0 0 64 64" aria-hidden="true">
         <defs>
           <mask id="sky-moon-cut">
@@ -174,12 +240,46 @@ export default function SkyScene({ content, className, onSend, onReplay }) {
       </p>
 
       <div className="sky-actions">
-        {phase === 'landed' && (
-          <button type="button" className="btn" onClick={onReplay}>
+        {phase === 'landed' && choicesReady && !ending && (
+          <div className="sky-choices">
+            <button type="button" className="btn" onClick={() => setEnding('sleep')}>
+              {content.skyChoiceSleep}
+            </button>
+            <button type="button" className="btn btn-primary" onClick={() => setEnding('fireworks')}>
+              {content.skyChoiceFireworks}
+            </button>
+          </div>
+        )}
+        {ending === 'fireworks' && (
+          <button type="button" className="btn sky-replay" onClick={onReplay}>
             Xem lại từ đầu
           </button>
         )}
       </div>
+
+      {ending === 'fireworks' && (
+        <>
+          <div className="sky-ground" aria-hidden="true" />
+          <div className="sky-family">
+            <img src={content.fireworksImage} alt="" draggable="false" />
+            {TWINKLES.map(([x, y, size, delay], i) => (
+              <i key={i} style={{ left: `${x}%`, top: `${y}%`, '--size': `${size}px`, '--delay': `${delay}s` }} />
+            ))}
+          </div>
+        </>
+      )}
+
+      {ending === 'sleep' && (
+        <div className="sky-sleep">
+          <div className="sky-sleep-card">
+            <img src={content.sleepImage} alt={content.sleepCaption} draggable="false" />
+            <p className="script-title sky-sleep-caption">{content.sleepCaption}</p>
+            <button type="button" className="btn" onClick={onReplay}>
+              Xem lại từ đầu
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

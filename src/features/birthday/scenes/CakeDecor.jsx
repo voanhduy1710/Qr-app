@@ -17,7 +17,7 @@ function Gift({ box, ribbon, className }) {
   )
 }
 
-function Balloon({ color, className }) {
+export function Balloon({ color, className }) {
   return (
     <svg className={`cake-balloon ${className}`} viewBox="0 0 60 170" aria-hidden="true">
       <path d="M30 70c-6 20 8 36 0 56s6 30 0 44" fill="none" stroke="rgba(255,240,230,0.55)" strokeWidth="1.2" />
