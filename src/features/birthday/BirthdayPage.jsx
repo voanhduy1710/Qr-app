@@ -8,7 +8,7 @@ import { useSceneMachine } from '../../shared/hooks/useSceneMachine'
 import { HAPPY_BIRTHDAY, LULLABY, playMelody, playTrack } from '../../shared/lib/audio'
 import { defaults } from './content'
 import { useGiftContent } from '../../shared/hooks/useGiftContent'
-import { listPhotos } from '../../shared/lib/photos'
+import { BUCKET, listPhotos } from '../../shared/lib/photos'
 import BalloonScene from './scenes/BalloonScene'
 import CakeScene from './scenes/CakeScene'
 import IntroScene from './scenes/IntroScene'
@@ -22,6 +22,8 @@ import './birthday.css'
 // Every scene in order; `?scene=` can start on any of them.
 const SCENES = ['gate', 'intro', 'cake', 'photos', 'wish', 'balloons', 'letter', 'scratch', 'sky']
 const WARM_SCENES = ['cake', 'photos', 'wish', 'balloons', 'letter', 'scratch', 'sky']
+
+const COUNTDOWN_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${BUCKET}/birthday/music/countdown.mp3`
 
 export default function BirthdayPage() {
   const { scene, go, sceneClass } = useSceneMachine('gate', SCENES)
@@ -58,13 +60,33 @@ export default function BirthdayPage() {
     track.current = null
   }, [])
 
-  // Music has two parts: the Happy Birthday jingle from the moment the gift is
-  // opened, then the admin's own song (or the lullaby) from the letter onward.
+  // Music has three parts: the countdown song, the Happy Birthday jingle from the
+  // cake, then the admin's own song (or the lullaby) from the letter onward.
+  // The 22s countdown song plays once, from the gate tap until the cake. The
+  // intro moves on only when both the words and the song have finished.
+  const [songOver, setSongOver] = useState(true) // true when there is no song, e.g. `?scene=intro`
+  const [wordsOver, setWordsOver] = useState(false)
+  const playCountdown = useCallback(() => {
+    stopAll()
+    setSongOver(false)
+    setWordsOver(false)
+    track.current = playTrack(COUNTDOWN_URL, { volume: 0.7, loop: false, onEnd: () => setSongOver(true) })
+  }, [stopAll])
+
+  useEffect(() => {
+    if (scene === 'intro' && wordsOver && songOver) go('cake')
+  }, [scene, wordsOver, songOver, go])
+
   const playJingle = useCallback(() => {
     stopAll()
     // A short rest between repeats so the loop breathes.
     stopMusic.current = playMelody([...HAPPY_BIRTHDAY, [null, 3]], { bpm: 118, volume: 0.2, loop: true })
   }, [stopAll])
+
+  // The jingle starts only once the cake scene appears.
+  useEffect(() => {
+    if (scene === 'cake') playJingle()
+  }, [scene, playJingle])
 
   const playLetterMusic = useCallback(() => {
     stopAll()
@@ -91,12 +113,19 @@ export default function BirthdayPage() {
           className={sceneClass}
           title={content.gateTitle}
           onOpen={() => {
-            playJingle()
+            playCountdown()
             go('intro')
           }}
         />
       )}
-      {scene === 'intro' && <IntroScene className={sceneClass} words={content.introWords} onDone={() => go('cake')} />}
+      {scene === 'intro' && (
+        <IntroScene
+          className={sceneClass}
+          words={content.introWords}
+          onDone={() => setWordsOver(true)}
+          onSkip={() => go('cake')}
+        />
+      )}
       {scene === 'cake' && (
         <CakeScene
           className={sceneClass}
@@ -139,7 +168,7 @@ export default function BirthdayPage() {
           }}
           onReplay={() => {
             setWishSent(false)
-            playJingle()
+            playCountdown()
             go('intro')
           }}
         />

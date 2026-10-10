@@ -50,9 +50,19 @@ export function subscribeMuted(fn) {
  * switch. Call it from a user gesture so the browser allows playback.
  * Returns `{ stop, duck(factor) }`; `duck(0.25)` lowers it, `duck(1)` restores.
  */
-export function playTrack(url, { volume = 0.6 } = {}) {
+export function playTrack(url, { volume = 0.6, loop = true, onEnd } = {}) {
   const el = new Audio(url)
-  el.loop = true
+  el.loop = loop
+  // Without a loop, `onEnd` fires once when the file finishes — or fails to
+  // load or play, so nothing waiting on it gets stuck. Never after `stop()`.
+  let ended = false
+  const finish = () => {
+    if (ended) return
+    ended = true
+    onEnd?.()
+  }
+  el.addEventListener('ended', finish)
+  el.addEventListener('error', finish)
   el.preload = 'auto'
   let level = 1
   let fade = 0
@@ -69,12 +79,13 @@ export function playTrack(url, { volume = 0.6 } = {}) {
     step()
   }
   el.volume = 0
-  el.play().catch(() => {})
+  el.play().catch(finish)
   glide()
   const onMute = () => glide()
   listeners.add(onMute)
   return {
     stop() {
+      ended = true
       listeners.delete(onMute)
       cancelAnimationFrame(fade)
       el.pause()
