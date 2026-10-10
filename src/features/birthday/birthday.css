@@ -1145,6 +1145,25 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* The last card is the way forward: it pulses until tapped. */
+.balloon-card.is-next {
+  pointer-events: auto;
+  cursor: pointer;
+  animation:
+    balloon-card-in 520ms var(--ease-out) both,
+    tap-me 1.6s ease-in-out 0.8s infinite;
+}
+
+@keyframes tap-me {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.04;
+  }
+}
+
 @keyframes balloon-card-in {
   from {
     opacity: 0;
@@ -1241,12 +1260,9 @@
   cursor: not-allowed;
 }
 
-.voucher-lock {
-  position: absolute;
-  inset: auto 0 10px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #3a3440;
+.voucher.is-revealed {
+  cursor: pointer;
+  animation: tap-me 1.6s ease-in-out 0.8s infinite;
 }
 
 .scratch-foot {

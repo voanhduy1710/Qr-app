@@ -24,7 +24,7 @@ function makeBalloon(head = 0) {
 
 /**
  * Balloons keep floating up; each pop bursts into confetti and shows the next
- * message. Once every message has been shown, the letter can be opened.
+ * message. Once every message has been shown, tapping the last card opens the letter.
  */
 export default function BalloonScene({ content, className, onDone }) {
   const messages = content.balloonMessages.length ? content.balloonMessages : ['♥']
@@ -92,7 +92,19 @@ export default function BalloonScene({ content, className, onDone }) {
       </header>
 
       {message && (
-        <div key={popped} className="balloon-card" role="status">
+        <div
+          key={popped}
+          className={`balloon-card${done ? ' is-next' : ''}`}
+          role={done ? 'button' : 'status'}
+          tabIndex={done ? 0 : undefined}
+          onClick={done ? onDone : undefined}
+          onKeyDown={(e) => {
+            if (done && (e.key === 'Enter' || e.key === ' ')) {
+              e.preventDefault()
+              onDone()
+            }
+          }}
+        >
           <p>{message}</p>
           <span className="balloon-count">
             {Math.min(popped, goal)} / {goal}
@@ -102,12 +114,7 @@ export default function BalloonScene({ content, className, onDone }) {
 
       <footer className="balloon-foot">
         {done ? (
-          <>
-            <p className="hint">{content.balloonDone}</p>
-            <button type="button" className="btn btn-primary" onClick={onDone}>
-              {content.balloonButton}
-            </button>
-          </>
+          <p className="hint">{content.balloonDone}</p>
         ) : (
           <p className="hint">
             <span aria-hidden="true">👆</span> {content.balloonLeft.replace('{count}', goal - popped)}

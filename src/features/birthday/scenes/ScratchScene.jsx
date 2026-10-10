@@ -3,15 +3,19 @@ import { playMelody } from '../../../shared/lib/audio'
 
 // How much of the silver has to go before the whole card reveals itself.
 const REVEAL_AT = 0.5
+// Taps right after the reveal are the scratch finishing, not a tap to move on.
+const NEXT_AFTER_MS = 700
 
-/** Three vouchers under a silver layer. Only one can be scratched; the rest lock. */
+/** Three vouchers under a silver layer. Only one can be scratched; the rest lock. Tapping the revealed one moves on. */
 export default function ScratchScene({ content, className, onDone }) {
   const [chosen, setChosen] = useState(null)
   const [revealed, setRevealed] = useState(false)
+  const revealedAt = useRef(0)
 
   function reveal() {
     if (revealed) return
     setRevealed(true)
+    revealedAt.current = Date.now()
     playMelody([['C5', 0.25], ['E5', 0.25], ['G5', 0.25], ['C6', 0.75]], { bpm: 160, volume: 0.18 })
   }
 
@@ -31,32 +35,28 @@ export default function ScratchScene({ content, className, onDone }) {
             revealed={revealed && chosen === i}
             onStart={() => setChosen((c) => (c === null ? i : c))}
             onReveal={reveal}
+            onNext={() => Date.now() - revealedAt.current > NEXT_AFTER_MS && onDone()}
           />
         ))}
       </div>
 
       <div className="scratch-foot">
-        {revealed ? (
-          <>
-            <p className="hint">{content.scratchDone}</p>
-            <button type="button" className="btn btn-primary" onClick={onDone}>
-              {content.scratchButton}
-            </button>
-          </>
-        ) : (
-          <p className="hint">{content.scratchHint}</p>
-        )}
+        <p className="hint">{revealed ? content.scratchDone : content.scratchHint}</p>
       </div>
     </div>
   )
 }
 
-function ScratchCard({ text, note, lockedText, locked, revealed, onStart, onReveal }) {
+function ScratchCard({ text, note, lockedText, locked, revealed, onStart, onReveal, onNext }) {
   const canvas = useRef(null)
   const last = useRef(null)
   const moves = useRef(0)
 
-  // Paint the silver once; afterwards the canvas just stretches with the card.
+  // Locked cards say so on the silver itself instead of the usual invitation.
+  const label = locked ? `✦  ${lockedText}  ✦` : '✦  CÀO ĐỂ NHẬN QUÀ  ✦'
+
+  // Paint the silver once (again only when a card locks, which was never scratched);
+  // afterwards the canvas just stretches with the card.
   useEffect(() => {
     const el = canvas.current
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
@@ -83,8 +83,8 @@ function ScratchCard({ text, note, lockedText, locked, revealed, onStart, onReve
     ctx.font = "600 15px 'Be Vietnam Pro', system-ui, sans-serif"
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    ctx.fillText('✦  CÀO ĐỂ NHẬN QUÀ  ✦', width / 2, height / 2)
-  }, [])
+    ctx.fillText(label, width / 2, height / 2)
+  }, [label])
 
   const point = (e) => {
     const r = canvas.current.getBoundingClientRect()
@@ -133,15 +133,19 @@ function ScratchCard({ text, note, lockedText, locked, revealed, onStart, onReve
   return (
     <div
       className={`voucher${locked ? ' is-locked' : ''}${revealed ? ' is-revealed' : ''}`}
-      tabIndex={locked || revealed ? -1 : 0}
+      tabIndex={locked ? -1 : 0}
       role="button"
-      aria-label={locked ? lockedText : 'Cào phiếu quà'}
+      aria-label={locked ? lockedText : revealed ? text : 'Cào phiếu quà'}
+      onClick={() => revealed && onNext()}
       onKeyDown={(e) => {
-        // Keyboard users can't scratch: Enter or Space reveals the card.
+        // Keyboard users can't scratch: Enter or Space reveals the card, then moves on.
         if (!locked && (e.key === 'Enter' || e.key === ' ')) {
           e.preventDefault()
-          onStart()
-          onReveal()
+          if (revealed) onNext()
+          else {
+            onStart()
+            onReveal()
+          }
         }
       }}
     >
@@ -164,7 +168,6 @@ function ScratchCard({ text, note, lockedText, locked, revealed, onStart, onReve
           if (!locked && !revealed && cleared() > REVEAL_AT) onReveal()
         }}
       />
-      {locked && <span className="voucher-lock">{lockedText}</span>}
     </div>
   )
 }

@@ -251,9 +251,14 @@ export default function SkyScene({ content, className, onSend, onReplay, preview
           </div>
         )}
         {ending === 'fireworks' && (
-          <button type="button" className="btn sky-replay" onClick={onReplay}>
-            Xem lại từ đầu
-          </button>
+          <div className="sky-choices">
+            <button type="button" className="btn btn-primary sky-replay" onClick={() => setEnding('sleep')}>
+              {content.fireworksToSleep}
+            </button>
+            <button type="button" className="btn sky-replay" onClick={onReplay}>
+              Xem lại từ đầu
+            </button>
+          </div>
         )}
       </div>
 
@@ -274,9 +279,14 @@ export default function SkyScene({ content, className, onSend, onReplay, preview
           <div className="sky-sleep-card">
             <img src={content.sleepImage} alt={content.sleepCaption} draggable="false" />
             <p className="script-title sky-sleep-caption">{content.sleepCaption}</p>
-            <button type="button" className="btn" onClick={onReplay}>
-              Xem lại từ đầu
-            </button>
+            <div className="sky-choices">
+              <button type="button" className="btn btn-primary" onClick={() => setEnding('fireworks')}>
+                {content.sleepToFireworks}
+              </button>
+              <button type="button" className="btn" onClick={onReplay}>
+                Xem lại từ đầu
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -51,8 +51,7 @@ export const defaults = {
   ],
   // {count} is replaced with how many balloons are left.
   balloonLeft: 'Còn {count} quả nữa',
-  balloonDone: 'Đủ lời chúc rồi! Giờ mở lá thư nhé',
-  balloonButton: 'Mở lá thư',
+  balloonDone: 'Đủ lời chúc rồi! Chạm vào thiệp để mở lá thư nhé',
   letterCover: ['Lá thư nhỏ', 'Gửi {name}', 'Hị Hị'],
   letterPages: [
     'Bố mình chúc mừng sinh nhật Mẹ Hấu nah ~~~\nSam Sam nhìn giề, đi làm tiếp mau, bà Cherry hóng vừa thui',
@@ -72,9 +71,8 @@ export const defaults = {
     '2 suất thịt bọ tái chín nhuận tràng',
   ],
   voucherNote: 'Dùng bất cứ lúc nào ♥',
-  scratchLocked: 'Đã chọn phiếu khác rồi, hem thammm',
-  scratchDone: 'Quà đã chọn, không đổi trả nha',
-  scratchButton: 'Gửi điều ước lên trời',
+  scratchLocked: 'Hem tham lam nah ~~~',
+  scratchDone: 'Quà đã chọn, không đổi trả nha. Chạm vào phiếu để đi tiếp',
   skyTitle: 'Biến điều ước thành sao băng',
   skyWish: 'Chúc mọi điều ước của Mẹ Hấu thành hiện thực nah ~~~',
   skyHint: 'Chạm vào ngôi sao để gửi điều ước của {name} lên trời đêm.',
@@ -84,6 +82,8 @@ export const defaults = {
   sleepImage: '/images/family-sleeping.png',
   fireworksImage: '/images/family-fireworks.png',
   sleepCaption: 'Chúc cả nhà ngủ ngon nah',
+  sleepToFireworks: 'Dậy đi xem pháo hoa',
+  fireworksToSleep: 'Cả nhà đi ngủ thôi',
 }
 
 // What the admin editor shows, grouped by scene in the order the recipient sees them.
@@ -158,8 +158,7 @@ export const schema = [
       { key: 'balloonTitle', label: 'Title', type: 'text' },
       { key: 'balloonMessages', label: 'Messages (one per popped balloon)', type: 'list' },
       { key: 'balloonLeft', label: 'Balloons-left hint', type: 'text', hint: '{count} becomes the number of balloons left.' },
-      { key: 'balloonDone', label: 'After the last pop', type: 'text' },
-      { key: 'balloonButton', label: 'Button to open the letter', type: 'text' },
+      { key: 'balloonDone', label: 'After the last pop', type: 'text', hint: 'Tapping the last card opens the letter.' },
     ],
   },
   {
@@ -183,9 +182,8 @@ export const schema = [
       { key: 'scratchHint', label: 'Hint under the cards', type: 'text' },
       { key: 'vouchers', label: 'Vouchers (one per card)', type: 'list' },
       { key: 'voucherNote', label: 'Small line on every voucher', type: 'text' },
-      { key: 'scratchLocked', label: 'Text on the locked vouchers', type: 'text' },
-      { key: 'scratchDone', label: 'After a voucher is revealed', type: 'text' },
-      { key: 'scratchButton', label: 'Button to the night sky', type: 'text' },
+      { key: 'scratchLocked', label: 'Text on the locked vouchers', type: 'text', hint: 'Shown on their silver, between two ✦.' },
+      { key: 'scratchDone', label: 'After a voucher is revealed', type: 'text', hint: 'Tapping the revealed voucher moves on to the night sky.' },
     ],
   },
   {
@@ -205,6 +203,8 @@ export const schema = [
       { key: 'skyChoiceFireworks', label: 'Ending button: watch fireworks', type: 'text' },
       { key: 'sleepImage', label: 'Sleeping picture', type: 'text', hint: 'Path or link to an image. The default is the cartoon family.' },
       { key: 'sleepCaption', label: 'Line under the sleeping picture', type: 'text' },
+      { key: 'sleepToFireworks', label: 'Sleep ending: button to the fireworks', type: 'text' },
+      { key: 'fireworksToSleep', label: 'Fireworks ending: button to sleep', type: 'text' },
       {
         key: 'fireworksImage',
         label: 'Family silhouette for the fireworks',

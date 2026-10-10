@@ -113,6 +113,7 @@ function pluck(note, when, duration, volume) {
   env.gain.exponentialRampToValueAtTime(volume, when + 0.008)
   env.gain.exponentialRampToValueAtTime(0.0001, when + Math.max(0.5, duration * 1.6))
   env.connect(master)
+  const oscs = []
   for (const [type, mult, gain] of [
     ['sine', 1, 1],
     ['triangle', 2, 0.18],
@@ -127,7 +128,9 @@ function pluck(note, when, duration, volume) {
     g.connect(env)
     osc.start(when)
     osc.stop(when + Math.max(0.6, duration * 1.7))
+    oscs.push(osc)
   }
+  return { env, oscs }
 }
 
 /**
@@ -140,11 +143,13 @@ export function playMelody(notes, { bpm = 100, volume = 0.22, loop = false, onEn
   const phraseBeats = notes.reduce((sum, [, beats]) => sum + beats, 0)
   let stopped = false
   let timer = 0
+  let voices = [] // notes of the phrase in flight, so stop() can silence them
 
   const schedulePhrase = (start) => {
     let t = start
+    voices = []
     for (const [note, beats] of notes) {
-      if (note) pluck(note, t, beats * beat, volume)
+      if (note) voices.push(pluck(note, t, beats * beat, volume))
       t += beats * beat
     }
     const msUntilEnd = (start + phraseBeats * beat - ctx.currentTime) * 1000
@@ -159,6 +164,20 @@ export function playMelody(notes, { bpm = 100, volume = 0.22, loop = false, onEn
   return () => {
     stopped = true
     clearTimeout(timer)
+    // Quick fade, then cut every scheduled note so nothing plays on.
+    const now = ctx.currentTime
+    for (const { env, oscs } of voices) {
+      env.gain.cancelScheduledValues(now)
+      env.gain.setTargetAtTime(0.0001, now, 0.03)
+      oscs.forEach((osc) => {
+        try {
+          osc.stop(now + 0.15)
+        } catch {
+          // already stopped
+        }
+      })
+    }
+    voices = []
   }
 }
 
